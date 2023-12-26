@@ -1,17 +1,28 @@
 package GUI;
-import javax.sound.sampled.Clip;
-import javax.swing.*;
-import java.io.File;
+
 import static GUI.GameSFX.Music.*;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.sound.sampled.Clip;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import Zombie.Zombie;
 
 public class GamePanel extends JFrame {
     private Clip clip;
-    public GamePanel(){
+
+    public ArrayList<ArrayList<Zombie>> Zombie_units;
+
+    public GamePanel() {
         innitializeGamePanel();
         GamePanelMusic();
     };
-    public void innitializeGamePanel()
-    {
+
+    public void innitializeGamePanel() {
         setTitle("Plants VS Zombies");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 900);
@@ -23,6 +34,7 @@ public class GamePanel extends JFrame {
         label.setBounds(0, 0, 1600, 900);
         add(label);
     }
+
     public void GamePanelMusic() {
         File soundIngameFile = new File("Sound/IngameSound.wav");
         MusicStart(soundIngameFile);

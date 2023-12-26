@@ -1,5 +1,3 @@
-package Plant;
-
 import GUI.GamePanel;
 
 public abstract class Plant {
