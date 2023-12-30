@@ -1,5 +1,6 @@
 package GUI.GameMenu;
-
+import GUI.GamePanel;
+import Game.Game;
 import GUI.GameMenu.Menu;
 import GUI.GameSFX.Button;
 import GameMode.EasyMode;
@@ -14,9 +15,13 @@ import java.awt.event.ActionListener;
 import static GUI.GameSFX.Button.*;
 
 public class MenuMode extends JFrame {
+    private Game game;
+    private GamePanel gamePanel;
     private GUI.GameSFX.Button buttonHandlerMode= new Button();
     public Font LabelFont = loadCustomFont("Fonts/House_Of_Terror.ttf",60);
-    public MenuMode(){
+    public MenuMode(Game game,GamePanel gamePanel){
+        this.game=game;
+        this.gamePanel=gamePanel;
         innitializeMode();
     }
     public void innitializeMode()
@@ -49,7 +54,7 @@ public class MenuMode extends JFrame {
                 try {
                     dispose();
                     buttonHandlerMode.ButtonClickSound();
-                    EasyMode easyMode=new EasyMode();
+                    EasyMode easyMode=new EasyMode(game);
                 }catch (Exception x)
                 {
                     x.printStackTrace();
@@ -63,7 +68,7 @@ public class MenuMode extends JFrame {
                 try {
                     buttonHandlerMode.ButtonClickSound();
                     dispose();
-                    NormalMode normalMode = new NormalMode();
+                    NormalMode normalMode = new NormalMode(game);
                 }catch (Exception x)
                 {
                     x.printStackTrace();
@@ -77,7 +82,7 @@ public class MenuMode extends JFrame {
                 try {
                     buttonHandlerMode.ButtonClickSound();
                     dispose();
-                    HardMode hardMode=new HardMode();
+                    HardMode hardMode=new HardMode(game);
                 }catch (Exception x)
                 {
                     x.printStackTrace();
