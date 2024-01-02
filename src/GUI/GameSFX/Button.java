@@ -36,7 +36,9 @@ public class Button {
         button.setFocusable(false);
         button.setHorizontalTextPosition(JButton.CENTER);
         button.setVerticalTextPosition(JButton.CENTER);
-        button.setBorderPainted(false);
+        button.setHorizontalAlignment(JButton.CENTER);
+        button.setVerticalAlignment(JButton.CENTER);
+        button.setBorder(BorderFactory.createLineBorder(new Color(0x006600), 2));
         return button;
     }
     public Button(){
