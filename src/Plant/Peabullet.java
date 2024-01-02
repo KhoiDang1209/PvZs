@@ -10,17 +10,17 @@ public class Peabullet {
 
     public Peabullet(GamePanel parent, int lane, int startX) {
         this.gp = parent;
-        this.myLane = lane;
+        this.myLane = lane;/* Which land the plant located */
         posX = startX;
     }
 
     public void advance() {
-        Rectangle pRect = new Rectangle(posX, 130 + myLane * 120, 28, 28);
+        Rectangle pea_pos = new Rectangle(posX, 130 + myLane * 120, 28, 28);
         for (int i = 0; i < gp.Zombie_units.get(myLane).size(); i++) {
             Zombie z = gp.Zombie_units.get(myLane).get(i);
-            Rectangle zRect = new Rectangle(z.posX, 109 + myLane * 120, 400, 120);
-            if (pRect.intersects(zRect)) {
-                z.health -= 300;
+            Rectangle z_place = new Rectangle(z.posX, 109 + myLane * 120, 400, 120);
+            if (pea_pos.intersects(z_place)) {
+                z.health -= 300;/* health = 1000 => after 4 pea = die */
                 boolean exit = false;
                 if (z.health < 0) {
                     System.out.println("ZOMBIE DIE");
@@ -32,7 +32,7 @@ public class Peabullet {
                                                */
                     exit = true;
                 }
-                gp.lanePeas.get(myLane).remove(this);
+                gp.Land_of_Plants.get(myLane).remove(this);/* clear the bullet */
                 if (exit)
                     break;
             }
