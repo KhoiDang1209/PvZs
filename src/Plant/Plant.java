@@ -1,4 +1,6 @@
-import GUI.GamePanel;
+package Plant;
+
+import Game.GamePanel;
 
 public abstract class Plant {
     public int health = 200;
@@ -8,10 +10,10 @@ public abstract class Plant {
 
     public GamePanel gp;
 
-    public Plant(GamePanel MainGame, int x, int y) {
+    public Plant(GamePanel gp, int x, int y) {
         this.x = x;
         this.y = y;
-        gp = MainGame;
+        this.gp = gp;
     }
 
     public void stop() {

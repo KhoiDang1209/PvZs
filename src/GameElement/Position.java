@@ -47,4 +47,17 @@ public class Position {
         }
         else return 9;
     }
+
+    public int getBox() {
+        return box;
+    }
+    public int getLane() {
+        return lane;
+    }
+    public void setBox(int box) {
+        this.box = box;
+    }
+    public void setLane(int lane) {
+        this.lane = lane;
+    }
 }

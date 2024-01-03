@@ -1,8 +1,8 @@
-package Zombie;
+/*package Zombie;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import GUI.GamePanel;
+import Game.GamePanel;
 import GameElement.Collider;
 
 public class Zombie {
@@ -71,5 +71,5 @@ public class Zombie {
        return z;
     }
 
-}
+}*/
 

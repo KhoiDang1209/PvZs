@@ -3,14 +3,11 @@
     import GUI.GameMenu.MenuMode;
     import GUI.GameMenu.PlantsMenu;
     import GUI.GameMenu.ZombiesMenu;
-    import GUI.GamePanel;
 
     import javax.swing.*;
-    import java.awt.event.ActionEvent;
-    import java.awt.event.ActionListener;
 
     import InputForGame.Mouse;
-    import InputForGame.MyMouseListener;
+
     public class Game implements Mouse {
         private Thread gameThread;
         private GamePanel gamePanel;

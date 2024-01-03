@@ -1,6 +1,6 @@
 package GameMode;
 import Game.Game;
-import GUI.GamePanel;
+import Game.GamePanel;
 
 public class HardMode {
     private Game game;

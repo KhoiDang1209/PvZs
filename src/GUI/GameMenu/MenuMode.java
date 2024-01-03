@@ -1,7 +1,6 @@
 package GUI.GameMenu;
-import GUI.GamePanel;
+import Game.GamePanel;
 import Game.Game;
-import GUI.GameMenu.Menu;
 import GUI.GameSFX.Button;
 import GameMode.EasyMode;
 import GameMode.HardMode;

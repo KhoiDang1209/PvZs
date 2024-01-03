@@ -1,4 +1,4 @@
-package GUI;
+package Game;
 
 import static GUI.GameSFX.Music.*;
 

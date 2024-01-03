@@ -1,6 +1,6 @@
 package GameMode;
 
-import GUI.GamePanel;
+import Game.GamePanel;
 import Game.Game;
 
 public class EasyMode {
