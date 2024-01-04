@@ -14,10 +14,12 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import Game.Game;
+import GameElement.Collider;
 import InputForGame.MyMouseListener;
 import Zombie.Zombie;
 
 public class GamePanel extends JFrame implements Runnable {
+    public Collider[] colliders;
     private Clip clip;
     private Game game;
     private JLabel timerLabel;

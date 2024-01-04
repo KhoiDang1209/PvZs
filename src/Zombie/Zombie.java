@@ -1,9 +1,10 @@
-/*package Zombie;
+package Zombie;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import Game.GamePanel;
 import GameElement.Collider;
+import GUI.GameEnd.GameOverNotification;
 
 public class Zombie {
 	// the attribute of zombie
@@ -48,9 +49,8 @@ public class Zombie {
             }
             if (posX < 0) {
                 isMoving = false;
-                JOptionPane.showMessageDialog(gp,"ZOMBIES ATE YOUR BRAIN !" + '\n' + "Starting the level again");
-                GameWindow.gw.dispose();
-                GameWindow.gw = new GameWindow();
+                gp.dispose();
+                GameOverNotification gon= new GameOverNotification();
             }
         }
     }
@@ -71,5 +71,5 @@ public class Zombie {
        return z;
     }
 
-}*/
+}
 

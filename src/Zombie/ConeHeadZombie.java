@@ -1,4 +1,4 @@
-/*package Zombie;
+package Zombie;
 import Game.GamePanel;
 
 public class ConeHeadZombie extends Zombie {
@@ -7,4 +7,4 @@ public class ConeHeadZombie extends Zombie {
         super(parent,lane);
         health = 1800;
     }
-}*/
+}
