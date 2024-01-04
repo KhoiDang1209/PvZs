@@ -5,6 +5,7 @@ import static GUI.GameSFX.Music.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
@@ -14,12 +15,14 @@ import javax.swing.SwingUtilities;
 
 import Game.Game;
 import InputForGame.MyMouseListener;
+import Zombie.Zombie;
 
 public class GamePanel extends JFrame implements Runnable {
     private Clip clip;
     private Game game;
     private JLabel timerLabel;
     private double setFPS = 60;
+    public ArrayList<ArrayList<Zombie>> Zombie_units;
 
     public double getSetFPS() {
         return setFPS;
