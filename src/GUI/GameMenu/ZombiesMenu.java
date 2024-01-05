@@ -49,6 +49,6 @@ public class ZombiesMenu extends JFrame {
                 }
             }
         });
-        add(Backbutton);
+        label.add(Backbutton);
     }
 }

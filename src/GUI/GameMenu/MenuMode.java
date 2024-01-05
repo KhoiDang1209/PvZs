@@ -33,7 +33,6 @@ public class MenuMode extends JFrame {
         label1.setText("Choose your game mode");
         label1.setFont(LabelFont);
         label1.setForeground(new Color(0x006600));
-        setLayout(null);
         label1.setBounds(500,300,600,200);
         add(label1);
         ImageIcon image = new ImageIcon("Image/background/ModeMenu.png");
@@ -103,10 +102,10 @@ public class MenuMode extends JFrame {
                 }
             }
         });
-        add(Easybutton);
-        add(Normalbutton);
-        add(Hardbutton);
-        add(Backbutton);
+        label2.add(Easybutton);
+        label2.add(Normalbutton);
+        label2.add(Hardbutton);
+        label2.add(Backbutton);
 
     }
 }

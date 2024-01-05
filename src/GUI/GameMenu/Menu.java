@@ -19,19 +19,21 @@ public class Menu extends JFrame  {
     private Clip clip;
     private Game game;
     private GamePanel gamePanel;
+
     public void MenuMusicStart() {
         File soundMenuFile = new File("Sound/MenuSound.wav");
         MusicStart(soundMenuFile);
     }
     public Menu() {
+        setTitle("Plants VS Zombies");
+        setSize(1600, 900);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(null);
         innitializeMenu();
         MenuMusicStart();
     }
     public void innitializeMenu () {
-            setTitle("Plants VS Zombies");
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setSize(1600, 900);
-            setResizable(false);
             ImageIcon image1 = new ImageIcon("Image/background/MainMenu02.png");;
             JLabel label2= new JLabel();
             ImageIcon image2 = new ImageIcon("Image/background/Title.png");
@@ -40,20 +42,14 @@ public class Menu extends JFrame  {
             add(label2);
             JLabel label = new JLabel();
             label.setIcon(image1);
-            setLayout(null);
             label.setBounds(0, 0, 1600, 900);
             add(label);
             JButton Nbutton = createStyledButton("New", customMenuButtonFont,new Color(0x627184),Color.black);
-            Nbutton.setBorderPainted(false);
-            Nbutton.setVerticalTextPosition(JButton.BOTTOM);
             JButton Gbutton = createStyledButton("Game", customMenuButtonFont,new Color(0x627184),Color.black);
-            Gbutton.setBorderPainted(false);
             JButton Pbutton = createStyledButton("Plants", customMenuButtonFont,new Color(0x777E84),Color.black);
-            Pbutton.setBorderPainted(false);
             JButton Zbutton = createStyledButton("Zombies", customMenuButtonFont,new Color(0x8C9696),Color.black);
-            Zbutton.setBorderPainted(false);
-            setLayout(null);
             Nbutton.setBounds(685, 380, 150, 75);
+            Nbutton.setBorderPainted(false);
             Nbutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -67,6 +63,7 @@ public class Menu extends JFrame  {
                 }
             });
             Gbutton.setBounds(685, 450, 150, 75);
+            Gbutton.setBorderPainted(false);
             Gbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -80,6 +77,7 @@ public class Menu extends JFrame  {
             }
         });
             Pbutton.setBounds(320, 460, 150, 75);
+            Pbutton.setBorderPainted(false);
             Pbutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -93,6 +91,7 @@ public class Menu extends JFrame  {
                 }
             });
             Zbutton.setBounds(1050, 420, 150, 75);
+            Zbutton.setBorderPainted(false);
             Zbutton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -105,10 +104,10 @@ public class Menu extends JFrame  {
                     }catch(Exception x){x.printStackTrace();}
                 }
             });
-            add(Nbutton);
-            add(Gbutton);
-            add(Pbutton);
-            add(Zbutton);
+            label.add(Nbutton);
+            label.add(Gbutton);
+            label.add(Pbutton);
+            label.add(Zbutton);
             setVisible(true);
         }
     }

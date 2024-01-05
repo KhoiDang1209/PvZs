@@ -50,6 +50,6 @@ public class PlantsMenu extends JFrame {
                 }
             }
         });
-        add(Backbutton);
+        label.add(Backbutton);
     }
 }
