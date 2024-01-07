@@ -15,7 +15,7 @@ import GameElement.Collider;
 import InputForGame.Mouse;
 import InputForGame.MyMouseListener;
 import Zombie.Zombie;
-import sun.security.provider.Sun;
+//import sun.security.provider.Sun;
 
 public class GamePanel extends JFrame implements Runnable, Mouse {
     public Collider[] colliders;

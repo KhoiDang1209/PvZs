@@ -89,7 +89,9 @@ public class MenuMode extends JFrame {
                 }
             }
         });
-        Backbutton.setBounds(100,50,150,66);
+        Backbutton.setFocusable(false);
+        Backbutton.setBorderPainted(false);
+        Backbutton.setBounds(100,50,150,39);
         Backbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
