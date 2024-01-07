@@ -2,23 +2,22 @@ package Game;
 
 import static GUI.GameSFX.Music.*;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
-
+import GameElement.Position;
 import javax.sound.sampled.Clip;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-
+import javax.swing.*;
 import Game.Game;
 import GameElement.Collider;
+import InputForGame.Mouse;
 import InputForGame.MyMouseListener;
 import Zombie.Zombie;
+import sun.security.provider.Sun;
 
-public class GamePanel extends JFrame implements Runnable {
+public class GamePanel extends JFrame implements Runnable, Mouse {
     public Collider[] colliders;
     private Clip clip;
     private Game game;
@@ -63,7 +62,11 @@ public class GamePanel extends JFrame implements Runnable {
     public void setMyMouseListener(MyMouseListener myMouseListener) {
         this.myMouseListener = myMouseListener;
     }
-
+    JButton SunflowerButtton=new JButton();
+    ImageIcon SunflowerCard=new ImageIcon("Image/Plants/Cards/SunflowerCard.png");
+    JButton PeashooterButton= new JButton();
+    ImageIcon PeashooterCard=new ImageIcon("Image/Plants/Cards/Peashootercard.png");
+    private volatile boolean isRunning = true;
     public GamePanel(Game game) {
         innitializeGamePanel();
         GamePanelMusic();
@@ -83,9 +86,46 @@ public class GamePanel extends JFrame implements Runnable {
         add(timerLabel);
         JLabel label = new JLabel();
         label.setIcon(image);
-        setLayout(null);
         label.setBounds(0, 0, 1600, 900);
         add(label);
+        JPanel ButtonPanel=new JPanel(new FlowLayout());
+        SunflowerButtton.setIcon(SunflowerCard);
+        SunflowerButtton.setBounds(50,50,140,194);
+        SunflowerButtton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
+        SunflowerButtton.setFocusable(true);
+        SunflowerButtton.setHorizontalAlignment(JButton.CENTER);
+        SunflowerButtton.setVerticalAlignment(JButton.CENTER);
+        SunflowerButtton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                int x = evt.getX();
+                int y = evt.getY();
+                Position position = new Position(x,y); // Assuming y is for Lane and x is for Box
+                int lane = position.Lane(y);
+                int box = position.Box(x);
+                System.out.println("Sunflower Released at Lane: " + lane + ", Box: " + box);
+            }
+        });
+        PeashooterButton.setIcon(PeashooterCard);
+        PeashooterButton.setBounds(50,250,140,195);
+        PeashooterButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
+        PeashooterButton.setFocusable(true);
+        PeashooterButton.setHorizontalAlignment(JButton.CENTER);
+        PeashooterButton.setVerticalAlignment(JButton.CENTER);
+        PeashooterButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                int x = evt.getX();
+                int y = evt.getY();
+                Position position = new Position(x,y); // Assuming y is for Lane and x is for Box
+                int lane = position.Lane(y);
+                int box = position.Box(x);
+                System.out.println("Sunflower Released at Lane: " + lane + ", Box: " + box);
+            }
+        });
+        label.add(SunflowerButtton);
+        label.add(PeashooterButton);
+        getContentPane().add(label);
+        pack();
+        setLocationRelativeTo(null);
     }
 
     public void GamePanelMusic() {
@@ -97,6 +137,12 @@ public class GamePanel extends JFrame implements Runnable {
         gameThread = new Thread(this) {
         };
         gameThread.start();
+    }
+    public void pauseGame() {
+        isRunning = false;
+    }
+    public void resumeGame() {
+        isRunning = true;
     }
 
     @Override
@@ -148,5 +194,33 @@ public class GamePanel extends JFrame implements Runnable {
         this.addMouseMotionListener(myMouseListener);
 
         requestFocus();
+    }
+    @Override
+    public void mouseClicked(int x, int y) {
+    }
+    @Override
+    public void mousePressed(int x, int y) {
+    }
+    @Override
+    public void mouseOver(int x, int y) {
+    }
+    @Override
+    public void mouseReleased(int x, int y) {
+        Position position = new Position(y, x); // Assuming y is for Lane and x is for Box
+        int lane = position.Lane(y);
+        int box = position.Box(x);
+        System.out.println("Released at Lane: " + lane + ", Box: " + box);
+    }
+    @Override
+    public void mouseEntered(int x, int y) {
+    }
+    @Override
+    public void mouseExited(int x, int y) {
+    }
+    @Override
+    public void mouseDragged(int x, int y) {
+    }
+    @Override
+    public void mouseMoved(int x, int y) {
     }
 }

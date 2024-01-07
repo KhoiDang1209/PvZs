@@ -3,20 +3,20 @@ package GameElement;
 public class Position {
     private int lane;
     private int box;
-    public Position(int lane, int box)
+    public Position(int box, int lane)
     {
         this.lane=lane;
         this.box=box;
     }
     public int Lane(int y)
     {
-        if(y>=87 && y<=247)
+        if(y>=110 && y<=265)
             return 1;
-        else if (y>247 && y<=407) {
+        else if (y>265 && y<=411) {
             return 2;
-        } else if (y>407 && y<=567) {
+        } else if (y>411 && y<=577) {
             return 3;
-        } else if(y>567 && y<=727) {
+        } else if(y>577 && y<=710) {
             return 4;
         }
         else return 5;
@@ -33,16 +33,16 @@ public class Position {
         else if (x>=744 && x<867) {
             return 4;
         }
-        else if (x>=867 && x<990) {
+        else if (x>=867 && x<985) {
             return 5;
         }
-        else if (x>=990 && x<1113){
+        else if (x>=985 && x<1104){
             return 6;
         }
-        else if (x>=1113 && x<1236){
+        else if (x>=1113 && x<1223){
             return 7;
         }
-        else if (x>=1236 && x<1359){
+        else if (x>=1236 && x<1345){
             return 8;
         }
         else return 9;

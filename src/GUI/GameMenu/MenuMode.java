@@ -18,6 +18,7 @@ public class MenuMode extends JFrame {
     private GamePanel gamePanel;
     private GUI.GameSFX.Button buttonHandlerMode= new Button();
     public Font LabelFont = loadCustomFont("Fonts/House_Of_Terror.ttf",60);
+    private ImageIcon back=new ImageIcon("Image/background/back.png");
     public MenuMode(Game game,GamePanel gamePanel){
         this.game=game;
         this.gamePanel=gamePanel;
@@ -44,7 +45,8 @@ public class MenuMode extends JFrame {
         JButton Easybutton = createStyledButton("Easy", customButtonFont,new Color(0xEFEF5B),new Color(0x006600));
         JButton Normalbutton = createStyledButton("Normal", customButtonFont,new Color(0xEFEF5B),new Color(0x006600));
         JButton Hardbutton = createStyledButton("Hard", customButtonFont,new Color(0xEFEF5B),new Color(0x006600));
-        JButton Backbutton=createStyledButton("Back",customButtonFont,new Color(0xEFEF5B),new Color(0x006600));
+        JButton Backbutton=new JButton();
+        Backbutton.setIcon(back);
         Easybutton.setBounds(450, 500, 150, 65);
         Easybutton.addActionListener(new ActionListener() {
             @Override
@@ -87,7 +89,7 @@ public class MenuMode extends JFrame {
                 }
             }
         });
-        Backbutton.setBounds(100,50,150,65);
+        Backbutton.setBounds(100,50,150,66);
         Backbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
