@@ -2,6 +2,7 @@ package Zombie;
 
 import Game.GamePanel;
 import GameElement.Collider;
+import Plant.Peashooter;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
