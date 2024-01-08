@@ -1,7 +1,7 @@
 package Zombie;
 import Game.GamePanel;
 
-public class NormalZombie extends Zombie {
+public class NormalZombie extends Zombie{
 
     public NormalZombie(GamePanel parent,int lane){
         super(parent,lane);

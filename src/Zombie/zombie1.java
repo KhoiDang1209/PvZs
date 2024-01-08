@@ -176,21 +176,21 @@ public class zombie1 implements ZombieFather{
         System.out.println("Zombie's speed is restored!");
         startAttackTimer();
     }
-    //public static zombie1 getZombie(String type,GamePanel parent, int lane, String imagePath) {
-       // Zombie z;
-        //switch(type) {
-            //case "NormalZombie" : z = new NormalZombie(parent,lane);
-                //break;
-            //case "ConeHeadZombie" : z = new ConeHeadZombie(parent,lane);
-               // break;
-            //case "ZombieFire" : z= new ZombieFire(imagePath, parent, lane);
-            //default:
-                //z = new Zombie(parent, lane);
-                //break;
+    public static zombie1 getZombie(String type,GamePanel parent, int lane, String imagePath) {
+        zombie1 z;
+        switch(type) {
+            case "NormalZombie" : z = new NormalZombie1(parent,lane);
+                break;
+            case "ConeHeadZombie" : z = new ConeheadZombie1(parent,lane);
+               break;
+            case "ZombieFire" : z= new ZombieFire(imagePath, parent, lane);
+            default:
+                z = new zombie1(parent, lane);
+                break;
 
-        //}
-        //return z;
-    //}
+        }
+        return z;
+    }
     public void setColor(Color color) {
         this.zombieColor = color;
 
