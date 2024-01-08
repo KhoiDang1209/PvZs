@@ -2,7 +2,9 @@ package Zombie;
 
 import Game.GamePanel;
 import GameElement.Collider;
+import Plant.FreezePeashooter;
 import Plant.Peashooter;
+import Plant.Sunflower;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -17,13 +19,13 @@ import java.util.Timer;
 public class zombie1 implements ZombieFather{
     protected String imagePath;
     // the attribute of zombie
-    int health ;
+    public int health ;
     private BufferedImage zombieImage;
     private  int slowInt;
     private int speed;
     private Color zombieColor;
     private final GamePanel gp;
-    protected int posX ;
+    public int posX ;
     public int myLane;
     public boolean isMoving = true;
     private  int damage ;
@@ -146,8 +148,8 @@ public class zombie1 implements ZombieFather{
             if (posX < 0) {
                 isMoving = false;
                 JOptionPane.showMessageDialog(gp, "ZOMBIES ATE YOUR BRAIN !" + '\n' + "Starting the level again");
-                GameWindow.gw.dispose();
-                GameWindow.gw = new GameWindow();
+                //GameWindow.gw.dispose();
+                //GameWindow.gw = new GameWindow();
             }
         }
     }
@@ -174,24 +176,24 @@ public class zombie1 implements ZombieFather{
         System.out.println("Zombie's speed is restored!");
         startAttackTimer();
     }
-    public static zombie1 getZombie(String type,GamePanel parent, int lane, String imagePath) {
-        Zombie z;
-        switch(type) {
-            case "NormalZombie" : z = new NormalZombie(parent,lane);
-                break;
-            case "ConeHeadZombie" : z = new ConeHeadZombie(parent,lane);
-                break;
-            case "ZombieFire" : z= new ZombieFire(imagePath, parent, lane);
-            default:
-                z = new Zombie(parent, lane);
-                break;
+    //public static zombie1 getZombie(String type,GamePanel parent, int lane, String imagePath) {
+       // Zombie z;
+        //switch(type) {
+            //case "NormalZombie" : z = new NormalZombie(parent,lane);
+                //break;
+            //case "ConeHeadZombie" : z = new ConeHeadZombie(parent,lane);
+               // break;
+            //case "ZombieFire" : z= new ZombieFire(imagePath, parent, lane);
+            //default:
+                //z = new Zombie(parent, lane);
+                //break;
 
-        }
-        return z;
-    }
+        //}
+        //return z;
+    //}
     public void setColor(Color color) {
         this.zombieColor = color;
-        gp.updateUI();
+
     }
     public void changeColor(Color color) {
         setColor(color);

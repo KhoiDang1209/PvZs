@@ -14,6 +14,7 @@ import Game.Game;
 import GameElement.Collider;
 import InputForGame.Mouse;
 import InputForGame.MyMouseListener;
+import Plant.Pea;
 import Zombie.Zombie;
 //import sun.security.provider.Sun;
 
@@ -67,6 +68,27 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     JButton PeashooterButton= new JButton();
     ImageIcon PeashooterCard=new ImageIcon("Image/Plants/Cards/Peashootercard.png");
     private volatile boolean isRunning = true;
+    Image bgImage;
+    Image peashooterImage;
+    Image freezePeashooterImage;
+    Image sunflowerImage;
+    Image peaImage;
+    Image freezePeaImage;
+
+    Image normalZombieImage;
+    Image ZombieFireImage;
+    Image coneHeadZombieImage;
+
+
+    ArrayList<ArrayList<Zombie>> laneZombies;
+    public ArrayList<ArrayList<Pea>> lanePeas;
+
+
+    Timer redrawTimer;
+    Timer advancerTimer;
+    Timer sunProducer;
+    Timer zombieProducer;
+    JLabel sunScoreboard;
     public GamePanel(Game game) {
         innitializeGamePanel();
         GamePanelMusic();
@@ -223,4 +245,5 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     @Override
     public void mouseMoved(int x, int y) {
     }
+
 }
