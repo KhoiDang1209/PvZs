@@ -18,7 +18,7 @@ import java.util.TimerTask;
 
 public class ZombieFire extends zombie1 {
     private int health1;
-    private BufferedImage zombieImage;
+    private BufferedImage zombieImage1;
     private  int slowInt1;
     private int speed1;
 
@@ -41,7 +41,7 @@ public class ZombieFire extends zombie1 {
         this.imagePath= imagePath;
         initAttributes();
         try {
-            zombieImage = ImageIO.read(new File(imagePath));
+            zombieImage1 = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -248,17 +248,17 @@ public class ZombieFire extends zombie1 {
         }
     }
     public void changeSkinColor(Color newColor) {
-        int width = zombieImage.getWidth();
-        int height = zombieImage.getHeight();
+        int width = zombieImage1.getWidth();
+        int height = zombieImage1.getHeight();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 // Lấy màu tại từng pixel
-                Color pixelColor = new Color(zombieImage.getRGB(x, y));
+                Color pixelColor = new Color(zombieImage1.getRGB(x, y));
 
                 // Kiểm tra nếu là màu xanh
                 if (isGreen(pixelColor)) {
                     // Thay đổi thành màu đỏ
-                    zombieImage.setRGB(x, y, Color.RED.getRGB());
+                    zombieImage1.setRGB(x, y, Color.RED.getRGB());
                 }
             }
         }
@@ -272,24 +272,24 @@ public class ZombieFire extends zombie1 {
         g2d.setComposite(AlphaComposite.DstIn);
 
         // Draw original image on top
-        g2d.drawImage(zombieImage, 0, 0, null);
+        g2d.drawImage(zombieImage1, 0, 0, null);
         g2d.dispose();
 
         // Update zombie image
-        zombieImage = newImage;
+        zombieImage1 = newImage;
     }
 
     private boolean isGreen(Color pixelColor) {
         return pixelColor.getGreen() > 150 && pixelColor.getRed() < 100 && pixelColor.getBlue() < 100;
     }
     public BufferedImage getZombieImage() {
-        return zombieImage;
+        return zombieImage1;
     }
     public void saveModifiedImage() {
         try {
             String outputFilePath = "zombie4.png";
             File outputFile = new File(outputFilePath);
-            ImageIO.write(zombieImage, "png", outputFile);
+            ImageIO.write(zombieImage1, "png", outputFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -299,8 +299,8 @@ public class ZombieFire extends zombie1 {
         return 600;
     }
     public void draw(Graphics g) {
-        if (zombieImage != null) {
-            g.drawImage(zombieImage, posX, myLane, null);
+        if (zombieImage1 != null) {
+            g.drawImage(zombieImage1, posX, myLane, null);
         }
     }
     @Override

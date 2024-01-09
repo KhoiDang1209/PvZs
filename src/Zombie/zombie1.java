@@ -20,7 +20,7 @@ public class zombie1 implements ZombieFather{
     protected String imagePath;
     // the attribute of zombie
     public int health ;
-    private BufferedImage zombieImage;
+    private BufferedImage zombieImage1;
     private  int slowInt;
     private int speed;
     private Color zombieColor;
@@ -301,8 +301,8 @@ public class zombie1 implements ZombieFather{
     }
 
     public void draw(Graphics g) {
-        if (zombieImage != null) {
-            g.drawImage(zombieImage, posX, myLane, null);
+        if (zombieImage1 != null) {
+            g.drawImage(zombieImage1, posX, myLane, null);
         }
     }
 
@@ -314,7 +314,7 @@ public class zombie1 implements ZombieFather{
         this.armor = armor;
     }
     public void setZombieImage(BufferedImage zombieImage) {
-        this.zombieImage = zombieImage;
+        this.zombieImage1 = zombieImage;
     }
     public void newspeed(){
         int newspeed;
