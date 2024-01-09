@@ -33,12 +33,48 @@ import Zombie.Zombie;
 //import sun.security.provider.Sun;
 
 public class GamePanel extends JFrame implements Runnable, Mouse {
+
     public Collider[] colliders;
     private Clip clip;
     private Game game;
-    private JLabel timerLabel;
     private double setFPS = 60;
+
+    // Set of ArrayList
+    // Use the zombie_units array
+    // ArrayList<ArrayList<Zombie>> laneZombies;
     public ArrayList<ArrayList<Zombie>> Zombie_units;
+    public ArrayList<Sun> activeSuns;
+    public ArrayList<ArrayList<Pea>> PlantInField;
+
+    // Set of Jlabel
+    private JLabel timerLabel;
+    JLabel NumOfSunBoard = new JLabel();
+    JLabel sunScoreboard;
+    private JLabel label = new JLabel();
+
+    // Set of image
+    Image bgImage;
+    Image peashooterImage;
+    Image freezePeashooterImage;
+    Image sunflowerImage;
+    Image peaImage;
+    Image freezePeaImage;
+
+    Image normalZombieImage;
+    Image ZombieFireImage;
+    Image coneHeadZombieImage;
+
+    // Set of imageicon
+    JButton SunflowerButtton = new JButton();
+    ImageIcon SunflowerCard = new ImageIcon("Image/Plants/Cards/SunflowerCard.png");
+    JButton PeashooterButton = new JButton();
+    ImageIcon PeashooterCard = new ImageIcon("Image/Plants/Cards/Peashootercard.png");
+
+    // Set of Timer
+    Timer redrawTimer;
+    Timer advancerTimer;
+    Timer sunProducer;
+    Timer zombieProducer;
 
     public double getSetFPS() {
         return setFPS;
@@ -81,8 +117,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // global value of Sun count
     private int Sun;
 
-    public ArrayList<Sun> activeSuns;
-
     public int getNumOfSun() {
         return Sun;
     }
@@ -93,32 +127,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         return NumOfSunBoard;
     }
 
-    JLabel NumOfSunBoard = new JLabel();
-
-    JButton SunflowerButtton = new JButton();
-    ImageIcon SunflowerCard = new ImageIcon("Image/Plants/Cards/SunflowerCard.png");
-    JButton PeashooterButton = new JButton();
-    ImageIcon PeashooterCard = new ImageIcon("Image/Plants/Cards/Peashootercard.png");
     private volatile boolean isRunning = true;
-    Image bgImage;
-    Image peashooterImage;
-    Image freezePeashooterImage;
-    Image sunflowerImage;
-    Image peaImage;
-    Image freezePeaImage;
-
-    Image normalZombieImage;
-    Image ZombieFireImage;
-    Image coneHeadZombieImage;
-
-    ArrayList<ArrayList<Zombie>> laneZombies;
-    public ArrayList<ArrayList<Pea>> lanePeas;
-
-    Timer redrawTimer;
-    Timer advancerTimer;
-    Timer sunProducer;
-    Timer zombieProducer;
-    JLabel sunScoreboard;
 
     public GamePanel(Game game) {
         this.game=game;
@@ -126,8 +135,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         GamePanelMusic();
         this.start();
     }
-
-    private JLabel label = new JLabel();
 
     public void innitializeGamePanel() {
         setTitle("Plants VS Zombies");
@@ -230,6 +237,22 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             }
         });
         sunProducer.start();
+
+        // Manage the zombie and plant in 5 line
+
+        Zombie_units = new ArrayList<>();
+        Zombie_units.add(new ArrayList<>()); // line 1
+        Zombie_units.add(new ArrayList<>()); // line 2
+        Zombie_units.add(new ArrayList<>()); // line 3
+        Zombie_units.add(new ArrayList<>()); // line 4
+        Zombie_units.add(new ArrayList<>()); // line 5
+
+        PlantInField = new ArrayList<>();
+        PlantInField.add(new ArrayList<>()); // line 1
+        PlantInField.add(new ArrayList<>()); // line 2
+        PlantInField.add(new ArrayList<>()); // line 3
+        PlantInField.add(new ArrayList<>()); // line 4
+        PlantInField.add(new ArrayList<>()); // line 5
     }
 
     private void advance() {
