@@ -78,6 +78,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         this.myMouseListener = myMouseListener;
     }
 
+    // global value of Sun count
     private int Sun;
 
     public ArrayList<Sun> activeSuns;
@@ -125,20 +126,23 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         this.start();
     }
 
+    private JLabel label = new JLabel();
+
     public void innitializeGamePanel() {
         setTitle("Plants VS Zombies");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 900);
         setResizable(false);
-        ImageIcon backgound_image = new ImageIcon("Image/background/Frontyard.png");
+
+        ImageIcon background_image = new ImageIcon("Image/background/Frontyard.png");
+        label.setIcon(background_image);
+        label.setBounds(0, 0, 1600, 900);
+
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
         timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
         timerLabel.setForeground(new Color(0x006600));
         timerLabel.setBounds(1200, 20, 300, 30);
         add(timerLabel);
-        JLabel label = new JLabel();
-        label.setIcon(backgound_image);
-        label.setBounds(0, 0, 1600, 900);
         add(label);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
@@ -199,11 +203,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         redrawTimer.start();
         activeSuns = new ArrayList<>();
-
-        Timer sunProducer = new Timer(5000, (ActionEvent e) -> {
+        // 6 seconds 1 sun
+        Timer sunProducer = new Timer(6000, (ActionEvent e) -> {
             System.out.println("Add sun");
             Random rnd = new Random();
-            Sun newSun = new Sun(this, rnd.nextInt(800) + 100, 0, rnd.nextInt(300) + 500);
+            Sun newSun = new Sun(this, rnd.nextInt(800) + 100, 0, rnd.nextInt(300) + 200);
             activeSuns.add(newSun);
             label.add(newSun);
 
@@ -215,13 +219,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                     while (iterator.hasNext()) {
                         Sun sun = iterator.next();
                         sun.FallSun();
-                        sun.repaint();
-
-                        // Remove suns that have reached the bottom
-                        if (sun.getY() >= getHeight()) {
-                            iterator.remove();
-                            label.remove(sun);
-                        }
                     }
                 }
             });
@@ -252,6 +249,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             activeSuns.get(i).FallSun();
         }
 
+    }
+
+    // Make the jpanel to remove the sun after being destroy
+    public void removeSun(Sun sun) {
+        activeSuns.remove(sun);
+        label.remove(sun);
+        label.revalidate();
+        label.repaint();
     }
 
     public void GamePanelMusic() {
