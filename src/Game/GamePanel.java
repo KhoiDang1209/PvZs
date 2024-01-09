@@ -121,6 +121,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     JLabel sunScoreboard;
 
     public GamePanel(Game game) {
+        this.game=game;
         innitializeGamePanel();
         GamePanelMusic();
         this.start();
@@ -174,7 +175,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 Position position = new Position(x, y); // Assuming y is for Lane and x is for Box
                 int lane = position.Lane(y);
                 int box = position.Box(x);
-                System.out.println("Sunflower Released at Lane: " + lane + ", Box: " + box);
+                System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
             }
         });
         label.add(SunflowerButtton);
@@ -290,29 +291,24 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         int updateGame = 0;
         int frame = 0;
         double now;
-
         while (true) {
             now = System.nanoTime();
             countTime = System.currentTimeMillis();
-
             // Render
             if (now - lastTimeFPS >= timePerFrame) {
                 frame++;
                 lastTimeFPS = System.nanoTime();
                 SwingUtilities.invokeLater(() -> repaint());
             }
-
             // Update
             if (now - lastTimeUPS >= timePerUpdate) {
                 updateGame++;
                 lastTimeUPS = System.nanoTime();
             }
-
             // FPS Counter & UPS Counter
             if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
                 String rs = "FPS: " + frame + "| UPS: " + updateGame + "| Time On Game: "
                         + (int) (countTime - startTime) / 1000 + " s";
-
                 SwingUtilities.invokeLater(() -> timerLabel.setText(rs));
                 updateGame = 0;
                 frame = 0;

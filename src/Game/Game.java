@@ -20,14 +20,9 @@ public class Game extends JFrame {
     private int gameTimeInSeconds = 0;
     private JLabel timerLabel;
     private static int checkTime = 0;
-
-    private void initializeComponents() {
-        Menu menu = new Menu();
-        menu.setVisible(true);
-    }
-
     public Game() {
-        initializeComponents();
+        this.gamePanel=new GamePanel(this);
+
     }
 
     public void updateGame() {
