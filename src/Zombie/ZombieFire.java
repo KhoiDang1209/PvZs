@@ -287,7 +287,7 @@ public class ZombieFire extends zombie1 {
     }
     public void saveModifiedImage() {
         try {
-            String outputFilePath = "newzombie.png";
+            String outputFilePath = "zombie4.png";
             File outputFile = new File(outputFilePath);
             ImageIO.write(zombieImage, "png", outputFile);
         } catch (IOException e) {
