@@ -21,7 +21,7 @@ public class Peashooter extends Plant {
           * mean it get which land that has zombie or the size > 0
            */
          if (gp.Zombie_units.get(y_lineland).size() > 0) {
-             gp.lanePeas.get(y_lineland).add(new Pea(gp, y_lineland, 103 + this.x * 100));/* Cong thuc */
+             //gp.lanePeas.get(y_lineland).add(new Pea(gp, y_lineland, 103 + this.x * 100));/* Cong thuc */
               /* Add an bullet */
          }
        });

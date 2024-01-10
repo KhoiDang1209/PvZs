@@ -33,6 +33,26 @@ public class PlantsMenu extends JFrame {
         setLayout(null);
         label.setBounds(0, 0, 1600, 900);
         add(label);
+        ImageIcon PeashooterEx= new ImageIcon("Image/Galary/Plants/PeashoterExplain.png");
+        JLabel PeashooterExLabel=new JLabel();
+        PeashooterExLabel.setIcon(PeashooterEx);
+        PeashooterExLabel.setBounds(75,150,PeashooterEx.getIconWidth(),PeashooterEx.getIconHeight());
+        label.add(PeashooterExLabel);
+        ImageIcon SnowPeaEx= new ImageIcon("Image/Galary/Plants/SnowPeaExplain.png");
+        JLabel SnowPeaExLabel=new JLabel();
+        SnowPeaExLabel.setIcon(SnowPeaEx);
+        SnowPeaExLabel.setBounds(425,150,SnowPeaEx.getIconWidth(),SnowPeaEx.getIconHeight());
+        label.add(SnowPeaExLabel);
+        ImageIcon SunflowerEx= new ImageIcon("Image/Galary/Plants/SunflowerExplain.png");
+        JLabel SunflowerExLabel=new JLabel();
+        SunflowerExLabel.setIcon(SunflowerEx);
+        SunflowerExLabel.setBounds(775,150,SunflowerEx.getIconWidth(),SunflowerEx.getIconHeight());
+        label.add(SunflowerExLabel);
+        ImageIcon WallnutEx= new ImageIcon("Image/Galary/Plants/Wall-nutExplain.png");
+        JLabel WallnutExLabel=new JLabel();
+        WallnutExLabel.setIcon(WallnutEx);
+        WallnutExLabel.setBounds(1125,150,WallnutEx.getIconWidth(),WallnutEx.getIconHeight());
+        label.add(WallnutExLabel);
         JButton Backbutton=createStyledButton("Back",customButtonFont,new Color(0xEFEF5B),new Color(0x006600));
         Backbutton.setBounds(50,50,150,65);
         Backbutton.addActionListener(new ActionListener() {
