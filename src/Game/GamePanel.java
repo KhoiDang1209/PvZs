@@ -38,6 +38,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private Clip clip;
     private Game game;
     private double setFPS = 60;
+    GameWindow.PlantType activePlantingBrush = GameWindow.PlantType.None;
 
     // Set of ArrayList
     // Use the zombie_units array
@@ -130,7 +131,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private volatile boolean isRunning = true;
 
     public GamePanel(Game game) {
-        this.game=game;
+        this.game = game;
         innitializeGamePanel();
         GamePanelMusic();
         this.start();
@@ -205,11 +206,12 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         NumOfSunBoard.setBounds(218, 0, 1400, 166);
         sunshowLabel.add(NumOfSunBoard);
 
+        // Draw all of everything after a very short a mount of time or make it to move
         redrawTimer = new Timer(25, (ActionEvent e) -> {
             repaint();
         });
-
         redrawTimer.start();
+
         activeSuns = new ArrayList<>();
         // 6 seconds 1 sun
         Timer sunProducer = new Timer(6000, (ActionEvent e) -> {
@@ -230,7 +232,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                     }
                 }
             });
-
             // Start the timer only if it's not already running
             if (!sunTimer.isRunning()) {
                 sunTimer.start();
@@ -253,6 +254,17 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         PlantInField.add(new ArrayList<>()); // line 3
         PlantInField.add(new ArrayList<>()); // line 4
         PlantInField.add(new ArrayList<>()); // line 5
+
+        /*
+         * colliders = new Collider[40];
+         * for (int i = 0; i < 40; i++) {
+         * Collider a = new Collider();
+         * a.setLocation(44 + (i % 9) * 100, 109 + (i / 9) * 120);
+         * a.setAction(new PlantActionListener((i % 9), (i / 9)));
+         * colliders[i] = a;
+         * panel.add(a);
+         * }
+         */
     }
 
     private void advance() {
@@ -344,7 +356,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         myMouseListener = new MyMouseListener(this);
         this.addMouseListener(myMouseListener);
         this.addMouseMotionListener(myMouseListener);
-
         requestFocus();
     }
 
@@ -388,4 +399,42 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         mouseY = y;
     }
 
+    // Make Plant
+
+    class PlantActionListener implements ActionListener {
+
+        int x, y;
+
+        public PlantActionListener(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            /*
+             * if (activePlantingBrush == GameWindow.PlantType.Sunflower) {
+             * if (getNumOfSun() >= 50) {
+             * colliders[x + y * 9].setPlant(new Sunflower(GamePanel.this, x, y));
+             * setNumOfSun(getNumOfSun() - 50);
+             * }
+             * }
+             * if (activePlantingBrush == GameWindow.PlantType.Peashooter) {
+             * if (getNumOfSun() >= 100) {
+             * colliders[x + y * 9].setPlant(new Peashooter(GamePanel.this, x, y));
+             * setNumOfSun(getNumOfSun() - 100);
+             * }
+             * }
+             * 
+             * /*
+             * if (activePlantingBrush == GameWindow.PlantType.FreezePeashooter) {
+             * if (getNumOfSun() >= 175) {
+             * colliders[x + y * 9].setPlant(new FreezePeashooter(GamePanel.this, x, y));
+             * setNumOfSun(getNumOfSun() - 175);
+             * }
+             * }
+             */
+            activePlantingBrush = GameWindow.PlantType.None;
+        }
+    }
 }
