@@ -32,6 +32,16 @@ public class ZombiesMenu extends JFrame {
         setLayout(null);
         label.setBounds(0, 0, 1600, 900);
         add(label);
+        ImageIcon zombieDescriptionImage = new ImageIcon("Image/Galary/Zombies/NormalZombieExplain.png");
+        JLabel zombieDescriptionLabel = new JLabel();
+        zombieDescriptionLabel.setIcon(zombieDescriptionImage);
+        zombieDescriptionLabel.setBounds(100, 250, zombieDescriptionImage.getIconWidth(), zombieDescriptionImage.getIconHeight());
+        label.add(zombieDescriptionLabel);
+        ImageIcon zombieDescriptionImage2 = new ImageIcon("Image/Galary/Zombies/ConeHeadZombieExplain.png");
+        JLabel zombieDescriptionLabel2 = new JLabel();
+        zombieDescriptionLabel2.setIcon(zombieDescriptionImage2);
+        zombieDescriptionLabel2.setBounds(450, 250, zombieDescriptionImage2.getIconWidth(), zombieDescriptionImage2.getIconHeight());
+        label.add(zombieDescriptionLabel2);
         JButton Backbutton=createStyledButton("Back",customButtonFont, new Color(0xEFEF5B),new Color(0x006600));
         Backbutton.setBounds(50,50,150,65);
         Backbutton.addActionListener(new ActionListener() {
