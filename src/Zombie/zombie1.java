@@ -37,6 +37,8 @@ public class zombie1 implements ZombieFather{
     private Timer slowTimer;
     private static final int MAX_ZOMBIE_TYPES = 3; // Số lượng loại Zombie có thể tạo
     private boolean isGameRunning;
+    private int xCoordinate;
+    private int yCoordinate;
     public zombie1(GamePanel parent, int lane) {
         this.gp = parent;
         myLane = lane;
@@ -228,20 +230,9 @@ public class zombie1 implements ZombieFather{
         String droppedItem = itemsToDrop.get(randomIndex);
         System.out.println("Zombie dropped: " + droppedItem);
     }
-    public void playdDeathSound() {
-        try {
-            // Load the sound file (replace "death_sound.wav" with your actual sound file)
-            var audioInputStream = AudioSystem.getAudioInputStream(Objects.requireNonNull(getClass().getResource("PlantVsZombies_src_assets_sounds_crazydaveextralong1 (1).wav")));
-            Clip clip = AudioSystem.getClip();
 
-            // Open and start playing the audio clip
-            clip.open(audioInputStream);
-            clip.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-    }
+
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
         int dx = switch (key) {
@@ -370,6 +361,17 @@ public class zombie1 implements ZombieFather{
                 System.out.println("Spawned Unknown Zombie");
                 // Xử lý khi có loại Zombie không được dự kiến
         }
+    }
+    public void spawn() {
+        int maxX = 1600;
+        int maxY = 900;
+
+        Random random = new Random();
+
+        this.xCoordinate = random.nextInt(maxX);
+        this.yCoordinate = random.nextInt(maxY);
+
+        System.out.println("Zombie spawned at: (" + xCoordinate + ", " + yCoordinate + ")");
     }
 
 

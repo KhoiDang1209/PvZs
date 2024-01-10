@@ -31,7 +31,7 @@ public interface ZombieFather {
 
 
     void dropItems();
-    void playdDeathSound();
+
     void keyPressed(KeyEvent e);
 }
 

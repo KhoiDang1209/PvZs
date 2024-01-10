@@ -13,6 +13,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,6 +32,8 @@ public class ZombieFire extends zombie1 {
     private Timer regenerationTimer1;
     private boolean isSlowed1;
     private Timer slowTimer1;
+    private int xCoordinate1;
+    private int yCoordinate1;
     public ZombieFire(String imagePath, GamePanel parent, int lane) {
         super( parent, lane);
         this.gp1 = parent;
@@ -193,14 +196,11 @@ public class ZombieFire extends zombie1 {
     public void playDeathAnimation() {
         super.playDeathAnimation();
     }
-    public void dropItems() {
+    public void dropItems(){
         super.dropItems();
     }
 
-    @Override
-    public void playdDeathSound() {
-        super.playdDeathSound();
-    }
+
 
 
     @Override
@@ -313,6 +313,19 @@ public class ZombieFire extends zombie1 {
         }
 
     }
+    public void spawn(){
+        int maxX = 1600;
+        int maxY = 900;
+
+        Random random = new Random();
+
+        this.xCoordinate1 = random.nextInt(maxX);
+        this.yCoordinate1 = random.nextInt(maxY);
+
+        System.out.println("Zombie spawned at: (" + xCoordinate1 + ", " + yCoordinate1+ ")");
+
+    }
+
 
 
 

@@ -9,6 +9,7 @@ import Plant.Sunflower;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,6 +33,8 @@ public class ConeheadZombie1 extends  zombie1 {
 
     private String name;
     private boolean shielded1;
+    private int xCoordinate2;
+    private int yCoordinate2;
 
 
     public ConeheadZombie1(GamePanel parent, int lane)  {
@@ -200,10 +203,7 @@ public class ConeheadZombie1 extends  zombie1 {
         super.dropItems();
     }
 
-    @Override
-    public void playdDeathSound() {
-        super.playdDeathSound();
-    }
+
 
 
     @Override
@@ -275,6 +275,18 @@ public class ConeheadZombie1 extends  zombie1 {
         }else {
             newspeed2 = this.speed2;
         }
+    }
+    public void spawn(){
+        int maxX = 1600;
+        int maxY = 900;
+
+        Random random = new Random();
+
+        this.xCoordinate2 = random.nextInt(maxX);
+        this.yCoordinate2 = random.nextInt(maxY);
+
+        System.out.println("Zombie spawned at: (" + xCoordinate2 + ", " + yCoordinate2+ ")");
+
     }
 
 
