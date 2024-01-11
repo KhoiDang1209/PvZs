@@ -3,7 +3,7 @@ package Plant;
 import java.awt.Rectangle;
 
 import Game.GamePanel;
-import Zombie.zombie1;
+import Zombie.Zombie;
 
 public class Pea {
     public int posX;
@@ -19,7 +19,7 @@ public class Pea {
     public void advance() {
         Rectangle pRect = new Rectangle(posX, 130 + myLane * 120, 28, 28);
         for (int i = 0; i < gp.Zombie_units.get(myLane).size(); i++) {
-            zombie1 z = gp.Zombie_units.get(myLane).get(i);
+            Zombie z = gp.Zombie_units.get(myLane).get(i);
             Rectangle zRect = new Rectangle(z.posX, 109 + myLane * 120, 400, 120);
             if (pRect.intersects(zRect)) {
                 z.health -= 300;

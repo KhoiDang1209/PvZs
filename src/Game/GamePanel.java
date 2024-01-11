@@ -32,7 +32,7 @@ import Plant.Pea;
 import Plant.Peashooter;
 import Plant.Sunflower;
 import Sun.Sun;
-import Zombie.zombie1;
+import Zombie.Zombie;
 //import sun.security.provider.Sun;
 
 public class GamePanel extends JFrame implements Runnable, Mouse {
@@ -46,7 +46,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // Set of ArrayList
     // Use the zombie_units array
     // ArrayList<ArrayList<Zombie>> laneZombies;
-    public ArrayList<ArrayList<zombie1>> Zombie_units;
+    public ArrayList<ArrayList<Zombie>> Zombie_units;
     public ArrayList<Sun> activeSuns;
     public ArrayList<ArrayList<Pea>> PlantInField;
 
