@@ -59,9 +59,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     Image freezePeashooterImage;
     Image freezePeaImage;
 
+    // Load zombie images
     Image normalZombieImage;
-    Image ZombieFireImage;
     Image coneHeadZombieImage;
+    Image bucketHeadZombieImage;
+    Image balloonZombieImage;
 
     // Set of imageicon
     JButton SunflowerButtton = new JButton();
@@ -152,6 +154,13 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 900);
         setResizable(false);
+
+
+        // Load zombie images
+        normalZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/normalzombie.gif")).getImage();
+        coneHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/coneheadzombie.gif")).getImage();
+        bucketHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/bucketheadzombie.gif")).getImage();
+        balloonZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/balloonzombie.gif")).getImage();
 
         label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, 1600, 900);
