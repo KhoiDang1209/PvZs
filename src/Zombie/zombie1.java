@@ -11,12 +11,17 @@ import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
 
-public class zombie1 implements ZombieFather{
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
+
+public class zombie1 extends Component implements ZombieFather, MouseListener {
     protected String imagePath;
     // the attribute of zombie
     public int health ;
@@ -39,6 +44,7 @@ public class zombie1 implements ZombieFather{
     private boolean isGameRunning;
     private int xCoordinate;
     private int yCoordinate;
+
     public zombie1(GamePanel parent, int lane) {
         this.gp = parent;
         myLane = lane;
@@ -49,6 +55,9 @@ public class zombie1 implements ZombieFather{
         this.imagePath= imagePath;
         initAttributes();
         this.shielded = false;
+
+        zombieImage1 = (BufferedImage) new ImageIcon(this.getClass().getResource("zombie2.gif")).getImage();
+        addMouseListener(this);
     }
     public void initAttributes() {
         this.health = 5000;
@@ -291,9 +300,29 @@ public class zombie1 implements ZombieFather{
         return 500;
     }
 
-    public void draw(Graphics g) {
-        if (zombieImage1 != null) {
-            g.drawImage(zombieImage1, posX, myLane, null);
+    public void paintComponent(Graphics g) {
+        if (zombieImage1 == null) {
+            System.out.println("No image");
+        }
+        gp.paintComponents(g);
+        g.drawImage(zombieImage1, 0, 0, null);
+    }
+    public void drawZombie(Graphics g) {
+        String gifPath = "zombie1 (1).gif"; // Thay đổi đường dẫn tới file GIF của bạn
+
+        // Sử dụng URL để đọc file từ đường dẫn
+        URL imageUrl = getClass().getResource(gifPath);
+
+        // Kiểm tra xem có thể đọc được file không
+        if (imageUrl != null) {
+            // Sử dụng ImageIcon để hiển thị hình ảnh từ URL
+            ImageIcon zombieIcon = new ImageIcon(imageUrl);
+
+            // Vẽ hình ảnh zombie tại vị trí (0, 0)
+            zombieIcon.paintIcon(this, g, 0, 0);
+        } else {
+            // Xử lý trường hợp không thể đọc file
+            g.drawString("Không thể đọc file zombie.gif", 10, 20);
         }
     }
 
@@ -375,17 +404,29 @@ public class zombie1 implements ZombieFather{
     }
 
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
 
+    }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
 
+    }
 
+    @Override
+    public void mouseReleased(MouseEvent e) {
 
+    }
 
+    @Override
+    public void mouseEntered(MouseEvent e) {
 
+    }
 
+    @Override
+    public void mouseExited(MouseEvent e) {
 
-
-
-
+    }
 
 }

@@ -9,6 +9,7 @@ import Plant.Sunflower;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -287,6 +288,24 @@ public class ConeheadZombie1 extends  zombie1 {
 
         System.out.println("Zombie spawned at: (" + xCoordinate2 + ", " + yCoordinate2+ ")");
 
+    }
+    public void drawZombie(Graphics g) {
+        String gifPath3 = "coneheadzombie.gif"; // Thay đổi đường dẫn tới file GIF của bạn
+
+        // Sử dụng URL để đọc file từ đường dẫn
+        URL imageUrl3 = getClass().getResource(gifPath3);
+
+        // Kiểm tra xem có thể đọc được file không
+        if (imageUrl3 != null) {
+            // Sử dụng ImageIcon để hiển thị hình ảnh từ URL
+            ImageIcon zombieIcon = new ImageIcon(imageUrl3);
+
+            // Vẽ hình ảnh zombie tại vị trí (0, 0)
+            zombieIcon.paintIcon(this, g, 0, 0);
+        } else {
+            // Xử lý trường hợp không thể đọc file
+            g.drawString("Không thể đọc file zombie.gif", 10, 20);
+        }
     }
 
 
