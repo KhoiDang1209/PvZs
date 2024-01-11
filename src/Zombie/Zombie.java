@@ -1,26 +1,76 @@
 package Zombie;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import Game.GamePanel;
 import GameElement.Collider;
 import GUI.GameEnd.GameOverNotification;
+import Plant.FreezePeashooter;
+import Plant.Peashooter;
+import Plant.Sunflower;
 
-public class Zombie {
+public class Zombie extends Component implements MouseListener {
 	// the attribute of zombie
     public int health = 1000;
-    public int speed = 1;
+    public int speed ;
 
     private GamePanel gp;
 
     public int posX = 1000;
     public int myLane;
     public boolean isMoving = true;
+    protected String imagePath;
+    // the attribute of zombie
+
+    private BufferedImage zombieImage1;
+    private  int slowInt;
+    private  int damage ;
+    private boolean isUnderAttack;
+    private java.util.Timer regenerationTimer;
+    private boolean isSlowed;
+    private int armor;
+    private boolean shielded;
+    private Timer slowTimer;
+    private static final int MAX_ZOMBIE_TYPES = 3; // Số lượng loại Zombie có thể tạo
+
+    private int xCoordinate;
+    private int yCoordinate;
     // Constructor
     public Zombie(GamePanel parent,int lane){
         this.gp = parent;
         myLane = lane;
-    }
+
+        this.gp = parent;
+        myLane = lane;
+
+        this.isUnderAttack = false;
+        startAttackTimer();
+        this.isSlowed = false;
+        this.imagePath= imagePath;
+        initAttributes();
+        this.shielded = false;
+
+        zombieImage1 = (BufferedImage) new ImageIcon(this.getClass().getResource("zombie1 (1).gif")).getImage();
+        addMouseListener(this);
+        }
+        public void initAttributes() {
+            this.health = 5000;
+            this.slowInt = 3000;
+            this.speed = 5;
+            this.damage = 100;
+            this.posX = 1500;
+            Timer slowTimer = new Timer();
+        }
+
+
     //Move straight
     public void advance(){
         if(isMoving) {
@@ -54,29 +104,222 @@ public class Zombie {
             }
         }
     }
-
-    int slowInt = 0;
-    public void slow(){
-        slowInt = 1000;
+    public void restoreSpeed(int ignoredSpeed) {
+        isSlowed = false;
+        ignoredSpeed= this.speed/3; // Khôi phục lại tốc độ di chuyển
+        System.out.println("Zombie's speed is restored!");
+        startAttackTimer();
     }
-    public static Zombie getZombie(String type, GamePanel parent, int lane) {
-        Zombie z = new Zombie(parent, lane);
-        switch (type) {
-            case "NormalZombie":
-                z = new NormalZombie(parent, lane);
-                break;
-            case "ConeHeadZombie":
-                z = new ConeHeadZombie(parent, lane);
-                break;
-            case "BucketHeadZombie":
-                z = new BucketHeadZombie(parent, lane);
-                break;
-            case "BalloonZombie":
-                z = new BalloonZombie(parent, lane);
-                break;
-        }
+    public void applyDamageEffects() {
+        slowDown(speed);
+
+    }
+    public boolean isAlive() {
+        return health>0;
+    }
+
+    public void die() {
+        isMoving = false;
+        System.out.println("Zombie has been defeated!");
+        regenerationTimer.cancel();
+    }
+    public static Zombie getZombie(GamePanel parent, String type, int lane) {
+        new Zombie(parent, lane);
+        Zombie z = switch (type) {
+            case "NormalZombie" -> new NormalZombie(parent, lane);
+            case "ConeHeadZombie" -> new ConeHeadZombie(parent, lane);
+            case "BucketHeadZombie" -> new BucketHeadZombie(parent, lane);
+            case "BalloonZombie" -> new BalloonZombie(parent, lane);
+
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
         return z;
     }
+    public void startAttackTimer() {
+        this.regenerationTimer = new Timer();
+        regenerationTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if (!isUnderAttack) {
+                    regenerateHealth();
+                } else {
+                    isUnderAttack = false;
+                }
+            }
+        }, 5000, 5000);
+    }
+    public void regenerateHealth() {
+        health = Math.min(5000, health + 100);
+    }
+    public void takeDamage(int damage) {
 
+        health -= damage;
+
+        if (isAlive()) {
+            applyDamageEffects();
+        } else if (this.health <= 0.3 * this.health) {
+
+            createShield();
+
+        }else {
+            die();
+        }
+        this.isUnderAttack = true;
+
+        // Reset đếm thời gian khi bị tấn công
+        resetAttackTimer();
+    }
+    public void createShield() {
+        // Kiểm tra nếu máu của zombie từ 30% trở xuống và chưa có giáp ảo
+        if (this.health <= 0.3* this.health && !this.shielded) {
+            // Tăng giáp của zombie lên 10 đơn vị
+            this.armor += 100;
+            // Đặt trạng thái giáp ảo là true
+            this.shielded = true;
+            // Tạo một luồng mới để đếm ngược 3 giây
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    armor -= 100;
+                    shielded = false;
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, 3000);
+        }
+    }
+    public void resetAttackTimer() {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                isUnderAttack = false;
+            }
+        }, 5000);
+
+    }
+    public void slowDown(int speed) {
+        if(!isSlowed) {
+            this.speed /= 3;
+            isSlowed = true;
+            System.out.println("Zombie slowed down for 3 seconds.");
+            Timer slowTimer = new Timer();
+            slowTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    isSlowed = false;
+                    System.out.println("Zombie back to normal speed.");
+                    slowTimer.cancel();
+                    restoreSpeed(speed);
+                }
+            }, 3000);
+        }
+    }
+    public int getMaxHealth() {
+        return 500;
+    }
+    public void attackOtherObject(Peashooter peashooter) {
+        // Ensure the target object is not null
+        if (peashooter!= null) {
+            if (health <= 0.3 * health) {
+                double healthPercentage = (double) health / getMaxHealth();
+                int calculatedDamage = (int) (damage*2 * healthPercentage);
+                peashooter.receivedamage(calculatedDamage);
+
+            } else {
+                double healthPercentage = (double) health / getMaxHealth();
+                int calculatedDamage = (int) (damage * healthPercentage);
+                peashooter.receivedamage(calculatedDamage);
+            }
+        }
+    }
+    public void attackOtherObject1(FreezePeashooter freezePeashooter){
+        if(freezePeashooter!= null) {
+            if (health <= 0.3 * health) {
+                double healthPercentage1 = (double) health * 4 / getMaxHealth();
+                int calculatedDamage1 = 2 * (int) (damage*2* healthPercentage1);
+                freezePeashooter.receivedamage(calculatedDamage1);
+            } else {
+                double healthPercentage1 = (double) health / getMaxHealth();
+                int calculatedDamage1 = (int) (damage * healthPercentage1);
+                freezePeashooter.receivedamage(calculatedDamage1);
+            }
+        }
+    }
+    public void attackObject2(Sunflower sunflower){
+        if(sunflower!=null){
+            if(this.health < 0.3* this.health){
+                int healthPercentage2= (int) (this.health * 3/ this.getMaxHealth());
+                int dame= (int)(this.damage*0.5*healthPercentage2);
+                sunflower.receivedamage(dame);
+            }
+        } else {
+            double healthPercentage2 = (double) this.health/ getMaxHealth();
+            int dame = (int) (this.damage  * healthPercentage2);
+            sunflower.receivedamage(dame);
+        }
+    }
+    public void spawn() {
+        int maxX = 1600;
+        int maxY = 900;
+
+        Random random = new Random();
+
+        this.xCoordinate = random.nextInt(maxX);
+        this.yCoordinate = random.nextInt(maxY);
+
+        System.out.println("Zombie spawned at: (" + xCoordinate + ", " + yCoordinate + ")");
+    }
+    public void paintComponent(Graphics g) {
+        if (zombieImage1 == null) {
+            System.out.println("No image");
+        }
+        gp.paintComponents(g);
+        g.drawImage(zombieImage1, 0, 0, null);
+    }
+    public void drawZombie(Graphics g) {
+        String gifPath = "zombie1 (1).gif"; // Thay đổi đường dẫn tới file GIF của bạn
+
+        // Sử dụng URL để đọc file từ đường dẫn
+        URL imageUrl = getClass().getResource(gifPath);
+
+        // Kiểm tra xem có thể đọc được file không
+        if (imageUrl != null) {
+            // Sử dụng ImageIcon để hiển thị hình ảnh từ URL
+            ImageIcon zombieIcon = new ImageIcon(imageUrl);
+
+            // Vẽ hình ảnh zombie tại vị trí (0, 0)
+            zombieIcon.paintIcon(this, g, 0, 0);
+        } else {
+            // Xử lý trường hợp không thể đọc file
+            g.drawString("Không thể đọc file zombie.gif", 10, 20);
+        }
+    }
+
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }
 
