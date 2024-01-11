@@ -54,7 +54,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private JLabel timerLabel;
     JLabel NumOfSunBoard = new JLabel();
     JLabel sunScoreboard;
-    private JLabel label = new JLabel();
 
     // Set of image
     Image freezePeashooterImage;
@@ -71,8 +70,16 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon PeashooterCard = new ImageIcon("Image/Plants/Cards/Peashootercard.png");
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
     ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
-    ImageIcon background_image = new ImageIcon("Image/background/Frontyard.png");
-    ImageIcon PeaImage = new ImageIcon("Image/Plants/Fields/ProjectilePea.png");
+    ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
+    Image originalImage = originalImageIcon.getImage();
+    // Scale factor <1 = zoom out, >1 = zoom in
+    double zoomOutFactor = 0.87; // Adjust this factor as needed
+    int scaledWidth = (int) (originalImage.getWidth(null) * zoomOutFactor);
+    int scaledHeight = (int) (originalImage.getHeight(null) * zoomOutFactor);
+
+    Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+    ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+    private JLabel label = new JLabel();
 
     // Set of Timer
     Timer redrawTimer;
@@ -146,7 +153,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setSize(1600, 900);
         setResizable(false);
 
-        label.setIcon(background_image);
+        label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, 1600, 900);
 
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
@@ -213,7 +220,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         Timer sunProducer = new Timer(6000, (ActionEvent e) -> {
             System.out.println("Add sun");
             Random rnd = new Random();
-            Sun newSun = new Sun(this, rnd.nextInt(800) + 100, 0, rnd.nextInt(300) + 200);
+            // Game Field from 313 = minX to maxX = 1270 or 1273, yMin = 85 to 650= maxY
+            // This is the range x and y of Field
+            Sun newSun = new Sun(this, rnd.nextInt(887) + 313, 0, rnd.nextInt(300) + 350);
             activeSuns.add(newSun);
             label.add(newSun);
 
@@ -447,18 +456,27 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     }
 
     // Finding correct formular in process
+
     /*
      * @Override
      * public void paint(Graphics graphic) {
      * super.paint(graphic);
+     * double zoomOutFactor = 1.1618;
      * // Convert ImageIcon to Image
      * Image bgImage = background_image.getImage();
+     * /*
      * Image peashooterImage = Sunflowergif.getImage();
      * Image sunflowerImage = Peashootergif.getImage();
      * Image PeaBullet = PeaImage.getImage();
-     * graphic.drawImage(bgImage, 0, 0, null);
+     */
+    /*
+     * Scale the backgruond image
+     * AffineTransform at = AffineTransform.getScaleInstance(1 / zoomOutFactor, 1 /
+     * zoomOutFactor);
+     * ((Graphics2D) graphic).drawImage(bgImage, at, this);
      * 
-     * // Plant Generation
+     * /*
+     * Plant Generation
      * for (int i = 0; i < 45; i++) {
      * Collider c = colliders[i];
      * if (c.assignedPlant != null) {
