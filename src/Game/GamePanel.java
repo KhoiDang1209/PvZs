@@ -59,9 +59,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     Image freezePeashooterImage;
     Image freezePeaImage;
 
+    // Load zombie images
     Image normalZombieImage;
-    Image ZombieFireImage;
     Image coneHeadZombieImage;
+    Image bucketHeadZombieImage;
+    Image balloonZombieImage;
 
     // Set of imageicon
     JButton SunflowerButtton = new JButton();
@@ -153,6 +155,13 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setSize(1600, 900);
         setResizable(false);
 
+
+        // Load zombie images
+        normalZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/normalzombie.gif")).getImage();
+        coneHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/coneheadzombie.gif")).getImage();
+        bucketHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/bucketheadzombie.gif")).getImage();
+        balloonZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/balloonzombie.gif")).getImage();
+
         label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, 1600, 900);
 
@@ -243,6 +252,22 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             }
         });
         sunProducer.start();
+
+        //Zombie producer
+        /* 
+        zombieProducer = new Timer(7000, (ActionEvent e) -> {
+            Random rnd = new Random();
+            int l = rnd.nextInt(5);
+            int t = rnd.nextInt(100);
+            Zombie z = null;
+            String[] allZombieTypes = {"NormalZombie", "ConeHeadZombie", "BucketHeadZombie", "BalloonZombie"};
+            int randomZombieIndex = rnd.nextInt(allZombieTypes.length);
+            String selectedZombieType = allZombieTypes[randomZombieIndex];
+            z = Zombie.getZombie(selectedZombieType, GamePanel.this, l);
+            Zombie_units.get(l).add(z);
+});
+        zombieProducer.start();
+         */
 
         // Manage the zombie and plant in 5 line
 
