@@ -27,7 +27,10 @@ import GameElement.Collider;
 import GameElement.Position;
 import InputForGame.Mouse;
 import InputForGame.MyMouseListener;
+import Plant.FreezePeashooter;
 import Plant.Pea;
+import Plant.Peashooter;
+import Plant.Sunflower;
 import Sun.Sun;
 import Zombie.Zombie;
 //import sun.security.provider.Sun;
@@ -51,14 +54,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private JLabel timerLabel;
     JLabel NumOfSunBoard = new JLabel();
     JLabel sunScoreboard;
-    private JLabel label = new JLabel();
 
     // Set of image
-    Image bgImage;
-    Image peashooterImage;
     Image freezePeashooterImage;
-    Image sunflowerImage;
-    Image peaImage;
     Image freezePeaImage;
 
     Image normalZombieImage;
@@ -70,6 +68,18 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon SunflowerCard = new ImageIcon("Image/Plants/Cards/SunflowerCard.png");
     JButton PeashooterButton = new JButton();
     ImageIcon PeashooterCard = new ImageIcon("Image/Plants/Cards/Peashootercard.png");
+    ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
+    ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
+    ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
+    Image originalImage = originalImageIcon.getImage();
+    // Scale factor <1 = zoom out, >1 = zoom in
+    double zoomOutFactor = 0.87; // Adjust this factor as needed
+    int scaledWidth = (int) (originalImage.getWidth(null) * zoomOutFactor);
+    int scaledHeight = (int) (originalImage.getHeight(null) * zoomOutFactor);
+
+    Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+    ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+    private JLabel label = new JLabel();
 
     // Set of Timer
     Timer redrawTimer;
@@ -143,8 +153,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setSize(1600, 900);
         setResizable(false);
 
-        ImageIcon background_image = new ImageIcon("Image/background/Frontyard.png");
-        label.setIcon(background_image);
+        label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, 1600, 900);
 
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
@@ -206,18 +215,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         NumOfSunBoard.setBounds(218, 0, 1400, 166);
         sunshowLabel.add(NumOfSunBoard);
 
-        // Draw all of everything after a very short a mount of time or make it to move
-        redrawTimer = new Timer(25, (ActionEvent e) -> {
-            repaint();
-        });
-        redrawTimer.start();
-
         activeSuns = new ArrayList<>();
         // 6 seconds 1 sun
         Timer sunProducer = new Timer(6000, (ActionEvent e) -> {
             System.out.println("Add sun");
             Random rnd = new Random();
-            Sun newSun = new Sun(this, rnd.nextInt(800) + 100, 0, rnd.nextInt(300) + 200);
+            // Game Field from 313 = minX to maxX = 1270 or 1273, yMin = 85 to 650= maxY
+            // This is the range x and y of Field
+            Sun newSun = new Sun(this, rnd.nextInt(887) + 313, 0, rnd.nextInt(300) + 350);
             activeSuns.add(newSun);
             label.add(newSun);
 
@@ -256,31 +261,45 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         PlantInField.add(new ArrayList<>()); // line 5
 
         /*
-         * colliders = new Collider[40];
-         * for (int i = 0; i < 40; i++) {
+         * colliders = new Collider[45];
+         * for (int i = 0; i < 45; i++) {
          * Collider a = new Collider();
          * a.setLocation(44 + (i % 9) * 100, 109 + (i / 9) * 120);
          * a.setAction(new PlantActionListener((i % 9), (i / 9)));
          * colliders[i] = a;
-         * panel.add(a);
+         * label.add(a);
          * }
          */
+
+        // Draw all of components after a very short a mount of time or make it to move
+        /*
+         * redrawTimer = new Timer(25, (ActionEvent e) -> {
+         * repaint();
+         * });
+         * redrawTimer.start();
+         */
+
+        /*
+         * advancerTimer = new Timer(60, (ActionEvent e) -> advance());
+         * advancerTimer.start();
+         */
+
     }
 
     private void advance() {
-        /*
-         * for (int i = 0; i < 5; i++) {
-         * for (Zombie z : laneZombies.get(i)) {
-         * z.advance();
-         * }
-         * 
-         * for (int j = 0; j < lanePeas.get(i).size(); j++) {
-         * Pea p = lanePeas.get(i).get(j);
-         * p.advance();
-         * }
-         * 
-         * }
-         */
+
+        for (int i = 0; i < 5; i++) {
+            /*
+             * for (Zombie z : laneZombies.get(i)) {
+             * z.advance();
+             * }
+             */
+            for (int j = 0; j < PlantInField.get(i).size(); j++) {
+                Pea p = PlantInField.get(i).get(j);
+                p.advance();
+            }
+        }
+
         for (int i = 0; i < activeSuns.size(); i++) {
             activeSuns.get(i).FallSun();
         }
@@ -412,29 +431,86 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            /*
-             * if (activePlantingBrush == GameWindow.PlantType.Sunflower) {
-             * if (getNumOfSun() >= 50) {
-             * colliders[x + y * 9].setPlant(new Sunflower(GamePanel.this, x, y));
-             * setNumOfSun(getNumOfSun() - 50);
-             * }
-             * }
-             * if (activePlantingBrush == GameWindow.PlantType.Peashooter) {
-             * if (getNumOfSun() >= 100) {
-             * colliders[x + y * 9].setPlant(new Peashooter(GamePanel.this, x, y));
-             * setNumOfSun(getNumOfSun() - 100);
-             * }
-             * }
-             * 
-             * /*
-             * if (activePlantingBrush == GameWindow.PlantType.FreezePeashooter) {
-             * if (getNumOfSun() >= 175) {
-             * colliders[x + y * 9].setPlant(new FreezePeashooter(GamePanel.this, x, y));
-             * setNumOfSun(getNumOfSun() - 175);
-             * }
-             * }
-             */
+            if (activePlantingBrush == GameWindow.PlantType.Sunflower) {
+                if (getNumOfSun() >= 50) {
+                    colliders[x + y * 9].setPlant(new Sunflower(GamePanel.this, x, y));
+                    setNumOfSun(getNumOfSun() - 50);
+                }
+            }
+            if (activePlantingBrush == GameWindow.PlantType.Peashooter) {
+                if (getNumOfSun() >= 100) {
+                    colliders[x + y * 9].setPlant(new Peashooter(GamePanel.this, x, y));
+                    setNumOfSun(getNumOfSun() - 100);
+                }
+            }
+
+            if (activePlantingBrush == GameWindow.PlantType.FreezePeashooter) {
+                if (getNumOfSun() >= 175) {
+                    colliders[x + y * 9].setPlant(new FreezePeashooter(GamePanel.this, x, y));
+                    setNumOfSun(getNumOfSun() - 175);
+                }
+            }
+
             activePlantingBrush = GameWindow.PlantType.None;
         }
     }
+
+    // Finding correct formular in process
+
+    /*
+     * @Override
+     * public void paint(Graphics graphic) {
+     * super.paint(graphic);
+     * double zoomOutFactor = 1.1618;
+     * // Convert ImageIcon to Image
+     * Image bgImage = background_image.getImage();
+     * /*
+     * Image peashooterImage = Sunflowergif.getImage();
+     * Image sunflowerImage = Peashootergif.getImage();
+     * Image PeaBullet = PeaImage.getImage();
+     */
+    /*
+     * Scale the backgruond image
+     * AffineTransform at = AffineTransform.getScaleInstance(1 / zoomOutFactor, 1 /
+     * zoomOutFactor);
+     * ((Graphics2D) graphic).drawImage(bgImage, at, this);
+     * 
+     * /*
+     * Plant Generation
+     * for (int i = 0; i < 45; i++) {
+     * Collider c = colliders[i];
+     * if (c.assignedPlant != null) {
+     * Plant WhichPlant = c.assignedPlant;
+     * if (WhichPlant instanceof Peashooter) {
+     * graphic.drawImage(peashooterImage, 60 + (i % 9) * 100, 129 + (i / 9) * 120,
+     * null);
+     * }
+     * if (WhichPlant instanceof Sunflower) {
+     * graphic.drawImage(sunflowerImage, 60 + (i % 9) * 100, 129 + (i / 9) * 120,
+     * null);
+     * }
+     * }
+     * }
+     * 
+     * // Bullet generation for normal Pea
+     * for (int i = 0; i < 5; i++) {
+     * // For zombie not now
+     * /*
+     * for (Zombie z : laneZombies.get(i)) {
+     * if (z instanceof NormalZombie) {
+     * g.drawImage(normalZombieImage, z.posX, 109 + (i * 120), null);
+     * } else if (z instanceof ConeHeadZombie) {
+     * g.drawImage(coneHeadZombieImage, z.posX, 109 + (i * 120), null);
+     * }
+     * }
+     * 
+     * for (int j = 0; j < PlantInField.get(i).size(); j++) {
+     * Pea p = PlantInField.get(i).get(j);
+     * if (p instanceof Pea) {
+     * graphic.drawImage(PeaBullet, p.posX, 130 + (i * 120), null);
+     * }
+     * }
+     * }
+     * }
+     */
 }

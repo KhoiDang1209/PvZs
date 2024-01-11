@@ -59,16 +59,23 @@ public class Zombie {
     public void slow(){
         slowInt = 1000;
     }
-    public static Zombie getZombie(String type,GamePanel parent, int lane) {
-        Zombie z = new Zombie(parent,lane);
-       switch(type) {
-           case "NormalZombie" : z = new NormalZombie(parent,lane);
-                                 break;
-           case "ConeHeadZombie" : z = new ConeHeadZombie(parent,lane);
-                                 break;
-    
-    }
-       return z;
+    public static Zombie getZombie(String type, GamePanel parent, int lane) {
+        Zombie z = new Zombie(parent, lane);
+        switch (type) {
+            case "NormalZombie":
+                z = new NormalZombie(parent, lane);
+                break;
+            case "ConeHeadZombie":
+                z = new ConeHeadZombie(parent, lane);
+                break;
+            case "BucketHeadZombie":
+                z = new BucketHeadZombie(parent, lane);
+                break;
+            case "BalloonZombie":
+                z = new BalloonZombie(parent, lane);
+                break;
+        }
+        return z;
     }
 
 }
