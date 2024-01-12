@@ -21,8 +21,8 @@ import Plant.Sunflower;
 public class Zombie   {
     // the attribute of zombie
     public int health = 1000;
-    public int speed = 1;
-    private  int damage ;
+    public int speed = 5;
+    private  int damage;
     private boolean isUnderAttack;
     private java.util.Timer regenerationTimer;
 
@@ -33,9 +33,11 @@ public class Zombie   {
     public boolean isMoving = true;
 
 
-    public Zombie(GamePanel parent,int lane){
+    public Zombie(GamePanel parent,int lane,int health, int speed){
         this.gp = parent;
         myLane = lane;
+        this.health=health;
+        this.speed=speed;
     }
 
     public void advance(){
@@ -164,16 +166,16 @@ public class Zombie   {
     public void slow(){ //phương thức slow khi frezze pea được bắn dính zombie
         slowInt = 1000; // mỗi lần bắn dính zombie biến slowint =1000
     }
-    public static Zombie getZombie(String type,GamePanel parent, int lane) {
-        Zombie z = new Zombie(parent,lane);
+    public static Zombie getZombie(String type,GamePanel parent, int lane, int health , int speed) {
+        Zombie z = new Zombie(parent,lane,health,speed);
         switch(type) {
-            case "NormalZombie" : z = new NormalZombie(parent,lane);
+            case "NormalZombie" : z = new NormalZombie(parent,lane,health,speed);
                 break;
-            case "ConeHeadZombie" : z = new ConeHeadZombie(parent,lane);
+            case "ConeHeadZombie" : z = new ConeHeadZombie(parent,lane,health,speed);
                 break;
-            case "BalloonZombie" : z = new BalloonZombie(parent,lane);
+            case "BalloonZombie" : z = new BalloonZombie(parent,lane,health,speed);
                 break;
-            case "BucketHeadZombie" : z= new BucketHeadZombie(parent, lane);
+            case "BucketHeadZombie" : z= new BucketHeadZombie(parent, lane,health,speed);
                 break;
         }
         return z;

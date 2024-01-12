@@ -176,16 +176,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(originalImage.getWidth(null), originalImage.getHeight(null));
         setResizable(true);
-
         // Load zombie images
-        ImageIcon normalZombieimage = new ImageIcon("Image/Zombie/normalzombie.gif");
-        ImageIcon coneHeadZombieImage = new ImageIcon("Image/Zombie/coneheadzombie.gif");
-        ImageIcon bucketHeadZombieImage = new ImageIcon("Image/Zombie/bucketheadzombie.gif");
-        ImageIcon balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif");
-
         label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, originalImage.getWidth(null), originalImage.getHeight(null));
-
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
         timerLabel.setFont(new Font("Arial", Font.BOLD, 12));
         timerLabel.setForeground(new Color(0x006600));
@@ -372,21 +365,20 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         sunProducer.start();
 
         // Zombie producer
-        /*
-         * zombieProducer = new Timer(7000, (ActionEvent e) -> {
-         * Random rnd = new Random();
-         * int l = rnd.nextInt(5);
-         * int t = rnd.nextInt(100);
-         * Zombie z = null;
-         * String[] allZombieTypes = {"NormalZombie", "ConeHeadZombie",
-         * "BucketHeadZombie", "BalloonZombie"};
-         * int randomZombieIndex = rnd.nextInt(allZombieTypes.length);
-         * String selectedZombieType = allZombieTypes[randomZombieIndex];
-         * z = Zombie.getZombie(selectedZombieType, GamePanel.this, l);
-         * Zombie_units.get(l).add(z);
-         * });
-         * zombieProducer.start();
-         */
+//
+//          zombieProducer = new Timer(7000, (ActionEvent e) -> {
+//          Random rnd = new Random();
+//          int l = rnd.nextInt(5);
+//          int t = rnd.nextInt(100);
+//          Zombie z = null;
+//          String[] allZombieTypes = {"NormalZombie", "ConeHeadZombie",
+//          "BucketHeadZombie", "BalloonZombie"};
+//          int randomZombieIndex = rnd.nextInt(allZombieTypes.length);
+//          String selectedZombieType = allZombieTypes[randomZombieIndex];
+//          z = Zombie.getZombie(selectedZombieType, GamePanel.this, l,he);
+//          Zombie_units.get(l).add(z);
+//          });
+//          zombieProducer.start();
 
         // Manage the zombie and plant in 5 line
 
