@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         Peashooter,
     }
 
+    private MouseListener peashooterButtonMouseListener;
+    public int PlantBox;
+    public int PlantLane;
     public Position position;
     public Collider[] colliders;
     private Clip clip;
@@ -86,6 +90,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
     Image originalImage = originalImageIcon.getImage();
     private JLabel PeashooterGIF;
+    private JLabel PlantGIF;
     // Scale factor <1 = zoom out, >1 = zoom in
     double zoomOutFactor = 0.87; // Adjust this factor as needed
     int scaledWidth = (int) (originalImage.getWidth(null) * zoomOutFactor);
@@ -161,6 +166,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         this.start();
     }
 
+    private int PlacedPeashoter;
+
     public void innitializeGamePanel() {
         setTitle("Plants VS Zombies");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -212,11 +219,12 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         // activePlantingBrush = PlantType.Peashooter;
         // }
         // });
-        PeashooterButton.addMouseListener(new MouseAdapter() {
+        peashooterButtonMouseListener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // Code to get an image when the button is clicked
                 // PeashooterGIF != null
+                PlacedPeashoter = 0;
                 PeashooterGIF.setIcon(Peashootergif);
                 PeashooterGIF.setBounds(e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
                         e.getYOnScreen() - Peashootergif.getIconHeight() / 2, Peashootergif.getIconWidth(),
@@ -249,7 +257,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 // Code to move the GIF when the mouse leaves the button
 
             }
-        });
+        };
+        PeashooterButton.addMouseListener(peashooterButtonMouseListener);
 
         PeashooterButton.addMouseMotionListener(new MouseMotionListener() {
             @Override
@@ -319,7 +328,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         activeSuns = new ArrayList<>();
         // 6 seconds 1 sun
-        Timer sunProducer = new Timer(6000, (ActionEvent e) -> {
+        Timer sunProducer = new Timer(600000, (ActionEvent e) -> {
             System.out.println("Add sun");
             Random rnd = new Random();
             // Game Field from 313 = minX to maxX = 1270 or 1273, yMin = 85 to 650= maxY
@@ -628,16 +637,34 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private class LabelMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
+            PlacedPeashoter = 0;
             System.out.println("Click!");
             int x = e.getXOnScreen();
             int y = e.getYOnScreen();
             System.out.printf("x = %d, y = %d", x, y);
             System.out.println();
             position = new Position(x, y);
-            int box = position.Box(x);
-            int lane = position.Lane(y);
+            int box = position.Box(x);// get the box number
+            int lane = position.Lane(y);// get the Lane number
             System.out.printf("Box is: %d. Lane is: %d", box, lane);
             System.out.println();
+
+            if (PeashooterGIF != null && PlacedPeashoter == 0) {
+                // Need a check if there is a plant or not
+                PlantBox = position.BoxDraw(x);
+                PlantLane = position.LaneDraw(y);
+                PlantGIF = new JLabel();
+                PlantGIF.setIcon(Peashootergif);
+                PlantGIF.setBounds(PlantBox, PlantLane, Peashootergif.getIconWidth(), Peashootergif.getIconHeight());
+                label.add(PlantGIF);
+                PlacedPeashoter = 1;
+                label.remove(PeashooterGIF);
+                repaint();
+            }
+            if (PlacedPeashoter == 1) {
+                PeashooterButton.addMouseListener(peashooterButtonMouseListener);
+                label.removeMouseListener(this);
+            }
         }
 
         @Override
@@ -660,7 +687,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
     private void updateGIFPosition(MouseEvent e) {
         // Code for updating the position of the GIF
-        if (PeashooterGIF != null) {
+        if (PeashooterGIF != null && PlacedPeashoter == 0) {
             PeashooterGIF.setIcon(Peashootergif);
             PeashooterGIF.setBounds(
                     e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
@@ -668,6 +695,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                     Peashootergif.getIconWidth(),
                     Peashootergif.getIconHeight());
             label.add(PeashooterGIF);
+            repaint();
+        } else if (PlacedPeashoter == 1) {
+            label.remove(PeashooterGIF);
             repaint();
         }
     }
