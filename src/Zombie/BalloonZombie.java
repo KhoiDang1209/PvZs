@@ -22,8 +22,9 @@ public class BalloonZombie extends Zombie {
     public int myLane;
     private boolean isSlowed2;
     private BufferedImage zombieImage2;
-    public BalloonZombie(GamePanel parent) {
-        super(parent);
+    public BalloonZombie(GamePanel parent, int lane) {
+        super(parent, lane);
+        myLane=lane;
         this.DEFAULT_HEALTH= 2800;
         this.DEFAULT_DAMAGE= 200;
         this.gp2= parent;

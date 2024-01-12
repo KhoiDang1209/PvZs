@@ -22,7 +22,8 @@ public class BucketHeadZombie extends Zombie {
     private BufferedImage zombieImage;
 
     public BucketHeadZombie(GamePanel parent, int lane) {
-        super(parent);
+        super(parent, lane);
+        myLane=lane;
         this.gp1=parent;
         initAttributes();
         zombieImage = (BufferedImage) new ImageIcon(Objects.requireNonNull(this.getClass().getResource("bucketheadzombie.gif"))).getImage();
@@ -150,5 +151,5 @@ public class BucketHeadZombie extends Zombie {
         super.resetAttackTimer();
     }
 
-   
+
 }

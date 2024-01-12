@@ -36,9 +36,9 @@ public class Zombie extends Component  {
     private java.util.Timer regenerationTimer;
     private boolean isSlowed;
     // Constructor
-    public Zombie(GamePanel parent){
+    public Zombie(GamePanel parent, int lane){
         this.gp = parent;
-
+        myLane=lane;
         this.isUnderAttack = false;
         startAttackTimer();
         this.isSlowed = false;
