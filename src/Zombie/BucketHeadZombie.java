@@ -1,7 +1,7 @@
 package Zombie;
 
 import Game.GamePanel;
-import GameElement.Collider;
+
 import Plant.FreezePeashooter;
 import Plant.Peashooter;
 import Plant.Sunflower;
@@ -14,12 +14,12 @@ import java.util.Objects;
 import java.util.Random;
 
 public class BucketHeadZombie extends Zombie {
-    private int speed1;
     private int health1;
+    private int speed1;
     private  int damage1 ;
     private final GamePanel gp1;
-    private boolean isSlowed1;
-    private BufferedImage zombieImage;
+
+    private final BufferedImage zombieImage;
 
     public BucketHeadZombie(GamePanel parent, int lane) {
         super(parent, lane);
@@ -31,10 +31,10 @@ public class BucketHeadZombie extends Zombie {
     }
     public void initAttributes() {
         this.health1 = 4000;
-        this.speed1 = 8;
+        int speed1 = 8;
         this.damage1 = 300;
         startAttackTimer();
-        this.isSlowed1 = false;
+
 
     }
 
@@ -52,19 +52,7 @@ public class BucketHeadZombie extends Zombie {
             }
         }
     }
-    public void attackObject2(Sunflower sunflower){
-        if(sunflower!=null){
-            if(this.health1 < 0.3* this.health1){
-                int healthPercentage2= (int) (this.health1 * 2/ this.getMaxHealth());
-                int dame= 2 * (int)(this.damage1*healthPercentage2);
-                sunflower.receivedamage(dame);
-            }
-        } else {
-            double healthPercentage2 = (double) this.health1  / getMaxHealth();
-            int dame = (int) (this.damage1  * healthPercentage2);
-            sunflower.receivedamage(dame);
-        }
-    }
+
     public void attackOtherObject(Peashooter peashooter) {
         // Ensure the target object is not null
         if (peashooter!= null) {
@@ -82,18 +70,9 @@ public class BucketHeadZombie extends Zombie {
     public void takeDamage(int damage1){
         super.takeDamage(damage1);
     }
-    public void slowDown(int speed1){
-        super.slowDown(speed1);
-    }
-    public void restoreSpeed(int ignoredSpeed1) {
-        isSlowed1 = false;
-        ignoredSpeed1= this.speed1/3; // Khôi phục lại tốc độ di chuyển
-        System.out.println("Zombie's speed is restored!");
-        startAttackTimer();
-    }
-    public void applyDamageEffects() {
-        super.applyDamageEffects();
-    }
+
+
+
     public void die(){
         super.die();
     }
@@ -150,6 +129,7 @@ public class BucketHeadZombie extends Zombie {
     public void resetAttackTimer() {
         super.resetAttackTimer();
     }
+
 
 
 }

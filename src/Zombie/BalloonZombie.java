@@ -14,14 +14,13 @@ import java.util.Random;
 
 public class BalloonZombie extends Zombie {
     private int DEFAULT_HEALTH ;
-    private int DEFAULT_DAMAGE ;
+    private final int DEFAULT_DAMAGE ;
     private final GamePanel gp2;
 
-    private int speed2;
+    private final int speed2;
 
     public int myLane;
-    private boolean isSlowed2;
-    private BufferedImage zombieImage2;
+    private final BufferedImage zombieImage2;
     public BalloonZombie(GamePanel parent, int lane) {
         super(parent, lane);
         myLane=lane;
@@ -29,7 +28,6 @@ public class BalloonZombie extends Zombie {
         this.DEFAULT_DAMAGE= 200;
         this.gp2= parent;
         startAttackTimer();
-        this.isSlowed2 = false;
         this.speed2=10;
         zombieImage2 = (BufferedImage) new ImageIcon(Objects.requireNonNull(this.getClass().getResource("balloonzombie.gif"))).getImage();
     }
@@ -39,29 +37,12 @@ public class BalloonZombie extends Zombie {
         super.takeDamage(DEFAULT_DAMAGE);
     }
 
-    @Override
-    public void slowDown(int speed2) {
-        super.slowDown(speed2);
-    }
+
 
     @Override
     public void die() {
         super.die();
     }
-
-
-
-    @Override
-    public void applyDamageEffects() {
-        super.applyDamageEffects();
-    }
-    public void restoreSpeed(int startSpeed) {
-        isSlowed2 = false;
-        startSpeed= this.speed2/3; // Khôi phục lại tốc độ di chuyển
-        System.out.println("Zombie's speed is restored!");
-        startAttackTimer();
-    }
-
     public void attackOtherObject(Peashooter peashooter) {
         // Ensure the target object is not null
         if (peashooter!= null) {
@@ -89,27 +70,15 @@ public class BalloonZombie extends Zombie {
             }
         }
     }
-    public void attackObject2(Sunflower sunflower){
-        if(sunflower!=null){
-            if(this.DEFAULT_HEALTH < 0.3* this.DEFAULT_HEALTH){
-                int healthPercentage2= (int) (this.DEFAULT_HEALTH * 2/ this.getMaxHealth());
-                int dame= 2 * (int)(this.DEFAULT_DAMAGE*healthPercentage2);
-                sunflower.receivedamage(dame);
-            }
-        } else {
-            double healthPercentage2 = (double) this.DEFAULT_HEALTH  / getMaxHealth();
-            int dame = (int) (this.DEFAULT_DAMAGE  * healthPercentage2);
-            sunflower.receivedamage(dame);
-        }
-    }
+
 
     public void spawn(){
         int maxX = 1600;
-        int maxY = 900;
+
         Random random = new Random();
-        int xCoordinate2 = random.nextInt(maxX);
-        int yCoordinate2 = random.nextInt(maxY);
-        System.out.println("Zombie spawned at: (" + xCoordinate2 + ", " + yCoordinate2 + ")");
+        int yCoordinate2 = random.nextInt(maxX);
+
+        System.out.println("Zombie spawned at: ("  + ", " + yCoordinate2 + ")");
 
     }
 
