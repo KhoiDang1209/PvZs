@@ -1,25 +1,29 @@
 package Plant;
-/*import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+
+import Game.GamePanel;
+
+import javax.swing.*;
 
 public class WallNut extends Plant{
-    private int WallNuthealth = 500;
-    public Wallnut(int x, int y,int row,int col) {
-        super(gp, x, y,);
-        this.path=getClass().getResource("/assets/walnut_full_life.gif").toString();
+    private int WallNuthealth= 2000;
+    public WallNut(GamePanel gp, int x, int y) {
+        super(gp, x, y);
     }
-    public void checkHp()
-    {
-        if(getHp()<=0)
-        {
-            setHp(0);
-            GamePlayController.allPlants.remove(this);
-            img.setVisible(false);
-            img.setDisable(true);
+    public void receivedamage(int dame){
+        if (dame > 0) {
+            int newHealth = this.WallNuthealth - dame;
+
+            if (newHealth <= 0) {
+                newHealth = 0; 
+                System.out.println("WallNut has been defeated!");
+            }
+
+            System.out.println("WallNut received damage: " + dame);
+            System.out.println("WallNut remaining health: " + newHealth);
+
+            this.WallNuthealth = newHealth; 
+        } else {
+            System.out.println("Invalid damage value. Damage must be greater than 0.");
         }
     }
-
-}*/
-
+}
