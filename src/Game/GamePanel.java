@@ -92,7 +92,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private JLabel PeashooterGIF;
     private JLabel PlantGIF;
     // Scale factor <1 = zoom out, >1 = zoom in
-    double zoomOutFactor = 0.87; // Adjust this factor as needed
+    double zoomOutFactor = 1; // Adjust this factor as needed
     int scaledWidth = (int) (originalImage.getWidth(null) * zoomOutFactor);
     int scaledHeight = (int) (originalImage.getHeight(null) * zoomOutFactor);
 
@@ -171,7 +171,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     public void innitializeGamePanel() {
         setTitle("Plants VS Zombies");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1600, 900);
+        setSize(originalImage.getWidth(null), originalImage.getHeight(null));
         setResizable(true);
 
         // Load zombie images
@@ -181,12 +181,12 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         ImageIcon balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif");
 
         label.setIcon(scaledImageIcon);
-        label.setBounds(0, 0, 1600, 900);
+        label.setBounds(0, 0, originalImage.getWidth(null), originalImage.getHeight(null));
 
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 12));
         timerLabel.setForeground(new Color(0x006600));
-        timerLabel.setBounds(1200, 20, 300, 30);
+        timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
@@ -232,7 +232,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 repaint();
 
                 // Change the MouseListener dynamically
-                PeashooterButton.removeMouseListener(this); // Remove the current MouseListener
+                PeashooterButton.removeMouseListener(peashooterButtonMouseListener); // Remove the current MouseListener
                 label.addMouseListener(new LabelMouseListener()); // Add a new MouseListener
                 label.addMouseMotionListener(new LabelMouseMotionListener()); // Add a new MouseMotionListener
             }
@@ -244,7 +244,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                // Handle mouse release event
+                // Code to get an image when the button is clicked
+                // PeashooterGIF != null
+
             }
 
             @Override
@@ -278,7 +280,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         SnowPeashooterButton.setFocusable(true);
         SnowPeashooterButton.setHorizontalAlignment(JButton.CENTER);
         SnowPeashooterButton.setVerticalAlignment(JButton.CENTER);
-        SunflowerButtton.addMouseListener(new java.awt.event.MouseAdapter() {
+        SnowPeashooterButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 int x = evt.getX();
                 int y = evt.getY();
@@ -637,10 +639,10 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private class LabelMouseListener extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            PlacedPeashoter = 0;
             System.out.println("Click!");
             int x = e.getXOnScreen();
             int y = e.getYOnScreen();
+            Position position = new Position(x, y);
             System.out.printf("x = %d, y = %d", x, y);
             System.out.println();
             position = new Position(x, y);
@@ -668,7 +670,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void mouseReleased(MouseEvent e) {
             updateGIFPosition(e);
         }
     }
@@ -690,8 +692,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         if (PeashooterGIF != null && PlacedPeashoter == 0) {
             PeashooterGIF.setIcon(Peashootergif);
             PeashooterGIF.setBounds(
-                    e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
-                    e.getYOnScreen() - Peashootergif.getIconHeight() / 2,
+                    e.getXOnScreen(),
+                    e.getYOnScreen(),
                     Peashootergif.getIconWidth(),
                     Peashootergif.getIconHeight());
             label.add(PeashooterGIF);
