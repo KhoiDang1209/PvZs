@@ -3,19 +3,17 @@ package Zombie;
 import Game.GamePanel;
 import GameElement.Collider;
 import Plant.FreezePeashooter;
+import Plant.Peashooter;
 import Plant.Sunflower;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Random;
-import java.util.Timer;
 
 public class BucketHeadZombie extends Zombie {
-    private int xCoordinate;
-    private int yCoordinate;
-    private  int slowInt1;
     private int speed1;
     private int health1;
     private  int damage1 ;
@@ -23,56 +21,23 @@ public class BucketHeadZombie extends Zombie {
     private boolean isSlowed1;
     private BufferedImage zombieImage;
 
-
     public BucketHeadZombie(GamePanel parent, int lane) {
-        super(parent, lane);
+        super(parent);
         this.gp1=parent;
-        ;
         initAttributes();
-        zombieImage = (BufferedImage) new ImageIcon(this.getClass().getResource("bucketheadzombie.gif")).getImage();
-        addMouseListener(this);
+        zombieImage = (BufferedImage) new ImageIcon(Objects.requireNonNull(this.getClass().getResource("bucketheadzombie.gif"))).getImage();
+
     }
     public void initAttributes() {
         this.health1 = 4000;
-        this.slowInt1 = 3000;
         this.speed1 = 8;
         this.damage1 = 300;
+        startAttackTimer();
+        this.isSlowed1 = false;
 
     }
-    public void advance() {
-        if (isMoving) {
-            boolean isCollides = false;
-            Collider collided = null;
-            for (int i = myLane * 9; i < (myLane + 1) * 9; i++) {
-                if (gp1.colliders[i].assignedPlant != null && gp1.colliders[i].isInsideCollider(posX)) {
-                    isCollides = true;
-                    collided = gp1.colliders[i];
-                }
-            }
-            if (!isCollides) {
 
-                if (slowInt1 > 0) {
-                    if (slowInt1 % 2 == 0) {
-                        posX--;
-                    }
-                    slowInt1--;
-                } else {
-                    posX -= 1;
-                }
-            } else {
-                collided.assignedPlant.health -= 10;
-                if (collided.assignedPlant.health < 0) {
-                    collided.removePlant();
-                }
-            }
-            if (posX < 0) {
-                isMoving = false;
-                JOptionPane.showMessageDialog(gp1, "ZOMBIES ATE YOUR BRAIN !" + '\n' + "Starting the level again");
-                //GameWindow.gw.dispose();
-                //GameWindow.gw = new GameWindow();
-            }
-        }
-    }
+
     public void attackOtherObject1(FreezePeashooter freezePeashooter){
         if(freezePeashooter!= null) {
             if (health1 <= 0.3 * health1) {
@@ -97,6 +62,20 @@ public class BucketHeadZombie extends Zombie {
             double healthPercentage2 = (double) this.health1  / getMaxHealth();
             int dame = (int) (this.damage1  * healthPercentage2);
             sunflower.receivedamage(dame);
+        }
+    }
+    public void attackOtherObject(Peashooter peashooter) {
+        // Ensure the target object is not null
+        if (peashooter!= null) {
+            if (health1 <= 0.3 * health1) {
+                double healthPercentage = (double) health1*2 / getMaxHealth();
+                int calculatedDamage = (int) (damage1*2 * healthPercentage);
+                peashooter.receivedamage(calculatedDamage);
+            } else {
+                double healthPercentage = (double) health1 / getMaxHealth();
+                int calculatedDamage = (int) (damage1 * healthPercentage);
+                peashooter.receivedamage(calculatedDamage);
+            }
         }
     }
     public void takeDamage(int damage1){
@@ -124,10 +103,10 @@ public class BucketHeadZombie extends Zombie {
 
         Random random = new Random();
 
-        this.xCoordinate = random.nextInt(maxX);
-        this.yCoordinate = random.nextInt(maxY);
+        int xCoordinate = random.nextInt(maxX);
+        int yCoordinate = random.nextInt(maxY);
 
-        System.out.println("Zombie spawned at: (" + xCoordinate + ", " + yCoordinate+ ")");
+        System.out.println("Zombie spawned at: (" + xCoordinate + ", " + yCoordinate + ")");
 
     }
 
@@ -149,6 +128,27 @@ public class BucketHeadZombie extends Zombie {
             g3.drawString("Không thể đọc file zombie.gif", 10, 20);
         }
     }
-    
+    @Override
+    public void paintComponent(Graphics g1) {
+        if (zombieImage == null) {
+            System.out.println("No image");
+        }
+        gp1.paintComponents(g1);
+        g1.drawImage(zombieImage, 0, 0, null);
+    }
+    public void regenerateHealth() {
+        health1 = Math.min(5000, health1 + 100);
+    }
 
+    @Override
+    public void startAttackTimer() {
+        super.startAttackTimer();
+    }
+
+    @Override
+    public void resetAttackTimer() {
+        super.resetAttackTimer();
+    }
+
+   
 }

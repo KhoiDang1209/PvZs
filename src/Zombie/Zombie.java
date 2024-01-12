@@ -2,108 +2,61 @@ package Zombie;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import Game.GamePanel;
-import GameElement.Collider;
-import GUI.GameEnd.GameOverNotification;
+
+
 import Plant.FreezePeashooter;
 import Plant.Peashooter;
 import Plant.Sunflower;
 
-public class Zombie extends Component implements MouseListener {
+public class Zombie extends Component  {
 	// the attribute of zombie
     public int health = 1000;
     public int speed ;
 
-    private GamePanel gp;
+    private final GamePanel gp;
 
     public int posX = 1000;
     public int myLane;
     public boolean isMoving = true;
     protected String imagePath;
     // the attribute of zombie
-
-    private BufferedImage zombieImage1;
+    private final BufferedImage zombieImage1;
     private  int slowInt;
     private  int damage ;
     private boolean isUnderAttack;
     private java.util.Timer regenerationTimer;
     private boolean isSlowed;
-    private int armor;
-    private boolean shielded;
-    private Timer slowTimer;
-    private static final int MAX_ZOMBIE_TYPES = 3; // Số lượng loại Zombie có thể tạo
-
-    private int xCoordinate;
-    private int yCoordinate;
     // Constructor
-    public Zombie(GamePanel parent,int lane){
+    public Zombie(GamePanel parent){
         this.gp = parent;
-        myLane = lane;
-
-        this.gp = parent;
-        myLane = lane;
 
         this.isUnderAttack = false;
         startAttackTimer();
         this.isSlowed = false;
         this.imagePath= imagePath;
         initAttributes();
-        this.shielded = false;
+        zombieImage1 = (BufferedImage) new ImageIcon(Objects.requireNonNull(this.getClass().getResource("zombie1 (1).gif"))).getImage();
 
-        zombieImage1 = (BufferedImage) new ImageIcon(this.getClass().getResource("zombie1 (1).gif")).getImage();
-        addMouseListener(this);
         }
         public void initAttributes() {
             this.health = 5000;
             this.slowInt = 3000;
             this.speed = 5;
             this.damage = 100;
-            this.posX = 1500;
-            Timer slowTimer = new Timer();
-        }
 
 
+       }
     //Move straight
-    public void advance(){
-        if(isMoving) {
-            boolean isCollides = false;
-            Collider collided = null;
-            for (int i = myLane * 9; i < (myLane + 1) * 9; i++) {
-                if (gp.colliders[i].assignedPlant != null && gp.colliders[i].isInsideCollider(posX)) {
-                    isCollides = true;
-                    collided = gp.colliders[i];
-                }
-            }
-            if (!isCollides) {
-                if(slowInt>0){
-                    if(slowInt % 2 == 0) {
-                        posX--;
-                    }
-                    slowInt--;
-                }else {
-                    posX -= 1;
-                }
-            } else {
-                collided.assignedPlant.health -= 10;
-                if (collided.assignedPlant.health < 0) {
-                    collided.removePlant();
-                }
-            }
-            if (posX < 0) {
-                isMoving = false;
-                gp.dispose();
-                GameOverNotification gon= new GameOverNotification();
-            }
-        }
-    }
+
     public void restoreSpeed(int ignoredSpeed) {
         isSlowed = false;
         ignoredSpeed= this.speed/3; // Khôi phục lại tốc độ di chuyển
@@ -117,23 +70,10 @@ public class Zombie extends Component implements MouseListener {
     public boolean isAlive() {
         return health>0;
     }
-
     public void die() {
         isMoving = false;
         System.out.println("Zombie has been defeated!");
         regenerationTimer.cancel();
-    }
-    public static Zombie getZombie(GamePanel parent, String type, int lane) {
-        new Zombie(parent, lane);
-        Zombie z = switch (type) {
-            case "NormalZombie" -> new NormalZombie(parent, lane);
-            case "ConeHeadZombie" -> new ConeHeadZombie(parent, lane);
-            case "BucketHeadZombie" -> new BucketHeadZombie(parent, lane);
-            case "BalloonZombie" -> new BalloonZombie(parent, lane);
-
-            default -> throw new IllegalStateException("Unexpected value: " + type);
-        };
-        return z;
     }
     public void startAttackTimer() {
         this.regenerationTimer = new Timer();
@@ -157,10 +97,6 @@ public class Zombie extends Component implements MouseListener {
 
         if (isAlive()) {
             applyDamageEffects();
-        } else if (this.health <= 0.3 * this.health) {
-
-            createShield();
-
         }else {
             die();
         }
@@ -169,25 +105,7 @@ public class Zombie extends Component implements MouseListener {
         // Reset đếm thời gian khi bị tấn công
         resetAttackTimer();
     }
-    public void createShield() {
-        // Kiểm tra nếu máu của zombie từ 30% trở xuống và chưa có giáp ảo
-        if (this.health <= 0.3* this.health && !this.shielded) {
-            // Tăng giáp của zombie lên 10 đơn vị
-            this.armor += 100;
-            // Đặt trạng thái giáp ảo là true
-            this.shielded = true;
-            // Tạo một luồng mới để đếm ngược 3 giây
-            TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    armor -= 100;
-                    shielded = false;
-                }
-            };
-            Timer timer = new Timer();
-            timer.schedule(task, 3000);
-        }
-    }
+
     public void resetAttackTimer() {
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -265,8 +183,8 @@ public class Zombie extends Component implements MouseListener {
 
         Random random = new Random();
 
-        this.xCoordinate = random.nextInt(maxX);
-        this.yCoordinate = random.nextInt(maxY);
+        int xCoordinate = random.nextInt(maxX);
+        int yCoordinate = random.nextInt(maxY);
 
         System.out.println("Zombie spawned at: (" + xCoordinate + ", " + yCoordinate + ")");
     }
@@ -294,32 +212,6 @@ public class Zombie extends Component implements MouseListener {
             // Xử lý trường hợp không thể đọc file
             g.drawString("Không thể đọc file zombie.gif", 10, 20);
         }
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }
 

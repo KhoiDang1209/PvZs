@@ -7,39 +7,30 @@ import Plant.Sunflower;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Objects;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class BalloonZombie extends Zombie {
     private int DEFAULT_HEALTH ;
     private int DEFAULT_DAMAGE ;
     private final GamePanel gp2;
-    public boolean isMoving = true;
+
     private int speed2;
-    private int armor1;
+
     public int myLane;
     private boolean isSlowed2;
-    private int slowInt2;
-    private boolean shielded1;
-    private int xCoordinate2;
-    private int yCoordinate2;
     private BufferedImage zombieImage2;
-    public BalloonZombie(GamePanel parent, int lane) {
-        super(parent, lane);
+    public BalloonZombie(GamePanel parent) {
+        super(parent);
         this.DEFAULT_HEALTH= 2800;
         this.DEFAULT_DAMAGE= 200;
         this.gp2= parent;
+        startAttackTimer();
         this.isSlowed2 = false;
         this.speed2=10;
-        this.myLane=lane;
-        zombieImage2 = (BufferedImage) new ImageIcon(this.getClass().getResource("balloonzombie.gif")).getImage();
-        addMouseListener(this);
-
+        zombieImage2 = (BufferedImage) new ImageIcon(Objects.requireNonNull(this.getClass().getResource("balloonzombie.gif"))).getImage();
     }
 
     @Override
@@ -57,10 +48,7 @@ public class BalloonZombie extends Zombie {
         super.die();
     }
 
-    @Override
-    public void advance() {
-        super.advance();
-    }
+
 
     @Override
     public void applyDamageEffects() {
@@ -72,9 +60,7 @@ public class BalloonZombie extends Zombie {
         System.out.println("Zombie's speed is restored!");
         startAttackTimer();
     }
-    public boolean isAlive() {
-        return DEFAULT_HEALTH>0;
-    }
+
     public void attackOtherObject(Peashooter peashooter) {
         // Ensure the target object is not null
         if (peashooter!= null) {
@@ -119,13 +105,10 @@ public class BalloonZombie extends Zombie {
     public void spawn(){
         int maxX = 1600;
         int maxY = 900;
-
         Random random = new Random();
-
-        this.xCoordinate2 = random.nextInt(maxX);
-        this.yCoordinate2 = random.nextInt(maxY);
-
-        System.out.println("Zombie spawned at: (" + xCoordinate2 + ", " + yCoordinate2+ ")");
+        int xCoordinate2 = random.nextInt(maxX);
+        int yCoordinate2 = random.nextInt(maxY);
+        System.out.println("Zombie spawned at: (" + xCoordinate2 + ", " + yCoordinate2 + ")");
 
     }
 
@@ -156,5 +139,18 @@ public class BalloonZombie extends Zombie {
         }
         gp2.paintComponents(g2);
         g2.drawImage(zombieImage2, 0, 0, null);
+    }
+    public void regenerateHealth() {
+        DEFAULT_HEALTH = Math.min(5000, DEFAULT_HEALTH + 100);
+    }
+
+    @Override
+    public void startAttackTimer() {
+        super.startAttackTimer();
+    }
+
+    @Override
+    public void resetAttackTimer() {
+        super.resetAttackTimer();
     }
 }
