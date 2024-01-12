@@ -8,6 +8,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +35,6 @@ import Plant.Peashooter;
 import Plant.Sunflower;
 import Sun.Sun;
 import Zombie.Zombie;
-//import sun.security.provider.Sun;
 
 public class GamePanel extends JFrame implements Runnable, Mouse {
     enum PlantType {
@@ -41,6 +43,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         Peashooter,
     }
 
+    public Position position;
     public Collider[] colliders;
     private Clip clip;
     private Game game;
@@ -74,10 +77,15 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon SunflowerCard = new ImageIcon("Image/Plants/Cards/SunflowerCard.png");
     JButton PeashooterButton = new JButton();
     ImageIcon PeashooterCard = new ImageIcon("Image/Plants/Cards/Peashootercard.png");
+    JButton SnowPeashooterButton = new JButton();
+    ImageIcon SnowPeashooterCard = new ImageIcon("Image/Plants/Cards/SnowPeaSeedCard.png");
+    JButton WallnutButton = new JButton();
+    ImageIcon WallnutCard = new ImageIcon("Image/Plants/Cards/Wall-nutCard.png");
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
     ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
     ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
     Image originalImage = originalImageIcon.getImage();
+    private JLabel PeashooterGIF;
     // Scale factor <1 = zoom out, >1 = zoom in
     double zoomOutFactor = 0.87; // Adjust this factor as needed
     int scaledWidth = (int) (originalImage.getWidth(null) * zoomOutFactor);
@@ -157,14 +165,13 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setTitle("Plants VS Zombies");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 900);
-        setResizable(false);
+        setResizable(true);
 
         // Load zombie images
-        normalZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/normalzombie.gif")).getImage();
-        coneHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/coneheadzombie.gif")).getImage();
-        bucketHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/bucketheadzombie.gif"))
-                .getImage();
-        balloonZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/balloonzombie.gif")).getImage();
+        ImageIcon normalZombieimage = new ImageIcon("Image/Zombie/normalzombie.gif");
+        ImageIcon coneHeadZombieImage = new ImageIcon("Image/Zombie/coneheadzombie.gif");
+        ImageIcon bucketHeadZombieImage = new ImageIcon("Image/Zombie/bucketheadzombie.gif");
+        ImageIcon balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif");
 
         label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, 1600, 900);
@@ -177,7 +184,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         add(label);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
-        SunflowerButtton.setBounds(50, 50, 140, 194);
+        SunflowerButtton.setBounds(50, 30, SunflowerCard.getIconWidth(), SunflowerCard.getIconHeight());
         SunflowerButtton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
         SunflowerButtton.setFocusable(true);
         SunflowerButtton.setHorizontalAlignment(JButton.CENTER);
@@ -193,12 +200,76 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             }
         });
         PeashooterButton.setIcon(PeashooterCard);
-        PeashooterButton.setBounds(50, 250, 140, 195);
+        PeashooterButton.setBounds(50, 215, PeashooterCard.getIconWidth(), PeashooterCard.getIconHeight());
         PeashooterButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
         PeashooterButton.setFocusable(true);
         PeashooterButton.setHorizontalAlignment(JButton.CENTER);
         PeashooterButton.setVerticalAlignment(JButton.CENTER);
-        PeashooterButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        PeashooterGIF = new JLabel();
+        // PeashooterButton.setAction(new AbstractAction() {
+        // @Override
+        // public void actionPerformed(ActionEvent e) {
+        // activePlantingBrush = PlantType.Peashooter;
+        // }
+        // });
+        PeashooterButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Code to get an image when the button is clicked
+                // PeashooterGIF != null
+                PeashooterGIF.setIcon(Peashootergif);
+                PeashooterGIF.setBounds(e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
+                        e.getYOnScreen() - Peashootergif.getIconHeight() / 2, Peashootergif.getIconWidth(),
+                        Peashootergif.getIconHeight());
+                repaint();
+
+                // Change the MouseListener dynamically
+                PeashooterButton.removeMouseListener(this); // Remove the current MouseListener
+                label.addMouseListener(new LabelMouseListener()); // Add a new MouseListener
+                label.addMouseMotionListener(new LabelMouseMotionListener()); // Add a new MouseMotionListener
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Handle mouse press event
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                // Handle mouse release event
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                // Handle mouse enter event
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                // Code to move the GIF when the mouse leaves the button
+
+            }
+        });
+
+        PeashooterButton.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                // Handle mouse drag event
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+
+            }
+        });
+
+        SnowPeashooterButton.setIcon(SnowPeashooterCard);
+        SnowPeashooterButton.setBounds(50, 400, SnowPeashooterCard.getIconWidth(), SnowPeashooterCard.getIconHeight());
+        SnowPeashooterButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
+        SnowPeashooterButton.setFocusable(true);
+        SnowPeashooterButton.setHorizontalAlignment(JButton.CENTER);
+        SnowPeashooterButton.setVerticalAlignment(JButton.CENTER);
+        SunflowerButtton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 int x = evt.getX();
                 int y = evt.getY();
@@ -208,6 +279,24 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
             }
         });
+        WallnutButton.setIcon(WallnutCard);
+        WallnutButton.setBounds(50, 585, WallnutCard.getIconWidth(), WallnutCard.getIconHeight());
+        WallnutButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
+        WallnutButton.setFocusable(true);
+        WallnutButton.setHorizontalAlignment(JButton.CENTER);
+        WallnutButton.setVerticalAlignment(JButton.CENTER);
+        WallnutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                int x = evt.getX();
+                int y = evt.getY();
+                Position position = new Position(x, y); // Assuming y is for Lane and x is for Box
+                int lane = position.Lane(y);
+                int box = position.Box(x);
+                System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
+            }
+        });
+        label.add(SnowPeashooterButton);
+        label.add(WallnutButton);
         label.add(SunflowerButtton);
         label.add(PeashooterButton);
         getContentPane().add(label);
@@ -535,4 +624,51 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
      * }
      * }
      */
+
+    private class LabelMouseListener extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            System.out.println("Click!");
+            int x = e.getXOnScreen();
+            int y = e.getYOnScreen();
+            System.out.printf("x = %d, y = %d", x, y);
+            System.out.println();
+            position = new Position(x, y);
+            int box = position.Box(x);
+            int lane = position.Lane(y);
+            System.out.printf("Box is: %d. Lane is: %d", box, lane);
+            System.out.println();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            updateGIFPosition(e);
+        }
+    }
+
+    private class LabelMouseMotionListener implements MouseMotionListener {
+        @Override
+        public void mouseMoved(MouseEvent e) {
+            updateGIFPosition(e);
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            // Code for the new MouseMotionListener on the label
+        }
+    }
+
+    private void updateGIFPosition(MouseEvent e) {
+        // Code for updating the position of the GIF
+        if (PeashooterGIF != null) {
+            PeashooterGIF.setIcon(Peashootergif);
+            PeashooterGIF.setBounds(
+                    e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
+                    e.getYOnScreen() - Peashootergif.getIconHeight() / 2,
+                    Peashootergif.getIconWidth(),
+                    Peashootergif.getIconHeight());
+            label.add(PeashooterGIF);
+            repaint();
+        }
+    }
 }
