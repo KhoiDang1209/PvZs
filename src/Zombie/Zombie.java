@@ -13,47 +13,75 @@ import java.util.TimerTask;
 import Game.GamePanel;
 
 
+import GameElement.Collider;
 import Plant.FreezePeashooter;
 import Plant.Peashooter;
+import Plant.Sunflower;
 
-
-public class Zombie extends Component  {
-	// the attribute of zombie
-    public int health = 1000;
-    public int speed ;
-
-    private final GamePanel gp;
-
-    public int posX = 1000;
-    public int myLane;
-    public boolean isMoving = true;
-    protected String imagePath;
+public class Zombie   {
     // the attribute of zombie
-    private final BufferedImage zombieImage1;
+    public int health = 1000;
+    public int speed = 1;
     private  int damage ;
     private boolean isUnderAttack;
     private java.util.Timer regenerationTimer;
 
-    // Constructor
-    public Zombie(GamePanel parent, int lane){
+    GamePanel gp;
+
+    public int posX = 1000;
+    public int myLane;
+    public boolean isMoving = true;
+
+
+    public Zombie(GamePanel parent,int lane){
         this.gp = parent;
-        myLane=lane;
-        this.isUnderAttack = false;
-        startAttackTimer();
-        initAttributes();
-        zombieImage1 = (BufferedImage) new ImageIcon(Objects.requireNonNull(this.getClass().getResource("zombie1 (1).gif"))).getImage();
+        myLane = lane;
+    }
 
+    public void advance(){
+        if(isMoving) { //kiểm tra zombie có di chuyển không nếu là true thì tiếp tục
+            boolean isCollides = false; // va chạm false
+            Collider collided = null;   // tạo một đối tượng va chạm
+            for (int i = myLane * 9; i < (myLane + 1) * 9; i++) { //đoạn mã code này kiểm tra có trong vùng va chạm không
+                if (gp.colliders[i].assignedPlant != null && gp.colliders[i].isInsideCollider(posX)) {
+                    isCollides = true;
+                    collided = gp.colliders[i]; // đối tượng collider được gán cho biến collided
+                }
+            }
+            if (!isCollides) { // không va chạm
+                if(slowInt>0){ // bị bắn đạn frezze
+                    if(slowInt % 2 == 0) { // nếu biến slowint là số chẵn thì zombie được di chuyển
+                        posX--; // nếu là số lẽ thì sẽ không di chuyển
+                    }
+                    slowInt--; // sau khi thực hiện xong hết slowint sẽ tự trừ đi 1
+                }else {
+                    posX -= 1; // nếu không bị làm chậm và không va chạm thì posx zombie -1
+                }
+            } else {
+                collided.assignedPlant.health -= 10; // máu của plant -10
+                if (collided.assignedPlant.health < 0){ // nếu máu của plant bé hơn 0 thì remove plant
+                    collided.removePlant();
+                }
+            }
+            if (posX < 0) { // zombie đi hết đường đi
+                isMoving = false;
+                JOptionPane.showMessageDialog(gp,"ZOMBIES KILLED THE GUARDIANS !" + '\n' + "Starting the level again");// trình một cửa sổ thông báo kết thúc game
+
+//                GameWindow.gw.dispose();
+//                GameWindow.gw = new GameWindow();
+            }
         }
-        public void initAttributes() {
-            this.health = 5000;
-            this.speed = 5;
-            this.damage = 100;
+    }
 
+    public void kill(){
+        if (health > 0 ){
+            health = 0;
+        }
 
-       }
-    //Move straight
-
-
+        if (gp != null){
+            //gp.laneZombies.get(posX).remove(this);
+        }
+    }
 
     public boolean isAlive() {
         return health>0;
@@ -132,37 +160,24 @@ public class Zombie extends Component  {
             }
         }
     }
-
-    public void spawn() {
-        int maxX = 1600;
-        Random random = new Random();
-        int yCoordinate = random.nextInt(maxX);
-        System.out.println("Zombie spawned at: (" + ", " + yCoordinate + ")");
+    int slowInt = 0; // biến slowint lúc đầu
+    public void slow(){ //phương thức slow khi frezze pea được bắn dính zombie
+        slowInt = 1000; // mỗi lần bắn dính zombie biến slowint =1000
     }
-    public void paintComponent(Graphics g) {
-        if (zombieImage1 == null) {
-            System.out.println("No image");
+    public static Zombie getZombie(String type,GamePanel parent, int lane) {
+        Zombie z = new Zombie(parent,lane);
+        switch(type) {
+            case "NormalZombie" : z = new NormalZombie(parent,lane);
+                break;
+            case "ConeHeadZombie" : z = new ConeHeadZombie(parent,lane);
+                break;
+            case "BalloonZombie" : z = new BalloonZombie(parent,lane);
+                break;
+            case "BucketHeadZombie" : z= new BucketHeadZombie(parent, lane);
+                break;
         }
-        gp.paintComponents(g);
-        g.drawImage(zombieImage1, 0, 0, null);
+        return z;
     }
-    public void drawZombie(Graphics g) {
-        String gifPath = "zombie1 (1).gif"; // Thay đổi đường dẫn tới file GIF của bạn
 
-        // Sử dụng URL để đọc file từ đường dẫn
-        URL imageUrl = getClass().getResource(gifPath);
 
-        // Kiểm tra xem có thể đọc được file không
-        if (imageUrl != null) {
-            // Sử dụng ImageIcon để hiển thị hình ảnh từ URL
-            ImageIcon zombieIcon = new ImageIcon(imageUrl);
-
-            // Vẽ hình ảnh zombie tại vị trí (0, 0)
-            zombieIcon.paintIcon(this, g, 0, 0);
-        } else {
-            // Xử lý trường hợp không thể đọc file
-            g.drawString("Không thể đọc file zombie.gif", 10, 20);
-        }
-    }
 }
-

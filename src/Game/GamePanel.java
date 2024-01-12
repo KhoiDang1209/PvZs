@@ -45,6 +45,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     }
 
     private MouseListener peashooterButtonMouseListener;
+    private JButton pauseButton;
+
+    private volatile boolean isPaused = false;
     public int PlantBox;
     public int PlantLane;
     public Position position;
@@ -189,6 +192,17 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
+        ImageIcon pauseicon=new ImageIcon("Image/background/pauseButton");
+        pauseButton = new JButton();
+        pauseButton.setIcon(pauseicon);
+        pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(), pauseicon.getIconHeight());
+        pauseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                togglePause();
+            }
+        });
+        add(pauseButton);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
         SunflowerButtton.setBounds(50, 30, SunflowerCard.getIconWidth(), SunflowerCard.getIconHeight());
@@ -330,7 +344,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         activeSuns = new ArrayList<>();
         // 6 seconds 1 sun
-        Timer sunProducer = new Timer(600000, (ActionEvent e) -> {
+        Timer sunProducer = new Timer(6000, (ActionEvent e) -> {
             System.out.println("Add sun");
             Random rnd = new Random();
             // Game Field from 313 = minX to maxX = 1270 or 1273, yMin = 85 to 650= maxY
@@ -415,7 +429,16 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
          */
 
     }
-
+    private void togglePause() {
+        if (isPaused) {
+            resumeGame();
+            pauseButton.setText("Pause");
+        } else {
+            pauseGame();
+            pauseButton.setText("Resume");
+        }
+        isPaused = !isPaused;
+    }
     private void advance() {
 
         for (int i = 0; i < 5; i++) {
