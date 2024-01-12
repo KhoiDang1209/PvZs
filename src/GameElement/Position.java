@@ -47,7 +47,41 @@ public class Position {
         }
         else return 9;
     }
-
+    public int BoxDraw(int x)
+    {
+        if(Box(x)==1)
+            return 375;
+        else if (Box(x)==2) {
+            return 498;
+        } else if (Box(x)==3) {
+            return 621;
+        }else if(Box(x)==4) {
+            return 744;
+        } else if (Box(x)==5) {
+            return 867;
+        } else if (Box(x)==6) {
+            return 985;
+        } else if (Box(x)==7) {
+            return 1113;
+        } else if (Box(x)==8) {
+            return 1236;
+        }
+        else return 1349;
+    }
+    public int LaneDraw(int y)
+    {
+        if(Lane(y)==1)
+            return 265;
+        else if (Lane(y)==2) {
+            return 411;
+        }
+        else if (Lane(y)==3) {
+            return 577;
+        }
+        else if (Lane(y)==4) {
+            return 710;
+        }else  return 859;
+    }
     public int getBox() {
         return box;
     }
