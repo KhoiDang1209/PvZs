@@ -92,7 +92,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private JLabel PeashooterGIF;
     private JLabel PlantGIF;
     // Scale factor <1 = zoom out, >1 = zoom in
-    double zoomOutFactor = 1; // Adjust this factor as needed
+    double zoomOutFactor = 0.87; // Adjust this factor as needed
     int scaledWidth = (int) (originalImage.getWidth(null) * zoomOutFactor);
     int scaledHeight = (int) (originalImage.getHeight(null) * zoomOutFactor);
 
@@ -692,8 +692,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         if (PeashooterGIF != null && PlacedPeashoter == 0) {
             PeashooterGIF.setIcon(Peashootergif);
             PeashooterGIF.setBounds(
-                    e.getXOnScreen(),
-                    e.getYOnScreen(),
+                    e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
+                    e.getYOnScreen() - Peashootergif.getIconHeight() / 2,
                     Peashootergif.getIconWidth(),
                     Peashootergif.getIconHeight());
             label.add(PeashooterGIF);
