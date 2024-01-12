@@ -7,19 +7,21 @@ import Plant.Sunflower;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Random;
 import java.util.Timer;
 
 public class BucketHeadZombie extends Zombie {
-    private int xCoordinate1;
-    private int yCoordinate1;
+    private int xCoordinate;
+    private int yCoordinate;
     private  int slowInt1;
     private int speed1;
     private int health1;
     private  int damage1 ;
     private final GamePanel gp1;
     private boolean isSlowed1;
+    private BufferedImage zombieImage;
 
 
     public BucketHeadZombie(GamePanel parent, int lane) {
@@ -27,6 +29,8 @@ public class BucketHeadZombie extends Zombie {
         this.gp1=parent;
         ;
         initAttributes();
+        zombieImage = (BufferedImage) new ImageIcon(this.getClass().getResource("bucketheadzombie.gif")).getImage();
+        addMouseListener(this);
     }
     public void initAttributes() {
         this.health1 = 4000;
@@ -113,28 +117,21 @@ public class BucketHeadZombie extends Zombie {
     public void die(){
         super.die();
     }
-    public void newspeed(){
-        int newspeed1;
-        if(this.health1<= 0.3* this.health1){
-            newspeed1= (int) (this.speed1*1.5);
-        }else{
-            newspeed1=this.speed1;
-        }
-    }
+
     public void spawn(){
         int maxX = 1600;
         int maxY = 900;
 
         Random random = new Random();
 
-        this.xCoordinate1 = random.nextInt(maxX);
-        this.yCoordinate1 = random.nextInt(maxY);
+        this.xCoordinate = random.nextInt(maxX);
+        this.yCoordinate = random.nextInt(maxY);
 
-        System.out.println("Zombie spawned at: (" + xCoordinate1 + ", " + yCoordinate1+ ")");
+        System.out.println("Zombie spawned at: (" + xCoordinate + ", " + yCoordinate+ ")");
 
     }
 
-    public void drawZombie(Graphics g) {
+    public void drawZombie(Graphics g3) {
         String gifPath2 = "zombie2.gif"; // Thay đổi đường dẫn tới file GIF của bạn
 
         // Sử dụng URL để đọc file từ đường dẫn
@@ -146,10 +143,10 @@ public class BucketHeadZombie extends Zombie {
             ImageIcon zombieIcon = new ImageIcon(imageUrl2);
 
             // Vẽ hình ảnh zombie tại vị trí (0, 0)
-            zombieIcon.paintIcon(this, g, 0, 0);
+            zombieIcon.paintIcon(this, g3, 0, 0);
         } else {
             // Xử lý trường hợp không thể đọc file
-            g.drawString("Không thể đọc file zombie.gif", 10, 20);
+            g3.drawString("Không thể đọc file zombie.gif", 10, 20);
         }
     }
     
