@@ -70,6 +70,10 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon SunflowerCard = new ImageIcon("Image/Plants/Cards/SunflowerCard.png");
     JButton PeashooterButton = new JButton();
     ImageIcon PeashooterCard = new ImageIcon("Image/Plants/Cards/Peashootercard.png");
+    JButton SnowPeashooterButton = new JButton();
+    ImageIcon SnowPeashooterCard = new ImageIcon("Image/Plants/Cards/SnowPeaSeedCard.png");
+    JButton WallnutButton = new JButton();
+    ImageIcon WallnutCard = new ImageIcon("Image/Plants/Cards/Wall-nutCard.png");
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
     ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
     ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
@@ -153,27 +157,27 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setTitle("Plants VS Zombies");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1600, 900);
-        setResizable(false);
+        setResizable(true);
 
 
         // Load zombie images
-        normalZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/normalzombie.gif")).getImage();
-        coneHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/coneheadzombie.gif")).getImage();
-        bucketHeadZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/bucketheadzombie.gif")).getImage();
-        balloonZombieImage = new ImageIcon(this.getClass().getResource("Image/Zombie/balloonzombie.gif")).getImage();
+        ImageIcon normalZombieimage = new ImageIcon("Image/Zombie/normalzombie.gif");
+        ImageIcon coneHeadZombieImage = new ImageIcon("Image/Zombie/coneheadzombie.gif");
+        ImageIcon bucketHeadZombieImage = new ImageIcon("Image/Zombie/bucketheadzombie.gif");
+        ImageIcon balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif");
 
         label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, 1600, 900);
 
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 12));
         timerLabel.setForeground(new Color(0x006600));
-        timerLabel.setBounds(1200, 20, 300, 30);
+        timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
-        SunflowerButtton.setBounds(50, 50, 140, 194);
+        SunflowerButtton.setBounds(50, 30, SunflowerCard.getIconWidth(), SunflowerCard.getIconHeight());
         SunflowerButtton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
         SunflowerButtton.setFocusable(true);
         SunflowerButtton.setHorizontalAlignment(JButton.CENTER);
@@ -189,7 +193,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             }
         });
         PeashooterButton.setIcon(PeashooterCard);
-        PeashooterButton.setBounds(50, 250, 140, 195);
+        PeashooterButton.setBounds(50, 215, PeashooterCard.getIconWidth(), PeashooterCard.getIconHeight());
         PeashooterButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
         PeashooterButton.setFocusable(true);
         PeashooterButton.setHorizontalAlignment(JButton.CENTER);
@@ -204,8 +208,42 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
             }
         });
+        SnowPeashooterButton.setIcon(SnowPeashooterCard);
+        SnowPeashooterButton.setBounds(50, 400, SnowPeashooterCard.getIconWidth(), SnowPeashooterCard.getIconHeight());
+        SnowPeashooterButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
+        SnowPeashooterButton.setFocusable(true);
+        SnowPeashooterButton.setHorizontalAlignment(JButton.CENTER);
+        SnowPeashooterButton.setVerticalAlignment(JButton.CENTER);
+        SunflowerButtton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                int x = evt.getX();
+                int y = evt.getY();
+                Position position = new Position(x, y); // Assuming y is for Lane and x is for Box
+                int lane = position.Lane(y);
+                int box = position.Box(x);
+                System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
+            }
+        });
+        WallnutButton.setIcon(WallnutCard);
+        WallnutButton.setBounds(50, 585, WallnutCard.getIconWidth(), WallnutCard.getIconHeight());
+        WallnutButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
+        WallnutButton.setFocusable(true);
+        WallnutButton.setHorizontalAlignment(JButton.CENTER);
+        WallnutButton.setVerticalAlignment(JButton.CENTER);
+        WallnutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                int x = evt.getX();
+                int y = evt.getY();
+                Position position = new Position(x, y); // Assuming y is for Lane and x is for Box
+                int lane = position.Lane(y);
+                int box = position.Box(x);
+                System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
+            }
+        });
         label.add(SunflowerButtton);
         label.add(PeashooterButton);
+        label.add(SnowPeashooterButton);
+        label.add(WallnutButton);
         getContentPane().add(label);
         pack();
         setLocationRelativeTo(null);
