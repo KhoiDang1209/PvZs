@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import Plant.Plant;
@@ -13,13 +14,14 @@ import Plant.Plant;
 public class Collider extends JPanel implements MouseListener {
 
     ActionListener al;
+    ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
 
     public Collider() {
         // setBorder(new LineBorder(Color.RED));
         setOpaque(false);
         addMouseListener(this);
         // setBackground(Color.green);
-        setSize(100, 120);
+        setSize(200, 200);
     }
 
     public Plant assignedPlant;

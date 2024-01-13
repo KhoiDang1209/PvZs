@@ -1,14 +1,15 @@
 package Zombie;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.Image;
+
+import javax.swing.JLabel;
+
+import GUI.GameEnd.GameOverNotification;
 import Game.GamePanel;
 import GameElement.Collider;
-import GUI.GameEnd.GameOverNotification;
 
 public class Zombie extends JLabel {
-	// the attribute of zombie
+    // the attribute of zombie
     public int health = 1000;
     public int speed = 2;
     Image zombieimage;
@@ -34,14 +35,16 @@ public class Zombie extends JLabel {
 
     public int myLane;
     public boolean isMoving = true;
+
     // Constructor
-    public Zombie(GamePanel parent,int lane){
+    public Zombie(GamePanel parent, int lane) {
         this.gp = parent;
         myLane = lane;
     }
-    //Move straight
-    public void advance(){
-        if(isMoving) {
+
+    // Move straight
+    public void advance() {
+        if (isMoving) {
             boolean isCollides = false;
             Collider collided = null;
             for (int i = myLane * 9; i < (myLane + 1) * 9; i++) {
@@ -51,12 +54,12 @@ public class Zombie extends JLabel {
                 }
             }
             if (!isCollides) {
-                if(slowInt>0){
-                    if(slowInt % 2 == 0) {
+                if (slowInt > 0) {
+                    if (slowInt % 2 == 0) {
                         posX--;
                     }
                     slowInt--;
-                }else {
+                } else {
                     posX -= 1;
                 }
             } else {
@@ -68,20 +71,23 @@ public class Zombie extends JLabel {
             if (posX < 315) {
                 isMoving = false;
                 gp.dispose();
-                GameOverNotification gon= new GameOverNotification();
+                GameOverNotification gon = new GameOverNotification();
             }
         }
     }
-    public void ZombieMove()
-    {
-        int currentX=getPosX();
-        posX=currentX-speed;
-        setLocation(posX,myLane);
+
+    public void ZombieMove() {
+        int currentX = getPosX();
+        posX = currentX - speed;
+        setLocation(posX, myLane);
     }
+
     int slowInt = 0;
-    public void slow(){
+
+    public void slow() {
         slowInt = 1000;
     }
+
     public static Zombie getZombie(String type, GamePanel parent, int lane) {
         Zombie z = new Zombie(parent, lane);
         switch (type) {
