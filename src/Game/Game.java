@@ -1,5 +1,7 @@
 package Game;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
@@ -8,8 +10,12 @@ import GUI.GameMenu.Menu;
 import GUI.GameMenu.MenuMode;
 import GUI.GameMenu.PlantsMenu;
 import GUI.GameMenu.ZombiesMenu;
+import Plant.Pea;
+import Zombie.Zombie;
 
 public class Game extends JFrame {
+    public ArrayList<ArrayList<Zombie>> Zombie_units;
+    public ArrayList<ArrayList<Pea>> PeaInField;
     private Thread gameThread;
     private GamePanel gamePanel;
     private Menu menu;
@@ -20,9 +26,27 @@ public class Game extends JFrame {
     private int gameTimeInSeconds = 0;
     private JLabel timerLabel;
     private static int checkTime = 0;
-    public Game() {
-        this.gamePanel=new GamePanel(this);
 
+    public Game() {
+        this.gamePanel = new GamePanel(this);
+
+        // Initialize Zombie_units
+        // Zombie add in GamePanel when draw
+        Zombie_units = new ArrayList<>();
+        Zombie_units.add(new ArrayList<>()); // line 1
+        Zombie_units.add(new ArrayList<>()); // line 2
+        Zombie_units.add(new ArrayList<>()); // line 3
+        Zombie_units.add(new ArrayList<>()); // line 4
+        Zombie_units.add(new ArrayList<>()); // line 5
+
+        // Initialize PlantInField
+        // PlantInField add in PeaShooter
+        PeaInField = new ArrayList<>();
+        PeaInField.add(new ArrayList<>()); // line 1
+        PeaInField.add(new ArrayList<>()); // line 2
+        PeaInField.add(new ArrayList<>()); // line 3
+        PeaInField.add(new ArrayList<>()); // line 4
+        PeaInField.add(new ArrayList<>()); // line 5
     }
 
     public void updateGame() {
@@ -52,5 +76,4 @@ public class Game extends JFrame {
 
         gameThread.start();
     }
-
 }

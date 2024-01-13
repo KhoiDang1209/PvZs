@@ -15,7 +15,7 @@ public class Position {
             return 1;
         else if (y > 240 && y <= 380) {
             return 2;
-        } else if (y > 380 && y <= 505) {
+        } else if (y > 380 && y <= 510) {
             return 3;
         } else if (y > 510 && y <= 645) {
             return 4;

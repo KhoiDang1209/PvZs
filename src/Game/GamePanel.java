@@ -14,7 +14,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 import javax.sound.sampled.Clip;
@@ -31,11 +30,9 @@ import GameElement.Collider;
 import GameElement.Position;
 import InputForGame.Mouse;
 import InputForGame.MyMouseListener;
-import Plant.Pea;
 import Plant.Peashooter;
 import Plant.Sunflower;
 import Sun.Sun;
-import Zombie.Zombie;
 
 public class GamePanel extends JFrame implements Runnable, Mouse {
     enum PlantType {
@@ -44,6 +41,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         Peashooter,
     }
 
+    private Game gm;
     private MouseListener peashooterButtonMouseListener;
     private JButton pauseButton;
 
@@ -60,9 +58,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // Set of ArrayList
     // Use the zombie_units array
     // ArrayList<ArrayList<Zombie>> laneZombies;
-    public ArrayList<ArrayList<Zombie>> Zombie_units;
+
     public ArrayList<Sun> activeSuns;
-    public ArrayList<ArrayList<Pea>> PlantInField;
 
     // Set of Jlabel
     private JLabel timerLabel;
@@ -91,6 +88,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
     ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
     ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
+    ImageIcon PeaImage = new ImageIcon("Image/Plants/Fields/ProjectilePea.png");
     Image originalImage = originalImageIcon.getImage();
     private JLabel PeashooterGIF;
     private JLabel PlantGIF;
@@ -101,7 +99,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
     Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
     ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
-    private JLabel label = new JLabel();
+    public JLabel label = new JLabel();
 
     // Set of Timer
     Timer redrawTimer;
@@ -170,6 +168,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     }
 
     private int PlacedPeashoter;
+    public int[] LaneTopLeft;
+    public int[] BoxTopLeft;
 
     public void innitializeGamePanel() {
         setTitle("Plants VS Zombies");
@@ -185,7 +185,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
-        ImageIcon pauseicon=new ImageIcon("Image/background/pauseButton");
+        ImageIcon pauseicon = new ImageIcon("Image/background/pauseButton");
         pauseButton = new JButton();
         pauseButton.setIcon(pauseicon);
         pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(), pauseicon.getIconHeight());
@@ -231,6 +231,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             public void mouseClicked(MouseEvent e) {
                 // Code to get an image when the button is clicked
                 // PeashooterGIF != null
+                activePlantingBrush = PlantType.Peashooter;
                 PlacedPeashoter = 0;
                 PeashooterGIF.setIcon(Peashootergif);
                 PeashooterGIF.setBounds(e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
@@ -345,68 +346,44 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             Sun newSun = new Sun(this, rnd.nextInt(887) + 313, 0, rnd.nextInt(300) + 350);
             activeSuns.add(newSun);
             label.add(newSun);
-
-            Timer sunTimer = new Timer(60, new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent ae) {
-                    // Update the position of each sun in activeSuns
-                    Iterator<Sun> iterator = activeSuns.iterator();
-                    while (iterator.hasNext()) {
-                        Sun sun = iterator.next();
-                        sun.FallSun();
-                    }
-                }
-            });
-            // Start the timer only if it's not already running
-            if (!sunTimer.isRunning()) {
-                sunTimer.start();
-            }
         });
         sunProducer.start();
 
+        advancerTimer = new Timer(60, (ActionEvent e) -> advance());
+        advancerTimer.start();
+
         // Zombie producer
-//
-//          zombieProducer = new Timer(7000, (ActionEvent e) -> {
-//          Random rnd = new Random();
-//          int l = rnd.nextInt(5);
-//          int t = rnd.nextInt(100);
-//          Zombie z = null;
-//          String[] allZombieTypes = {"NormalZombie", "ConeHeadZombie",
-//          "BucketHeadZombie", "BalloonZombie"};
-//          int randomZombieIndex = rnd.nextInt(allZombieTypes.length);
-//          String selectedZombieType = allZombieTypes[randomZombieIndex];
-//          z = Zombie.getZombie(selectedZombieType, GamePanel.this, l,he);
-//          Zombie_units.get(l).add(z);
-//          });
-//          zombieProducer.start();
+        //
+        // zombieProducer = new Timer(7000, (ActionEvent e) -> {
+        // Random rnd = new Random();
+        // int l = rnd.nextInt(5);
+        // int t = rnd.nextInt(100);
+        // Zombie z = null;
+        // String[] allZombieTypes = {"NormalZombie", "ConeHeadZombie",
+        // "BucketHeadZombie", "BalloonZombie"};
+        // int randomZombieIndex = rnd.nextInt(allZombieTypes.length);
+        // String selectedZombieType = allZombieTypes[randomZombieIndex];
+        // z = Zombie.getZombie(selectedZombieType, GamePanel.this, l,he);
+        // Zombie_units.get(l).add(z);
+        // });
+        // zombieProducer.start();
 
-        // Manage the zombie and plant in 5 line
-
-        Zombie_units = new ArrayList<>();
-        Zombie_units.add(new ArrayList<>()); // line 1
-        Zombie_units.add(new ArrayList<>()); // line 2
-        Zombie_units.add(new ArrayList<>()); // line 3
-        Zombie_units.add(new ArrayList<>()); // line 4
-        Zombie_units.add(new ArrayList<>()); // line 5
-
-        PlantInField = new ArrayList<>();
-        PlantInField.add(new ArrayList<>()); // line 1
-        PlantInField.add(new ArrayList<>()); // line 2
-        PlantInField.add(new ArrayList<>()); // line 3
-        PlantInField.add(new ArrayList<>()); // line 4
-        PlantInField.add(new ArrayList<>()); // line 5
-
+        // Set the box where plant will be add and action in each box for all field
         /*
          * colliders = new Collider[45];
+         * LaneTopLeft = new int[] { 120, 240, 380, 510, 645 };
+         * BoxTopLeft = new int[] { 315, 442, 543, 654, 755, 871, 964, 1070, 1175 };
          * for (int i = 0; i < 45; i++) {
+         * int Box = i % 9;
+         * int Land = i / 9;
          * Collider a = new Collider();
-         * a.setLocation(44 + (i % 9) * 100, 109 + (i / 9) * 120);
+         * a.setLocation(BoxTopLeft[Box], LaneTopLeft[Land]);
+         * // i % 9 = Box, i / 9 = Lane
          * a.setAction(new PlantActionListener((i % 9), (i / 9)));
          * colliders[i] = a;
          * label.add(a);
          * }
          */
-
         // Draw all of components after a very short a mount of time or make it to move
         /*
          * redrawTimer = new Timer(25, (ActionEvent e) -> {
@@ -415,12 +392,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
          * redrawTimer.start();
          */
 
-        /*
-         * advancerTimer = new Timer(60, (ActionEvent e) -> advance());
-         * advancerTimer.start();
-         */
-
     }
+
     private void togglePause() {
         if (isPaused) {
             resumeGame();
@@ -431,20 +404,22 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         }
         isPaused = !isPaused;
     }
+
+    // Trigger advanced method in each class
     private void advance() {
-
-        for (int i = 0; i < 5; i++) {
-            /*
-             * for (Zombie z : laneZombies.get(i)) {
-             * z.advance();
-             * }
-             */
-            for (int j = 0; j < PlantInField.get(i).size(); j++) {
-                Pea p = PlantInField.get(i).get(j);
-                p.advance();
-            }
-        }
-
+        /*
+         * for (int i = 0; i < 5; i++) {
+         * /*
+         * for (Zombie z : laneZombies.get(i)) {
+         * z.advance();
+         * }
+         * 
+         * for (int j = 0; j < gm.PeaInField.get(i).size(); j++) {
+         * Pea p = gm.PeaInField.get(i).get(j);
+         * p.advance();
+         * }
+         * }
+         */
         for (int i = 0; i < activeSuns.size(); i++) {
             activeSuns.get(i).FallSun();
         }
@@ -579,12 +554,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             if (activePlantingBrush == PlantType.Sunflower) {
                 if (getNumOfSun() >= 50) {
                     colliders[x + y * 9].setPlant(new Sunflower(GamePanel.this, x, y));
+                    // new Sunflower(GamePanel.this, x, y) position where the sun fall
                     setNumOfSun(getNumOfSun() - 50);
                 }
             }
             if (activePlantingBrush == PlantType.Peashooter) {
                 if (getNumOfSun() >= 100) {
                     colliders[x + y * 9].setPlant(new Peashooter(GamePanel.this, x, y));
+                    // new Peashooter(GamePanel.this, x, y) position where the pea bullet fire
                     setNumOfSun(getNumOfSun() - 100);
                 }
             }
@@ -593,34 +570,24 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     }
 
     // Finding correct formular in process
-
     /*
      * @Override
      * public void paint(Graphics graphic) {
      * super.paint(graphic);
-     * double zoomOutFactor = 1.1618;
      * // Convert ImageIcon to Image
-     * Image bgImage = background_image.getImage();
-     * /*
      * Image peashooterImage = Sunflowergif.getImage();
      * Image sunflowerImage = Peashootergif.getImage();
      * Image PeaBullet = PeaImage.getImage();
-     */
-    /*
-     * Scale the backgruond image
-     * AffineTransform at = AffineTransform.getScaleInstance(1 / zoomOutFactor, 1 /
-     * zoomOutFactor);
-     * ((Graphics2D) graphic).drawImage(bgImage, at, this);
      * 
-     * /*
-     * Plant Generation
+     * // Plant Generation
      * for (int i = 0; i < 45; i++) {
+     * int Box = i % 9;
+     * int Land = i / 9;
      * Collider c = colliders[i];
      * if (c.assignedPlant != null) {
      * Plant WhichPlant = c.assignedPlant;
      * if (WhichPlant instanceof Peashooter) {
-     * graphic.drawImage(peashooterImage, 60 + (i % 9) * 100, 129 + (i / 9) * 120,
-     * null);
+     * graphic.drawImage(peashooterImage, BoxTopLeft[Box], LaneTopLeft[Land], null);
      * }
      * if (WhichPlant instanceof Sunflower) {
      * graphic.drawImage(sunflowerImage, 60 + (i % 9) * 100, 129 + (i / 9) * 120,
@@ -628,7 +595,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
      * }
      * }
      * }
-     * 
      * // Bullet generation for normal Pea
      * for (int i = 0; i < 5; i++) {
      * // For zombie not now
@@ -641,8 +607,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
      * }
      * }
      * 
-     * for (int j = 0; j < PlantInField.get(i).size(); j++) {
-     * Pea p = PlantInField.get(i).get(j);
+     * for (int j = 0; j < gm.PeaInField.get(i).size(); j++) {
+     * Pea p = gm.PeaInField.get(i).get(j);
      * if (p instanceof Pea) {
      * graphic.drawImage(PeaBullet, p.posX, 130 + (i * 120), null);
      * }

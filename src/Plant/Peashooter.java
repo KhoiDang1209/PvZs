@@ -5,9 +5,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Timer;
 
+import Game.Game;
 import Game.GamePanel;
 
 public class Peashooter extends Plant {
+    private Game gm;
 
     private int blood = 300;
 
@@ -21,8 +23,8 @@ public class Peashooter extends Plant {
              * it get y
              * mean it get which land that has zombie or the size > 0
              */
-            if (gp.Zombie_units.get(y_lineland).size() > 0) {
-                gp.PlantInField.get(y_lineland).add(new Pea(gp, y_lineland, 103 + this.x * 100));/* Cong thuc */
+            if (gm.Zombie_units.get(y_lineland).size() > 0) {
+                gm.PeaInField.get(y_lineland).add(new Pea(gp, y_lineland, 103 + this.x * 100));/* Cong thuc */
                 /* Add an bullet */
             }
         });
