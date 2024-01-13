@@ -191,16 +191,16 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
-        ImageIcon pauseicon = new ImageIcon("Image/background/pauseButton");
-        pauseButton = new JButton();
-        pauseButton.setIcon(pauseicon);
-        pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(), pauseicon.getIconHeight());
-        pauseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                togglePause();
-            }
-        });
+////        ImageIcon pauseicon = new ImageIcon("Image/background/pause.png");
+////        pauseButton = new JButton();
+////        pauseButton.setIcon(pauseicon);
+////        pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(), pauseicon.getIconHeight());
+////        pauseButton.addActionListener(new ActionListener() {
+////            @Override
+////            public void actionPerformed(ActionEvent e) {
+////
+////            }
+//        });
         add(pauseButton);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
@@ -401,25 +401,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
          */
 
     }
-
-//    public void updateZombies() {
-//        for (int i = 0; i < gm.Zombie_units.size(); i++) {
-//            for (Zombie zombie : gm.Zombie_units.get(i)) {
-//            }
-//        }
-//    }
-
-    private void togglePause() {
-        if (isPaused) {
-            resumeGame();
-            pauseButton.setText("Pause");
-        } else {
-            pauseGame();
-            pauseButton.setText("Resume");
-        }
-        isPaused = !isPaused;
-    }
-
     // Trigger advanced method in each class
     private void advance() {
 
@@ -430,7 +411,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 int y=laneSpawn(z.myLane);
                 z.setPosX(newX);
                 z.setBounds(newX,y,z.getWidth(),z.getHeight());
-                System.out.println("Zombie is at "+newX+" and speed is "+z.getSpeed());
                 z.advance();
             }
 
@@ -446,41 +426,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
     }
 
-//    @Override
-//    public void paint(Graphics g) {
-//        super.paint(g);
-//        // Calculate the elapsed time since the last frame
-//        long currentTime = System.nanoTime();
-//        long elapsedTime = currentTime - lastFrameTime;
-//        lastFrameTime = currentTime;
-//        // Draw Zombies
-//        for (int i = 0; i < 5; i++) {
-//            int laneYPosition = laneSpawn(i + 1); // i + 1 because lanes are 1-indexed in your method
-//            for (Zombie z : gm.Zombie_units.get(i)) {
-//                if (z.isMoving) {
-//                    Image zombieImage = null;
-//                    if (z instanceof NormalZombie) {
-//                        zombieImage=normalZombieImage;
-//                    } else if (z instanceof ConeHeadZombie) {
-//                        zombieImage=coneHeadZombieImage;
-//                    } else if (z instanceof BucketHeadZombie) {
-//                        zombieImage=bucketHeadZombieImage;
-//                    } else if (z instanceof BalloonZombie) {
-//                        zombieImage=balloonZombieImage;
-//                    }
-//                    g.drawImage(zombieImage, z.posX, laneYPosition, null);
-//                    // Update the posX based on elapsed time and speed
-//                    double seconds = elapsedTime / 1e9; // Convert nanoseconds to seconds
-//                    z.posX -= z.speed * seconds * 0.5; // Adjust posX based on speed and elapsed time
-//                }
-//            }
-//        }
-//        try {
-//            Thread.sleep(16); // You can adjust the sleep duration as needed
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     // Draw Peas
     // for (int j = 0; j < PlantInField.get(i).size(); j++) {
