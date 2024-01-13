@@ -1,19 +1,37 @@
 package Zombie;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import Game.GamePanel;
 import GameElement.Collider;
 import GUI.GameEnd.GameOverNotification;
 
-public class Zombie {
+public class Zombie extends JLabel {
 	// the attribute of zombie
     public int health = 1000;
-    public int speed = 1;
-
+    public int speed = 2;
+    Image zombieimage;
     private GamePanel gp;
 
-    public int posX = 1300;
+    public int posX = 1600;
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
     public int myLane;
     public boolean isMoving = true;
     // Constructor
@@ -47,14 +65,19 @@ public class Zombie {
                     collided.removePlant();
                 }
             }
-            if (posX < 0) {
+            if (posX < 315) {
                 isMoving = false;
                 gp.dispose();
                 GameOverNotification gon= new GameOverNotification();
             }
         }
     }
-
+    public void ZombieMove()
+    {
+        int currentX=getPosX();
+        posX=currentX-speed;
+        setLocation(posX,myLane);
+    }
     int slowInt = 0;
     public void slow(){
         slowInt = 1000;

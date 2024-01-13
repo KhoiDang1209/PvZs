@@ -2,11 +2,7 @@ package Game;
 
 import static GUI.GameSFX.Music.*;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -79,10 +75,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     Image freezePeaImage;
 
     // Load zombie images
-    Image normalZombieImage;
-    Image coneHeadZombieImage;
-    Image bucketHeadZombieImage;
-    Image balloonZombieImage;
 
     // Set of imageicon
     JButton SunflowerButtton = new JButton();
@@ -166,6 +158,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         return NumOfSunBoard;
     }
 
+
+
     private volatile boolean isRunning = true;
 
     public GamePanel(Game game) {
@@ -186,11 +180,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setResizable(true);
 
         // Load zombie images
-        normalZombieImage = new ImageIcon("Image/Zombie/normalzombie.gif").getImage();
-        coneHeadZombieImage = new ImageIcon("Image/Zombie/coneheadzombie.gif").getImage();
-        bucketHeadZombieImage = new ImageIcon("Image/Zombie/bucketheadzombie.gif").getImage();
-        balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif").getImage();
-
         // Other code...
 
         label.setIcon(scaledImageIcon);
@@ -365,16 +354,17 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             label.add(newSun);
         });
         sunProducer.start();
-
         advancerTimer = new Timer(60, (ActionEvent e) -> advance());
         advancerTimer.start();
 
         // Zombie producer
 
-        zombieProducer = new Timer(7000, (ActionEvent e) -> {
+        zombieProducer = new Timer(3000, (ActionEvent e) -> {
             Random rnd = new Random();
             int l = rnd.nextInt(5);
             int t = rnd.nextInt(100);
+            int y=laneSpawn(l);
+            int x=1600;
             Zombie z = null;
             String[] allZombieTypes = { "NormalZombie", "ConeHeadZombie",
                     "BucketHeadZombie", "BalloonZombie" };
@@ -383,6 +373,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             z = Zombie.getZombie(selectedZombieType, GamePanel.this, l);
             System.out.printf("Add z at land %d", l);
             gm.Zombie_units.get(l).add(z);
+            label.add(z);
+            z.setBounds(1600,y,z.getWidth(),z.getHeight());
         });
         zombieProducer.start();
 
@@ -403,18 +395,19 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         }
 
         // Draw all of components after a very short a mount of time or make it to move
-
-        redrawTimer = new Timer(100, (ActionEvent e) -> {
-            repaint();
-        });
-        redrawTimer.start();
-
         /*
          * advancerTimer = new Timer(60, (ActionEvent e) -> advance());
          * advancerTimer.start();
          */
 
     }
+
+//    public void updateZombies() {
+//        for (int i = 0; i < gm.Zombie_units.size(); i++) {
+//            for (Zombie zombie : gm.Zombie_units.get(i)) {
+//            }
+//        }
+//    }
 
     private void togglePause() {
         if (isPaused) {
@@ -430,9 +423,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // Trigger advanced method in each class
     private void advance() {
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < gm.Zombie_units.size(); i++) {
 
             for (Zombie z : gm.Zombie_units.get(i)) {
+                int newX=z.posX-z.speed;
+                int y=laneSpawn(z.myLane);
+                z.setPosX(newX);
+                z.setBounds(newX,y,z.getWidth(),z.getHeight());
+                System.out.println("Zombie is at "+newX+" and speed is "+z.getSpeed());
                 z.advance();
             }
 
@@ -448,38 +446,41 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
     }
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-
-        // Calculate the elapsed time since the last frame
-        long currentTime = System.nanoTime();
-        long elapsedTime = currentTime - lastFrameTime;
-        lastFrameTime = currentTime;
-
-        // Draw Zombies
-        for (int i = 0; i < 5; i++) {
-            for (Zombie z : gm.Zombie_units.get(i)) {
-                if (z.isMoving) {
-                    if (z instanceof NormalZombie) {
-                        g.drawImage(normalZombieImage, z.posX, 160 + (i * 120), this);
-                    } else if (z instanceof ConeHeadZombie) {
-                        g.drawImage(coneHeadZombieImage, z.posX, 160 + (i * 120), this);
-                    } else if (z instanceof BucketHeadZombie) {
-                        g.drawImage(bucketHeadZombieImage, z.posX, 160 + (i * 120), this);
-                    } else if (z instanceof BalloonZombie) {
-                        g.drawImage(balloonZombieImage, z.posX, 160 + (i * 120), this);
-                    }
-
-                    // Update the posX based on elapsed time and speed
-                    double seconds = elapsedTime / 1e9; // Convert nanoseconds to seconds
-                    z.posX -= z.speed * seconds * 0.5; // Adjust posX based on speed and elapsed time
-
-                }
-            }
-        }
-
-    }
+//    @Override
+//    public void paint(Graphics g) {
+//        super.paint(g);
+//        // Calculate the elapsed time since the last frame
+//        long currentTime = System.nanoTime();
+//        long elapsedTime = currentTime - lastFrameTime;
+//        lastFrameTime = currentTime;
+//        // Draw Zombies
+//        for (int i = 0; i < 5; i++) {
+//            int laneYPosition = laneSpawn(i + 1); // i + 1 because lanes are 1-indexed in your method
+//            for (Zombie z : gm.Zombie_units.get(i)) {
+//                if (z.isMoving) {
+//                    Image zombieImage = null;
+//                    if (z instanceof NormalZombie) {
+//                        zombieImage=normalZombieImage;
+//                    } else if (z instanceof ConeHeadZombie) {
+//                        zombieImage=coneHeadZombieImage;
+//                    } else if (z instanceof BucketHeadZombie) {
+//                        zombieImage=bucketHeadZombieImage;
+//                    } else if (z instanceof BalloonZombie) {
+//                        zombieImage=balloonZombieImage;
+//                    }
+//                    g.drawImage(zombieImage, z.posX, laneYPosition, null);
+//                    // Update the posX based on elapsed time and speed
+//                    double seconds = elapsedTime / 1e9; // Convert nanoseconds to seconds
+//                    z.posX -= z.speed * seconds * 0.5; // Adjust posX based on speed and elapsed time
+//                }
+//            }
+//        }
+//        try {
+//            Thread.sleep(16); // You can adjust the sleep duration as needed
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     // Draw Peas
     // for (int j = 0; j < PlantInField.get(i).size(); j++) {
@@ -748,5 +749,17 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             label.remove(PeashooterGIF);
             repaint();
         }
+    }
+    public int laneSpawn(int x)
+    {
+        if(x==1)
+            return 80;
+        else if (x==2) {
+            return 225;
+        } else if (x==3) {
+            return 360;
+        } else if(x==4){
+            return 480;
+        } else return 600;
     }
 }
