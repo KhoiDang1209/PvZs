@@ -1,8 +1,6 @@
 //
 package Plant;
 
-import java.awt.event.ActionEvent;
-
 import javax.swing.Timer;
 
 import Game.Game;
@@ -17,18 +15,19 @@ public class Peashooter extends Plant {
 
     public Peashooter(GamePanel parent, int x_box, int y_lineland) {
         super(parent, x_box, y_lineland);
-        shootTimer = new Timer(1500, (ActionEvent Shot) -> {
-            /*
-             * Get the position of zombie as zombie store in an array has 5 small arrays so
-             * it get y
-             * mean it get which land that has zombie or the size > 0
-             */
-            if (gm.Zombie_units.get(y_lineland).size() > 0) {
-                gm.PeaInField.get(y_lineland).add(new Pea(gp, y_lineland, 103 + this.x * 100));/* Cong thuc */
-                /* Add an bullet */
-            }
-        });
-        shootTimer.start();
+        // shootTimer = new Timer(1500, (ActionEvent Shot) -> {
+        /*
+         * Get the position of zombie as zombie store in an array has 5 small arrays so
+         * it get y
+         * mean it get which land that has zombie or the size > 0
+         */
+        // if (gm.Zombie_units.get(y_lineland).size() > 0) {
+        // gm.PeaInField.get(y_lineland).add(new Pea(gp, y_lineland, 103 + this.x *
+        // 100));/* Cong thuc */
+        /* Add an bullet */
+        // }
+        // });
+        // shootTimer.start();
     }
 
     @Override

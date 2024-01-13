@@ -27,8 +27,8 @@ public class Game extends JFrame {
     private JLabel timerLabel;
     private static int checkTime = 0;
 
-    public Game() {
-        this.gamePanel = new GamePanel(this);
+    public Game(GamePanel gp) {
+        this.gamePanel = gp;
 
         // Initialize Zombie_units
         // Zombie add in GamePanel when draw
