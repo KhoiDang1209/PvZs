@@ -1,6 +1,7 @@
 package Game;
 
 import static GUI.GameSFX.Music.*;
+import java.awt.Graphics;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -15,6 +16,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import javax.sound.sampled.Clip;
@@ -35,6 +37,10 @@ import Plant.Pea;
 import Plant.Peashooter;
 import Plant.Sunflower;
 import Sun.Sun;
+import Zombie.BalloonZombie;
+import Zombie.BucketHeadZombie;
+import Zombie.ConeHeadZombie;
+import Zombie.NormalZombie;
 import Zombie.Zombie;
 
 public class GamePanel extends JFrame implements Runnable, Mouse {
@@ -55,6 +61,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private Clip clip;
     private Game game;
     private double setFPS = 60;
+    private long lastFrameTime = System.nanoTime();
     PlantType activePlantingBrush = PlantType.None;
 
     // Set of ArrayList
@@ -73,11 +80,12 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     Image freezePeashooterImage;
     Image freezePeaImage;
 
-    // Load zombie images
-    Image normalZombieImage;
-    Image coneHeadZombieImage;
-    Image bucketHeadZombieImage;
-    Image balloonZombieImage;
+   // Load zombie images
+   Image normalZombieImage;
+   Image coneHeadZombieImage;
+   Image bucketHeadZombieImage;
+   Image balloonZombieImage;
+
 
     // Set of imageicon
     JButton SunflowerButtton = new JButton();
@@ -176,9 +184,19 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(originalImage.getWidth(null), originalImage.getHeight(null));
         setResizable(true);
-        // Load zombie images
+
+    // Load zombie images
+    normalZombieImage = new ImageIcon("Image/Zombie/normalzombie.gif").getImage();
+    coneHeadZombieImage = new ImageIcon("Image/Zombie/coneheadzombie.gif").getImage();
+    bucketHeadZombieImage = new ImageIcon("Image/Zombie/bucketheadzombie.gif").getImage();
+    balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif").getImage();
+
+    // Other code...
+
+
         label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, originalImage.getWidth(null), originalImage.getHeight(null));
+
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
         timerLabel.setFont(new Font("Arial", Font.BOLD, 12));
         timerLabel.setForeground(new Color(0x006600));
@@ -365,20 +383,21 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         sunProducer.start();
 
         // Zombie producer
-//
-//          zombieProducer = new Timer(7000, (ActionEvent e) -> {
-//          Random rnd = new Random();
-//          int l = rnd.nextInt(5);
-//          int t = rnd.nextInt(100);
-//          Zombie z = null;
-//          String[] allZombieTypes = {"NormalZombie", "ConeHeadZombie",
-//          "BucketHeadZombie", "BalloonZombie"};
-//          int randomZombieIndex = rnd.nextInt(allZombieTypes.length);
-//          String selectedZombieType = allZombieTypes[randomZombieIndex];
-//          z = Zombie.getZombie(selectedZombieType, GamePanel.this, l,he);
-//          Zombie_units.get(l).add(z);
-//          });
-//          zombieProducer.start();
+        
+          zombieProducer = new Timer(7000, (ActionEvent e) -> {
+          Random rnd = new Random();
+          int l = rnd.nextInt(5);
+          int t = rnd.nextInt(100);
+          Zombie z = null;
+          String[] allZombieTypes = {"NormalZombie", "ConeHeadZombie",
+          "BucketHeadZombie", "BalloonZombie"};
+          int randomZombieIndex = rnd.nextInt(allZombieTypes.length);
+          String selectedZombieType = allZombieTypes[randomZombieIndex];
+          z = Zombie.getZombie(selectedZombieType, GamePanel.this, l);
+          Zombie_units.get(l).add(z);
+          });
+         zombieProducer.start();
+         
 
         // Manage the zombie and plant in 5 line
 
@@ -396,29 +415,29 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         PlantInField.add(new ArrayList<>()); // line 4
         PlantInField.add(new ArrayList<>()); // line 5
 
-        /*
-         * colliders = new Collider[45];
-         * for (int i = 0; i < 45; i++) {
-         * Collider a = new Collider();
-         * a.setLocation(44 + (i % 9) * 100, 109 + (i / 9) * 120);
-         * a.setAction(new PlantActionListener((i % 9), (i / 9)));
-         * colliders[i] = a;
-         * label.add(a);
-         * }
-         */
+        
+        //   colliders = new Collider[45];
+        //   for (int i = 0; i < 45; i++) {
+        //   Collider a = new Collider();
+        //   a.setLocation(44 + (i % 9) * 100, 109 + (i / 9) * 120);
+        //   a.setAction(new PlantActionListener((i % 9), (i / 9)));
+        //   colliders[i] = a;
+        //   label.add(a);
+        //   }
+         
 
         // Draw all of components after a very short a mount of time or make it to move
-        /*
-         * redrawTimer = new Timer(25, (ActionEvent e) -> {
-         * repaint();
-         * });
-         * redrawTimer.start();
-         */
+        
+          redrawTimer = new Timer(100, (ActionEvent e) -> {
+          repaint();
+          });
+          redrawTimer.start();
+         
 
-        /*
-         * advancerTimer = new Timer(60, (ActionEvent e) -> advance());
-         * advancerTimer.start();
-         */
+        
+          advancerTimer = new Timer(150, (ActionEvent e) -> advance());
+          advancerTimer.start();
+         
 
     }
     private void togglePause() {
@@ -434,11 +453,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     private void advance() {
 
         for (int i = 0; i < 5; i++) {
-            /*
-             * for (Zombie z : laneZombies.get(i)) {
-             * z.advance();
-             * }
-             */
+            
+              for (Zombie z : Zombie_units.get(i)) {
+              z.advance();
+              }
+             
             for (int j = 0; j < PlantInField.get(i).size(); j++) {
                 Pea p = PlantInField.get(i).get(j);
                 p.advance();
@@ -450,6 +469,56 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         }
 
     }
+
+
+    @Override
+    public void paint(Graphics g) {
+    super.paint(g);
+
+    // Calculate the elapsed time since the last frame
+    long currentTime = System.nanoTime();
+    long elapsedTime = currentTime - lastFrameTime;
+    lastFrameTime = currentTime;
+    
+
+    // Draw Zombies
+    for (int i = 0; i < 5; i++) {
+        for (Zombie z : Zombie_units.get(i)) {
+            if (z.isMoving) {
+                if (z instanceof NormalZombie) {
+                    g.drawImage(normalZombieImage, z.posX, 160 + (i * 120), this);
+                } else if (z instanceof ConeHeadZombie) {
+                    g.drawImage(coneHeadZombieImage, z.posX, 160 + (i * 120), this);
+                } else if (z instanceof BucketHeadZombie) {
+                    g.drawImage(bucketHeadZombieImage, z.posX, 160 + (i * 120), this);
+                } else if (z instanceof BalloonZombie) {
+                    g.drawImage(balloonZombieImage, z.posX, 160 + (i * 120), this);
+                }
+
+                // Update the posX based on elapsed time and speed
+                double seconds = elapsedTime / 1e9; // Convert nanoseconds to seconds
+                z.posX -= z.speed * seconds*0.5 ; // Adjust posX based on speed and elapsed time
+               
+
+            }
+        }
+    }
+    
+
+}
+        
+        // Draw Peas
+        // for (int j = 0; j < PlantInField.get(i).size(); j++) {
+        //     Pea p = PlantInField.get(i).get(j);
+        //     if (p instanceof FreezePea) {
+        //         g.drawImage(freezePeaImage, p.posX, 130 + (i * 120), this);
+        //     } else {
+        //         g.drawImage(peaImage, p.posX, 130 + (i * 120), this);
+        //     }
+        // }
+    
+
+
 
     // Make the jpanel to remove the sun after being destroy
     public void removeSun(Sun sun) {
