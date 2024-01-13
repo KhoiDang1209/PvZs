@@ -189,16 +189,17 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
-        ImageIcon pauseicon = new ImageIcon("Image/background/pauseButton");
-        pauseButton = new JButton();
-        pauseButton.setIcon(pauseicon);
-        pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(), pauseicon.getIconHeight());
-        pauseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                togglePause();
-            }
-        });
+        //// ImageIcon pauseicon = new ImageIcon("Image/background/pause.png");
+        //// pauseButton = new JButton();
+        //// pauseButton.setIcon(pauseicon);
+        //// pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(),
+        //// pauseicon.getIconHeight());
+        //// pauseButton.addActionListener(new ActionListener() {
+        //// @Override
+        //// public void actionPerformed(ActionEvent e) {
+        ////
+        //// }
+        // });
         add(pauseButton);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
