@@ -23,6 +23,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import GUI.GameEnd.GameOverNotification;
+import GUI.GameEnd.GameWinnerNotification;
 import GameElement.Collider;
 import GameElement.LawnMower;
 import GameElement.Position;
@@ -61,7 +63,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // Set of ArrayList
     // Use the zombie_units array
     // ArrayList<ArrayList<Zombie>> laneZombies;
-
+    private int ZombDieToWin=50;
     public ArrayList<Sun> activeSuns;
     public ArrayList<LawnMower> lawnMowers = new ArrayList<>();
     // Set of Jlabel
@@ -162,10 +164,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
     private volatile boolean isRunning = true;
 
-    public GamePanel(Game game) {
+    public GamePanel(Game game,int ZombDieToWin) {
         innitializeGamePanel();
         GamePanelMusic();
         this.start();
+        this.ZombDieToWin=ZombDieToWin;
     }
 
     private int PlacedPeashoter;
@@ -454,11 +457,25 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 lastTimeCheck = System.currentTimeMillis();
             }
             this.updateZombieDielabel(Pea.zombieDie);
+            if(Pea.zombieDie==ZombDieToWin)
+                GameWinnner(this);
         }
     }
     public void updateZombieDielabel(int x)
     {
          zombieDieLabel.setText("ZOMBIE DIE: "+x);
+    }
+    public void GameWinnner(GamePanel gamePanel)
+    {
+        dispose();
+        MusicStop();
+        GameWinnerNotification gameWinnerNotification=new GameWinnerNotification();
+    }
+    public void GameOver(GamePanel gamePanel)
+    {
+        dispose();
+        MusicStop();
+        GameOverNotification gameOverNotification=new GameOverNotification();
     }
     void initializeInput() {
         myMouseListener = new MyMouseListener(this);

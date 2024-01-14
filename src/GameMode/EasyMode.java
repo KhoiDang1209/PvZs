@@ -5,7 +5,7 @@ import Game.GamePanel;
 
 public class EasyMode {
     private Game game;
-
+    private int ZombDieToWin=50;
     public EasyMode(Game game) {
         this.game = game;
         displayEasyMode();
@@ -20,7 +20,7 @@ public class EasyMode {
          * FreezePeashooter
          * }
          */
-        GamePanel gamePanel = new GamePanel(game);
+        GamePanel gamePanel = new GamePanel(game,ZombDieToWin);
         gamePanel.setVisible(true);
     }
 }

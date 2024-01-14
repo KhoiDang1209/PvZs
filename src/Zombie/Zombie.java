@@ -70,8 +70,7 @@ public class Zombie extends JLabel {
             }
             if (posX < 315) {
                 isMoving = false;
-                gp.dispose();
-                GameOverNotification gon = new GameOverNotification();
+                gp.GameOver(gp);
             }
         }
     }
