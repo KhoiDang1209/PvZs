@@ -43,7 +43,7 @@ public class GameWinnerNotification extends JFrame {
         add(label);
         JButton BTMButton=createStyledButton("Back to menu",GWNButtonFont,new Color(0x46EF4B),new Color(0xEFEF5B));
         BTMButton.setBounds(50,350,225,70);
-        add(BTMButton);
+        label.add(BTMButton);
         BTMButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +57,7 @@ public class GameWinnerNotification extends JFrame {
         });
         JButton ExitGameButton=createStyledButton("Exit game",GWNButtonFont,new Color(0x46EF4B),new Color(0xEFEF5B));
         ExitGameButton.setBounds(300,350,225,70);
-        add(ExitGameButton);
+        label.add(ExitGameButton);
         ExitGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
