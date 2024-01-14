@@ -456,8 +456,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 lastTimeCheck = System.currentTimeMillis();
             }
             this.updateZombieDielabel(Pea.zombieDie);
-            if (Pea.zombieDie == ZombDieToWin)
+            if (Pea.zombieDie == ZombDieToWin) {
                 GameWinnner(this);
+            }
         }
     }
 
