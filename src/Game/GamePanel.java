@@ -65,7 +65,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // ArrayList<ArrayList<Zombie>> laneZombies;
 
     public ArrayList<Sun> activeSuns;
-    public ArrayList<LawnMower> lawnMowers=new ArrayList<>();
+    public ArrayList<LawnMower> lawnMowers = new ArrayList<>();
     // Set of Jlabel
     private JLabel timerLabel;
     JLabel NumOfSunBoard = new JLabel();
@@ -201,21 +201,21 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             }
         });
         add(pauseButton);
-        LawnMower lawnMower1=new LawnMower(this,200,125);
+        LawnMower lawnMower1 = new LawnMower(this, 200, 125);
         label.add(lawnMower1);
-        lawnMower1.setBounds(200,125,lawnMower1.getWidth(),lawnMower1.getHeight());
-        LawnMower lawnMower2=new LawnMower(this,200,255);
+        lawnMower1.setBounds(200, 125, lawnMower1.getWidth(), lawnMower1.getHeight());
+        LawnMower lawnMower2 = new LawnMower(this, 200, 255);
         label.add(lawnMower2);
-        lawnMower2.setBounds(200,255,lawnMower2.getWidth(),lawnMower2.getHeight());
-        LawnMower lawnMower3=new LawnMower(this,200,385);
+        lawnMower2.setBounds(200, 255, lawnMower2.getWidth(), lawnMower2.getHeight());
+        LawnMower lawnMower3 = new LawnMower(this, 200, 385);
         label.add(lawnMower3);
-        lawnMower3.setBounds(200,385,lawnMower3.getWidth(),lawnMower3.getHeight());
-        LawnMower lawnMower4=new LawnMower(this,200,505);
+        lawnMower3.setBounds(200, 385, lawnMower3.getWidth(), lawnMower3.getHeight());
+        LawnMower lawnMower4 = new LawnMower(this, 200, 505);
         label.add(lawnMower4);
-        lawnMower4.setBounds(200,505,lawnMower4.getWidth(),lawnMower4.getHeight());
-        LawnMower lawnMower5=new LawnMower(this,200,630);
+        lawnMower4.setBounds(200, 505, lawnMower4.getWidth(), lawnMower4.getHeight());
+        LawnMower lawnMower5 = new LawnMower(this, 200, 630);
         label.add(lawnMower5);
-        lawnMower5.setBounds(200,630,lawnMower5.getWidth(),lawnMower5.getHeight());
+        lawnMower5.setBounds(200, 630, lawnMower5.getWidth(), lawnMower5.getHeight());
         lawnMowers.add(lawnMower1);
         lawnMowers.add(lawnMower2);
         lawnMowers.add(lawnMower3);
@@ -354,9 +354,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         // Zombie producer
 
-        zombieProducer = new Timer(10000, (ActionEvent e) -> {
+        zombieProducer = new Timer(5000, (ActionEvent e) -> {
             Random rnd = new Random();
-            int l = rnd.nextInt(5);
+            int l = 4; // rnd.nextInt(5);
             int y = laneSpawn(l);
             int x = 900;
             Zombie z = null;
@@ -391,7 +391,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             label.add(a);
         }
 
-        redrawTimer = new Timer(1000, (ActionEvent e) -> {
+        redrawTimer = new Timer(60, (ActionEvent e) -> {
             SwingUtilities.invokeLater(() -> repaint());
         });
         redrawTimer.start();
@@ -618,7 +618,12 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 Pea p = gm.PeaInField.get(i).get(j);
                 if (p instanceof Pea) {
                     // Draw ImageIcon as Image
-                    PeaImage.paintIcon(this, graphic, p.posX, 130 + (i * 120));
+                    if (i == 2 || i == 3 || i == 4) {
+                        PeaImage.paintIcon(this, graphic, p.posX + 40, 102 + (i * 137));
+                    } else {
+                        PeaImage.paintIcon(this, graphic, p.posX + 40, 130 + (i * 140));
+                    }
+
                 }
             }
         }
