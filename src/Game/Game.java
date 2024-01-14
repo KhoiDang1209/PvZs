@@ -8,7 +8,7 @@ import Plant.Pea;
 import Plant.Snowpea;
 import Zombie.Zombie;
 
-public class Game extends JFrame {
+public class Game {
     public ArrayList<ArrayList<Zombie>> Zombie_units;
     public ArrayList<ArrayList<Pea>> PeaInField;
     public ArrayList<ArrayList<Snowpea>> SnowPeaInField;
