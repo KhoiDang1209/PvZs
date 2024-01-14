@@ -43,7 +43,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         None,
         Sunflower,
         Peashooter,
-    }
+     Wallnut,
+    SnowPeashooter,}
 
     public static final String Zombie_units = null;
 
@@ -89,6 +90,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon SnowPeashooterCard = new ImageIcon("Image/Plants/Cards/SnowPeaSeedCard.png");
     JButton WallnutButton = new JButton();
     ImageIcon WallnutCard = new ImageIcon("Image/Plants/Cards/Wall-nutCard.png");
+    ImageIcon Wallnutgif = new ImageIcon("Image/Plants/Cards/wallnut.gif");
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
     ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
     ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
@@ -270,7 +272,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 Position position = new Position(x, y); // Assuming y is for Lane and x is for Box
                 int lane = position.Lane(y);
                 int box = position.Box(x);
-                System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
+                System.out.println("Wallnut Released at Lane: " + lane + ", Box: " + box);
             }
         });
         label.add(SnowPeashooterButton);
@@ -561,7 +563,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                     setNumOfSun(getNumOfSun() - 100);
                 }
             }
-
+            else if (activePlantingBrush == PlantType.Wallnut) {
+                if (getNumOfSun() >= 50) {
+                    // Set place that bullet fire
+                    colliders[x + y * 9].setPlant(new WallNut(GamePanel.this, x, y));
+                    // new Peashooter(GamePanel.this, x, y) position where the pea bullet fire
+                    setNumOfSun(getNumOfSun() - 50);
+                }
+            }
             activePlantingBrush = PlantType.None;
         }
     }
@@ -596,7 +605,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         // Bullet generation for normal Pea
         drawPeaBullets(graphic);
     }
-    }
+    
 
     public void drawPeaBullets(Graphics graphic) {
         for (int i = 0; i < 5; i++) {
