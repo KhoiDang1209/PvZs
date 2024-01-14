@@ -4,7 +4,6 @@ import java.awt.Image;
 
 import javax.swing.JLabel;
 
-import GUI.GameEnd.GameOverNotification;
 import Game.GamePanel;
 import GameElement.Collider;
 
@@ -87,7 +86,7 @@ public class Zombie extends JLabel {
 
     // How to slow a Zombie
     public void slow() {
-        slowInt = 20;
+        slowInt = 25;
     }
 
     public static Zombie getZombie(String type, GamePanel parent, int lane) {
