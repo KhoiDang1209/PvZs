@@ -9,7 +9,7 @@ import Game.GamePanel;
 
 public class Peashooter extends Plant {
 
-    private int blood = 300;
+    private int blood = 350;
 
     public Timer shootTimer;
 
