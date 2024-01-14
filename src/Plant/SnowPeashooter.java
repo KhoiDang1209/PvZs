@@ -1,4 +1,3 @@
-//
 package Plant;
 
 import java.awt.event.ActionEvent;
