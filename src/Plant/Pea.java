@@ -27,7 +27,7 @@ public class Pea {
             Zombie z = gp.gm.Zombie_units.get(myLane).get(i);
             Rectangle zRect = new Rectangle(z.posX, 80 + myLane * 160, z.getWidth(), z.getHeight());
             if (pRect.intersects(zRect)) {
-                z.health -= 180;
+                z.health -= 250;
                 boolean exit = false;
                 if (z.health < 0) {
                     zombieDie++;

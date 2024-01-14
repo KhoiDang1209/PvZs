@@ -1,6 +1,6 @@
 package Game;
 
-import static GUI.GameSFX.Button.loadCustomFont;
+import static GUI.GameSFX.Button.*;
 import static GUI.GameSFX.Music.*;
 
 import java.awt.Color;
@@ -66,7 +66,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // Set of ArrayList
     // Use the zombie_units array
     // ArrayList<ArrayList<Zombie>> laneZombies;
-    private int ZombDieToWin=50;
+    private int ZombDieToWin = 50;
     public ArrayList<Sun> activeSuns;
     public ArrayList<LawnMower> lawnMowers = new ArrayList<>();
     // Set of Jlabel
@@ -106,7 +106,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
     ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
     public JLabel label = new JLabel();
-    public Font ZombieDieFont = loadCustomFont("Fonts/House_Of_Terror.ttf",16);
+    public Font ZombieDieFont = loadCustomFont("Fonts/House_Of_Terror.ttf", 16);
 
     // Set of Timer
     Timer redrawTimer;
@@ -169,11 +169,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
     private volatile boolean isRunning = true;
 
-    public GamePanel(Game game,int ZombDieToWin) {
+    public GamePanel(Game game, int ZombDieToWin) {
         innitializeGamePanel();
         GamePanelMusic();
         this.start();
-        this.ZombDieToWin=ZombDieToWin;
+        this.ZombDieToWin = ZombDieToWin;
     }
 
     private int PlacedPeashoter;
@@ -198,7 +198,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
-        zombieDieLabel=new JLabel("ZOMBIE DIE: 0");
+        zombieDieLabel = new JLabel("ZOMBIE DIE: 0");
         zombieDieLabel.setFont(ZombieDieFont);
         zombieDieLabel.setForeground(Color.red);
         zombieDieLabel.setBounds(1200, 20, 300, 30);
@@ -290,7 +290,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         sunshowLabel.setBounds(100, 0, 470, 100);
         label.add(sunshowLabel);
         // Place to set initial number of sun
-        int InitialnumOfSun = 1500;
+        int InitialnumOfSun = 100;
         setNumOfSun(InitialnumOfSun);
         NumOfSunBoard.setFont(new Font("Arial", Font.BOLD, 20));
         NumOfSunBoard.setForeground(new Color(0, 0, 0));
@@ -469,27 +469,28 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 lastTimeCheck = System.currentTimeMillis();
             }
             this.updateZombieDielabel(Pea.zombieDie);
-            if(Pea.zombieDie==ZombDieToWin) {
+            if (Pea.zombieDie == ZombDieToWin) {
                 GameWinnner(this);
             }
         }
     }
-    public void updateZombieDielabel(int x)
-    {
-         zombieDieLabel.setText("ZOMBIE DIE: "+x);
+
+    public void updateZombieDielabel(int x) {
+        zombieDieLabel.setText("ZOMBIE DIE: " + x);
     }
-    public void GameWinnner(GamePanel gamePanel)
-    {
+
+    public void GameWinnner(GamePanel gamePanel) {
         dispose();
         MusicStop();
-        GameWinnerNotification gameWinnerNotification=new GameWinnerNotification();
+        GameWinnerNotification gameWinnerNotification = new GameWinnerNotification();
     }
-    public void GameOver(GamePanel gamePanel)
-    {
+
+    public void GameOver(GamePanel gamePanel) {
         dispose();
         MusicStop();
-        GameOverNotification gameOverNotification=new GameOverNotification();
+        GameOverNotification gameOverNotification = new GameOverNotification();
     }
+
     void initializeInput() {
         myMouseListener = new MyMouseListener(this);
         this.addMouseListener(myMouseListener);
