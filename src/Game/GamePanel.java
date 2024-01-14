@@ -28,6 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import GameElement.Collider;
+import GameElement.LawnMower;
 import GameElement.Position;
 import InputForGame.Mouse;
 import InputForGame.MyMouseListener;
@@ -65,7 +66,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // ArrayList<ArrayList<Zombie>> laneZombies;
 
     public ArrayList<Sun> activeSuns;
-
+    public ArrayList<LawnMower> lawnMowers=new ArrayList<>();
     // Set of Jlabel
     private JLabel timerLabel;
     JLabel NumOfSunBoard = new JLabel();
@@ -201,6 +202,26 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             }
         });
         add(pauseButton);
+        LawnMower lawnMower1=new LawnMower(this,200,125);
+        label.add(lawnMower1);
+        lawnMower1.setBounds(200,125,lawnMower1.getWidth(),lawnMower1.getHeight());
+        LawnMower lawnMower2=new LawnMower(this,200,255);
+        label.add(lawnMower2);
+        lawnMower2.setBounds(200,255,lawnMower2.getWidth(),lawnMower2.getHeight());
+        LawnMower lawnMower3=new LawnMower(this,200,385);
+        label.add(lawnMower3);
+        lawnMower3.setBounds(200,385,lawnMower3.getWidth(),lawnMower3.getHeight());
+        LawnMower lawnMower4=new LawnMower(this,200,505);
+        label.add(lawnMower4);
+        lawnMower4.setBounds(200,505,lawnMower4.getWidth(),lawnMower4.getHeight());
+        LawnMower lawnMower5=new LawnMower(this,200,630);
+        label.add(lawnMower5);
+        lawnMower5.setBounds(200,630,lawnMower5.getWidth(),lawnMower5.getHeight());
+        lawnMowers.add(lawnMower1);
+        lawnMowers.add(lawnMower2);
+        lawnMowers.add(lawnMower3);
+        lawnMowers.add(lawnMower4);
+        lawnMowers.add(lawnMower5);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
         SunflowerButtton.setBounds(50, 30, SunflowerCard.getIconWidth(), SunflowerCard.getIconHeight());
