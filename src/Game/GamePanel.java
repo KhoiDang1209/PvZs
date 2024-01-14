@@ -34,7 +34,7 @@ import Plant.Plant;
 import Plant.SnowPeashooter;
 import Plant.Snowpea;
 import Plant.Sunflower;
-import Plant.WallNut;
+import Plant.wallNut;
 import Sun.Sun;
 import Zombie.Zombie;
 
@@ -567,7 +567,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             else if (activePlantingBrush == PlantType.Wallnut) {
                 if (getNumOfSun() >= 50) {
                     // Set place that bullet fire
-                    colliders[x + y * 9].setPlant(new WallNut(GamePanel.this, x, y));
+                    colliders[x + y * 9].setPlant(new wallNut(GamePanel.this, x, y));
                     // new Peashooter(GamePanel.this, x, y) position where the pea bullet fire
                     setNumOfSun(getNumOfSun() - 50);
                 }
