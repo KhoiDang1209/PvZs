@@ -3,19 +3,15 @@ package Game;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.Timer;
 
-import GUI.GameMenu.Menu;
-import GUI.GameMenu.MenuMode;
-import GUI.GameMenu.PlantsMenu;
-import GUI.GameMenu.ZombiesMenu;
 import Plant.Pea;
+import Plant.Snowpea;
 import Zombie.Zombie;
 
 public class Game extends JFrame {
     public ArrayList<ArrayList<Zombie>> Zombie_units;
     public ArrayList<ArrayList<Pea>> PeaInField;
+    public ArrayList<ArrayList<Snowpea>> SnowPeaInField;
     private Thread gameThread;
     private GamePanel gamePanel;
 
@@ -39,6 +35,13 @@ public class Game extends JFrame {
         PeaInField.add(new ArrayList<>()); // line 3
         PeaInField.add(new ArrayList<>()); // line 4
         PeaInField.add(new ArrayList<>()); // line 5
+
+        SnowPeaInField = new ArrayList<>();
+        SnowPeaInField.add(new ArrayList<>()); // line 1
+        SnowPeaInField.add(new ArrayList<>()); // line 2
+        SnowPeaInField.add(new ArrayList<>()); // line 3
+        SnowPeaInField.add(new ArrayList<>()); // line 4
+        SnowPeaInField.add(new ArrayList<>()); // line 5
     }
 
     public void updateGame() {
@@ -50,6 +53,7 @@ public class Game extends JFrame {
          * }
          */
     }
+
     public void startGameThread() {
         gameThread = new Thread(() -> {
             while (true) {

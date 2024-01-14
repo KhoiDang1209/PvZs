@@ -8,13 +8,11 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.sound.sampled.Clip;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,6 +28,8 @@ import InputForGame.MyMouseListener;
 import Plant.Pea;
 import Plant.Peashooter;
 import Plant.Plant;
+import Plant.SnowPeashooter;
+import Plant.Snowpea;
 import Plant.Sunflower;
 import Sun.Sun;
 import Zombie.Zombie;
@@ -39,10 +39,10 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         None,
         Sunflower,
         Peashooter,
+        SnowPeashooter
     }
 
     public Game gm = new Game(this);
-    private MouseListener peashooterButtonMouseListener;
     private JButton pauseButton;
 
     private volatile boolean isPaused = false;
@@ -85,8 +85,10 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon WallnutCard = new ImageIcon("Image/Plants/Cards/Wall-nutCard.png");
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
     ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
+    ImageIcon SnowPeashootergif = new ImageIcon("Image/Plants/Fields/Snow-Pea.gif");
     ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
     ImageIcon PeaImage = new ImageIcon("Image/Plants/Fields/ProjectilePea.png");
+    ImageIcon SnowPeaImage = new ImageIcon("Image/Plants/Fields/ProjectileSnowPea.png");
     Image originalImage = originalImageIcon.getImage();
 
     // Scale factor <1 = zoom out, >1 = zoom in
@@ -243,19 +245,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         SnowPeashooterButton.setFocusable(true);
         SnowPeashooterButton.setHorizontalAlignment(JButton.CENTER);
         SnowPeashooterButton.setVerticalAlignment(JButton.CENTER);
-        SnowPeashooterButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                int x = evt.getX();
-                int y = evt.getY();
-                Position position = new Position(x, y); // Assuming y is for Lane and x is for Box
-                int lane = position.Lane(y);
-                int box = position.Box(x);
-                System.out.println("Peashooter Released at Lane: " + lane + ", Box: " + box);
-            }
+        SnowPeashooterButton.addActionListener((ActionEvent e) -> {
+            activePlantingBrush = PlantType.SnowPeashooter;
         });
         WallnutButton.setIcon(WallnutCard);
         WallnutButton.setBounds(50, 585, WallnutCard.getIconWidth(), WallnutCard.getIconHeight());
-        WallnutButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
         WallnutButton.setFocusable(true);
         WallnutButton.setHorizontalAlignment(JButton.CENTER);
         WallnutButton.setVerticalAlignment(JButton.CENTER);
@@ -284,7 +278,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         sunshowLabel.setBounds(100, 0, 470, 100);
         label.add(sunshowLabel);
         // Place to set initial number of sun
-        int InitialnumOfSun = 100;
+        int InitialnumOfSun = 1500;
         setNumOfSun(InitialnumOfSun);
         NumOfSunBoard.setFont(new Font("Arial", Font.BOLD, 20));
         NumOfSunBoard.setForeground(new Color(0, 0, 0));
@@ -383,6 +377,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             for (int j = 0; j < gm.PeaInField.get(i).size(); j++) {
                 Pea p = gm.PeaInField.get(i).get(j);
                 p.advance();
+            }
+
+            for (int j = 0; j < gm.SnowPeaInField.get(i).size(); j++) {
+                Snowpea Sp = gm.SnowPeaInField.get(i).get(j);
+                Sp.advance();
             }
         }
 
@@ -544,6 +543,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 }
             }
 
+            else if (activePlantingBrush == PlantType.SnowPeashooter) {
+                if (getNumOfSun() >= 150) {
+                    // Set place that bullet fire
+                    colliders[x + y * 9].setPlant(new SnowPeashooter(GamePanel.this, x, y));
+                    // new Peashooter(GamePanel.this, x, y) position where the pea bullet fire
+                    setNumOfSun(getNumOfSun() - 150);
+                }
+            }
             activePlantingBrush = PlantType.None;
         }
     }
@@ -556,7 +563,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     public void paint(Graphics graphic) {
         super.paint(graphic);
         // Plant Generation
-
         for (int i = 0; i < 45; i++) {
             int Box = i % 9;
             int Land = i / 9;
@@ -572,6 +578,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 } else if (WhichPlant instanceof Sunflower) {
                     // Draw ImageIcon as Image
                     Sunflowergif.paintIcon(this, graphic, DrawBox, DrawLane);
+                } else if (WhichPlant instanceof SnowPeashooter) {
+                    // Draw ImageIcon as Image
+                    SnowPeashootergif.paintIcon(this, graphic, DrawBox, DrawLane);
                 }
             }
 
@@ -584,12 +593,31 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < gm.PeaInField.get(i).size(); j++) {
                 Pea p = gm.PeaInField.get(i).get(j);
+
+                // Check if the object is an instance of Pea
                 if (p instanceof Pea) {
-                    // Draw ImageIcon as Image
+                    // Draw ImageIcon as Image for Pea
                     if (i == 2 || i == 3 || i == 4) {
                         PeaImage.paintIcon(this, graphic, p.posX + 40, 107 + (i * 137));
                     } else {
                         PeaImage.paintIcon(this, graphic, p.posX + 40, 130 + (i * 140));
+                    }
+                }
+            }
+        }
+
+        // Now, handle Snowpea separately (outside the inner loop)
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < gm.SnowPeaInField.get(i).size(); j++) {
+                Snowpea Sp = gm.SnowPeaInField.get(i).get(j);
+
+                // Check if the object is an instance of Snowpea
+                if (Sp instanceof Snowpea) {
+                    // Draw ImageIcon as Image for Snowpea
+                    if (i == 2 || i == 3 || i == 4) {
+                        SnowPeaImage.paintIcon(this, graphic, Sp.posX + 40, 107 + (i * 137)); // Use Sp instead of p
+                    } else {
+                        SnowPeaImage.paintIcon(this, graphic, Sp.posX + 40, 130 + (i * 140)); // Use Sp instead of p
                     }
                 }
             }

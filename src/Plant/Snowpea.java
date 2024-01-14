@@ -1,40 +1,51 @@
 package Plant;
 
+import java.awt.Rectangle;
+
+import javax.swing.ImageIcon;
+
 import Game.GamePanel;
+import Zombie.Zombie;
 
-import javax.swing.*;
+public class Snowpea {
+    public int posX;
+    protected GamePanel gp;
+    public int myLane;
+    ImageIcon SnowPeabullet = new ImageIcon("Image/Plants/Fields/ProjectileSnowPea.png");
 
-public class SnowPeaShooter extends Plant{
-    public Timer shootTimer;
-    private int blood1= 1000;
-
-    public SnowPeaShooter(GamePanel gp, int x, int y) {
-        super(gp, x, y);
+    public Snowpea(GamePanel parent, int lane, int startX) {
+        this.gp = parent;
+        this.myLane = lane;
+        posX = startX;
     }
 
-
-    @Override
-    public void stop(){
-        shootTimer.stop();
-    }
-
-    public void receivedamage(int calculatedDamage1) {
-        if (calculatedDamage1 > 0) {
-            int newHealth = this.blood1 - calculatedDamage1;
-
-            if (newHealth <= 0) {
-                newHealth = 0; // Ensure health doesn't go below zero
-                System.out.println("Peashooter has been defeated!");
+    public void advance() {
+        Rectangle SpRect = new Rectangle(posX, 80 + myLane * 160, SnowPeabullet.getIconWidth(),
+                SnowPeabullet.getIconHeight());
+        for (int i = 0; i < gp.gm.Zombie_units.get(myLane).size(); i++) {
+            Zombie z = gp.gm.Zombie_units.get(myLane).get(i);
+            Rectangle zRect = new Rectangle(z.posX, 80 + myLane * 160, z.getWidth(), z.getHeight());
+            if (SpRect.intersects(zRect)) {
+                // Condition to slow the zombie
+                z.slow();
+                z.health -= 50;
+                boolean exit = false;
+                if (z.health < 0) {
+                    System.out.println("ZOMBIE DIE");
+                    // This to do
+                    gp.gm.Zombie_units.get(myLane).remove(i);
+                    gp.removeDieZombie(z);
+                    exit = true;
+                }
+                gp.gm.SnowPeaInField.get(myLane).remove(this);
+                if (exit)
+                    break;
             }
-
-            System.out.println("Peashooter received damage: " + calculatedDamage1);
-            System.out.println("Peashooter remaining health: " + newHealth);
-
-            this.blood1 = newHealth; // Update the Peashooter's health
-        } else {
-            System.out.println("Invalid damage value. Damage must be greater than 0.");
         }
-
+        if (posX > 1300) {
+            gp.gm.SnowPeaInField.get(myLane).remove(this);
+        }
+        posX += 10;
     }
 
 }

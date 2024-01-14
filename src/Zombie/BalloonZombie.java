@@ -10,7 +10,7 @@ public class BalloonZombie extends Zombie {
     public BalloonZombie(GamePanel parent, int lane) {
         super(parent, lane);
         health = 800;
-        speed = 1;
+        speed = 2;
         balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif");
         setIcon(balloonZombieImage);
         setSize(balloonZombieImage.getIconWidth(), balloonZombieImage.getIconHeight());

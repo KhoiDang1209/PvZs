@@ -11,7 +11,7 @@ import GameElement.Collider;
 public class Zombie extends JLabel {
     // the attribute of zombie
     public int health = 1000;
-    public int speed = 0;
+    public int speed = 1;
     Image zombieimage;
     private GamePanel gp;
 
@@ -54,13 +54,15 @@ public class Zombie extends JLabel {
                 }
             }
             if (!isCollides) {
+                // The way to slow the zombie
+                speed = 1;
                 if (slowInt > 0) {
                     if (slowInt % 2 == 0) {
-                        posX--;
+                        speed = 0;
                     }
                     slowInt--;
                 } else {
-                    posX -= 1;
+                    posX -= speed;
                 }
             } else {
                 collided.assignedPlant.health -= 10;
@@ -84,8 +86,9 @@ public class Zombie extends JLabel {
 
     int slowInt = 0;
 
+    // How to slow a Zombie
     public void slow() {
-        slowInt = 1000;
+        slowInt = 20;
     }
 
     public static Zombie getZombie(String type, GamePanel parent, int lane) {
