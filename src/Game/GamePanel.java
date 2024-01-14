@@ -288,7 +288,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         sunshowLabel.setBounds(100, 0, 470, 100);
         label.add(sunshowLabel);
         // Place to set initial number of sun
-        int InitialnumOfSun = 1500;
+        int InitialnumOfSun = 150;
         setNumOfSun(InitialnumOfSun);
         NumOfSunBoard.setFont(new Font("Arial", Font.BOLD, 20));
         NumOfSunBoard.setForeground(new Color(0, 0, 0));
@@ -576,7 +576,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             } else if (activePlantingBrush == PlantType.Wallnut) {
                 if (getNumOfSun() >= 50) {
                     // Set place that bullet fire
-                    colliders[x + y * 9].setPlant(new SnowPeashooter(GamePanel.this, x, y));
+                    colliders[x + y * 9].setPlant(new wallNut(GamePanel.this, x, y));
                     // new Peashooter(GamePanel.this, x, y) position where the pea bullet fire
                     setNumOfSun(getNumOfSun() - 50);
                 }
