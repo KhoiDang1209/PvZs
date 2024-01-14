@@ -39,10 +39,10 @@ public class Pea {
                     break;
             }
         }
-        if (posX > 2000) {
+        if (posX > 1300) {
             gp.gm.PeaInField.get(myLane).remove(this);
         }
-        posX += 8;
+        posX += 15;
     }
 
 }
