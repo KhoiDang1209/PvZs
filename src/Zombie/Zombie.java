@@ -6,6 +6,10 @@ import javax.swing.JLabel;
 
 import Game.GamePanel;
 import GameElement.Collider;
+import Plant.Peashooter;
+import Plant.SnowPeashooter;
+import Plant.Sunflower;
+import Plant.wallNut;
 
 public class Zombie extends JLabel {
     // the attribute of zombie
@@ -64,9 +68,28 @@ public class Zombie extends JLabel {
                     posX -= speed;
                 }
             } else {
-                collided.assignedPlant.health -= 10;
-                if (collided.assignedPlant.health < 0) {
-                    collided.removePlant();
+                if (collided.assignedPlant instanceof Peashooter || collided.assignedPlant instanceof SnowPeashooter
+                        || collided.assignedPlant instanceof Sunflower) {
+                    int plantHealth = collided.assignedPlant.getNormalHealth();
+                    plantHealth -= 10;
+                    // Update the health property of the assigned plant
+                    collided.assignedPlant.setNormalHealth(plantHealth);
+                    if (plantHealth <= 0) {
+                        collided.removePlant();
+                    }
+                }
+
+                // the way for the zombir to stop as it stop then back then get speed =1
+                if (collided.assignedPlant instanceof wallNut) {
+                    int plantHealth = collided.assignedPlant.getTankerHealth();
+                    plantHealth -= 100;
+                    // Update the health property of the assigned plant
+                    collided.assignedPlant.setTankerHealth(plantHealth);
+                    speed = 0;
+                    speed = -1;
+                    if (plantHealth <= 0) {
+                        collided.removePlant();
+                    }
                 }
             }
             if (posX < 315) {

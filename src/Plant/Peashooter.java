@@ -9,8 +9,6 @@ import Game.GamePanel;
 
 public class Peashooter extends Plant {
 
-    private int blood = 350;
-
     public Timer shootTimer;
 
     public Peashooter(GamePanel parent, int x_box, int y_lineland) {
@@ -36,7 +34,7 @@ public class Peashooter extends Plant {
 
     public void receivedamage(int calculatedDamage) {
         if (calculatedDamage > 0) {
-            int newHealth = this.blood - calculatedDamage;
+            int newHealth = this.health - calculatedDamage;
 
             if (newHealth <= 0) {
                 newHealth = 0; // Ensure health doesn't go below zero
@@ -46,7 +44,7 @@ public class Peashooter extends Plant {
             System.out.println("Peashooter received damage: " + calculatedDamage);
             System.out.println("Peashooter remaining health: " + newHealth);
 
-            this.blood = newHealth; // Update the Peashooter's health
+            this.health = newHealth; // Update the Peashooter's health
         } else {
             System.out.println("Invalid damage value. Damage must be greater than 0.");
         }

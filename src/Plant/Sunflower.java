@@ -39,4 +39,5 @@ public class Sunflower extends Plant {
             System.out.println("Invalid damage value. Damage must be greater than 0.");
         }
     }
+
 }

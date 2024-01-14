@@ -3,7 +3,7 @@ package Plant;
 import Game.GamePanel;
 
 public class wallNut extends Plant {
-    private int WallNuthealth = 3500;
+    private int WallNuthealth = 10000;
 
     public wallNut(GamePanel gp, int x, int y) {
         super(gp, x, y);
