@@ -8,7 +8,7 @@ public class ConeHeadZombie extends Zombie {
     ImageIcon coneHeadZombieImage;
     public ConeHeadZombie(GamePanel parent,int lane){
         super(parent,lane);
-        health = 1800;
+        health = 1300;
         coneHeadZombieImage = new ImageIcon("Image/Zombie/coneheadzombie.gif");
         setIcon(coneHeadZombieImage);
         setSize(coneHeadZombieImage.getIconWidth(),coneHeadZombieImage.getIconHeight());

@@ -1,5 +1,6 @@
 package Game;
 
+import static GUI.GameSFX.Button.loadCustomFont;
 import static GUI.GameSFX.Music.*;
 
 import java.awt.Color;
@@ -65,6 +66,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     public ArrayList<LawnMower> lawnMowers = new ArrayList<>();
     // Set of Jlabel
     private JLabel timerLabel;
+    private JLabel zombieDieLabel;
     JLabel NumOfSunBoard = new JLabel();
     JLabel sunScoreboard;
 
@@ -97,6 +99,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
     ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
     public JLabel label = new JLabel();
+    public Font ZombieDieFont = loadCustomFont("Fonts/House_Of_Terror.ttf",16);
 
     // Set of Timer
     Timer redrawTimer;
@@ -182,23 +185,16 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         label.setBounds(0, 0, originalImage.getWidth(null), originalImage.getHeight(null));
 
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 12));
+        timerLabel.setFont(ZombieDieFont);
         timerLabel.setForeground(new Color(0x006600));
         timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
-        ImageIcon pauseicon = new ImageIcon("Image/background/pause.png");
-        pauseButton = new JButton();
-        pauseButton.setIcon(pauseicon);
-        pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(),
-                pauseicon.getIconHeight());
-        pauseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        add(pauseButton);
+        zombieDieLabel=new JLabel("ZOMBIE DIE: 0");
+        zombieDieLabel.setFont(ZombieDieFont);
+        zombieDieLabel.setForeground(Color.red);
+        zombieDieLabel.setBounds(1200, 20, 300, 30);
+        label.add(zombieDieLabel);
         LawnMower lawnMower1 = new LawnMower(this, 200, 125);
         label.add(lawnMower1);
         lawnMower1.setBounds(200, 125, lawnMower1.getWidth(), lawnMower1.getHeight());
@@ -293,7 +289,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         activeSuns = new ArrayList<>();
         // 6 seconds 1 sun
-        Timer sunProducer = new Timer(7500, (ActionEvent e) -> {
+        Timer sunProducer = new Timer(6000, (ActionEvent e) -> {
             System.out.println("Add sun");
             Random rnd = new Random();
             // Game Field from 313 = minX to maxX = 1270 or 1273, yMin = 85 to 650= maxY
@@ -441,7 +437,6 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             if (now - lastTimeFPS >= timePerFrame) {
                 frame++;
                 lastTimeFPS = System.nanoTime();
-                // SwingUtilities.invokeLater(() -> repaint());
             }
             // Update
             if (now - lastTimeUPS >= timePerUpdate) {
@@ -458,17 +453,13 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 frame = 0;
                 lastTimeCheck = System.currentTimeMillis();
             }
-            /*
-             * if (now - lastTimeFPS >= timePerFrame) {
-             * frame++;
-             * lastTimeFPS = System.nanoTime();
-             * SwingUtilities.invokeLater(() -> repaint());
-             * }
-             */
-
+            this.updateZombieDielabel(Pea.zombieDie);
         }
     }
-
+    public void updateZombieDielabel(int x)
+    {
+         zombieDieLabel.setText("ZOMBIE DIE: "+x);
+    }
     void initializeInput() {
         myMouseListener = new MyMouseListener(this);
         this.addMouseListener(myMouseListener);

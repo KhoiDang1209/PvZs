@@ -9,7 +9,7 @@ public class BalloonZombie extends Zombie {
 
     public BalloonZombie(GamePanel parent, int lane) {
         super(parent, lane);
-        health = 800;
+        health = 900;
         speed = 1;
         balloonZombieImage = new ImageIcon("Image/Zombie/balloonzombie.gif");
         setIcon(balloonZombieImage);

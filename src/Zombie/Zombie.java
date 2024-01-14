@@ -10,7 +10,7 @@ import GameElement.Collider;
 
 public class Zombie extends JLabel {
     // the attribute of zombie
-    public int health = 1000;
+    public int health = 1050;
     public int speed = 0;
     Image zombieimage;
     private GamePanel gp;
