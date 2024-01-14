@@ -30,6 +30,7 @@ public class Pea {
                     System.out.println("ZOMBIE DIE");
                     // This to do
                     gp.gm.Zombie_units.get(myLane).remove(i);
+                    gp.removeDieZombie(z);
                     exit = true;
                 }
                 // Make a remove pea method in gamepanel

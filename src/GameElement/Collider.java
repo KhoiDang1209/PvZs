@@ -21,7 +21,9 @@ public class Collider extends JPanel implements MouseListener {
         setOpaque(false);
         addMouseListener(this);
         // setBackground(Color.green);
-        setSize(200, 200);
+        // Set the range of collider in this area only collider will receive mouseclic,
+        // sun no use
+        setSize(80, 100);
     }
 
     public Plant assignedPlant;

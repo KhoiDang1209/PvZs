@@ -189,17 +189,17 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         timerLabel.setBounds(800, 20, 300, 30);
         add(timerLabel);
         add(label);
-        //// ImageIcon pauseicon = new ImageIcon("Image/background/pause.png");
-        //// pauseButton = new JButton();
-        //// pauseButton.setIcon(pauseicon);
-        //// pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(),
-        //// pauseicon.getIconHeight());
-        //// pauseButton.addActionListener(new ActionListener() {
-        //// @Override
-        //// public void actionPerformed(ActionEvent e) {
-        ////
-        //// }
-        // });
+        ImageIcon pauseicon = new ImageIcon("Image/background/pause.png");
+        pauseButton = new JButton();
+        pauseButton.setIcon(pauseicon);
+        pauseButton.setBounds(1400, 20, pauseicon.getIconWidth(),
+                pauseicon.getIconHeight());
+        pauseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         add(pauseButton);
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
@@ -220,77 +220,10 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         });
         PeashooterButton.setIcon(PeashooterCard);
         PeashooterButton.setBounds(50, 215, PeashooterCard.getIconWidth(), PeashooterCard.getIconHeight());
-        PeashooterButton.setBorder(BorderFactory.createLineBorder(new Color(0x818FB4), 3));
         PeashooterButton.setFocusable(true);
         PeashooterButton.setHorizontalAlignment(JButton.CENTER);
         PeashooterButton.setVerticalAlignment(JButton.CENTER);
         PeashooterGIF = new JLabel();
-        // PeashooterButton.setAction(new AbstractAction() {
-        // @Override
-        // public void actionPerformed(ActionEvent e) {
-        // activePlantingBrush = PlantType.Peashooter;
-        // }
-        // });
-        /*
-         * peashooterButtonMouseListener = new MouseAdapter() {
-         * 
-         * @Override
-         * public void mouseClicked(MouseEvent e) {
-         * // Code to get an image when the button is clicked
-         * // PeashooterGIF != null
-         * activePlantingBrush = PlantType.Peashooter;
-         * PlacedPeashoter = 0;
-         * PeashooterGIF.setIcon(Peashootergif);
-         * PeashooterGIF.setBounds(e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
-         * e.getYOnScreen() - Peashootergif.getIconHeight() / 2,
-         * Peashootergif.getIconWidth(),
-         * Peashootergif.getIconHeight());
-         * // Change the MouseListener dynamically
-         * PeashooterButton.removeMouseListener(peashooterButtonMouseListener); //
-         * Remove the current MouseListener
-         * label.addMouseListener(new LabelMouseListener()); // Add a new MouseListener
-         * label.addMouseMotionListener(new LabelMouseMotionListener()); // Add a new
-         * MouseMotionListener
-         * }
-         * 
-         * @Override
-         * public void mousePressed(MouseEvent e) {
-         * // Handle mouse press event
-         * }
-         * 
-         * @Override
-         * public void mouseReleased(MouseEvent e) {
-         * // Handle mouse release event here
-         * activePlantingBrush = PlantType.Peashooter;
-         * }
-         * 
-         * @Override
-         * public void mouseEntered(MouseEvent e) {
-         * // Handle mouse enter event
-         * }
-         * 
-         * @Override
-         * public void mouseExited(MouseEvent e) {
-         * // Code to move the GIF when the mouse leaves the button
-         * 
-         * }
-         * };
-         */
-        // PeashooterButton.addMouseListener(peashooterButtonMouseListener);
-        /*
-         * PeashooterButton.addMouseMotionListener(new MouseMotionListener() {
-         * 
-         * @Override
-         * public void mouseDragged(MouseEvent e) {
-         * // Handle mouse drag event
-         * }
-         * 
-         * @Override
-         * public void mouseMoved(MouseEvent e) {
-         * 
-         * }
-         * });
-         */
         PeashooterButton.addActionListener((ActionEvent e) -> {
             activePlantingBrush = PlantType.Peashooter;
         });
@@ -404,9 +337,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         zombieProducer = new Timer(10000, (ActionEvent e) -> {
             Random rnd = new Random();
             int l = rnd.nextInt(5);
-            int t = rnd.nextInt(100);
             int y = laneSpawn(l);
-            int x = 1600;
+            int x = 900;
             Zombie z = null;
             String[] allZombieTypes = { "NormalZombie", "ConeHeadZombie",
                     "BucketHeadZombie", "BalloonZombie" };
@@ -416,14 +348,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             System.out.printf("Add z at land %d", l);
             gm.Zombie_units.get(l).add(z);
             label.add(z);
-            z.setBounds(1600, y, z.getWidth(), z.getHeight());
+            z.setBounds(x, y, z.getWidth(), z.getHeight());
         });
         zombieProducer.start();
 
         // Set the box where plant will be add and action in each box for all field
 
         colliders = new Collider[45];
-        LaneTopLeft = new int[] { 120, 250, 380, 510, 645 };
+        LaneTopLeft = new int[] { 121, 250, 381, 511, 646 };
         BoxTopLeft = new int[] { 315, 442, 543, 654, 755, 871, 964, 1070, 1175 };
         for (int i = 0; i < 45; i++) {
             int Box = i % 9;
@@ -439,11 +371,16 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             label.add(a);
         }
 
-        redrawTimer = new Timer(1500, (ActionEvent e) -> {
+        redrawTimer = new Timer(1000, (ActionEvent e) -> {
             SwingUtilities.invokeLater(() -> repaint());
         });
         redrawTimer.start();
 
+    }
+
+    public void removeDieZombie(Zombie zom) {
+        label.remove(zom);
+        label.revalidate();
     }
 
     private void togglePause() {
@@ -467,7 +404,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 int y = laneSpawn(z.myLane);
                 z.setPosX(newX);
                 z.setBounds(newX, y, z.getWidth(), z.getHeight());
-                System.out.println("Zombie is at " + newX + " and speed is " + z.getSpeed());
+                // System.out.println("Zombie is at " + newX + " and speed is " + z.getSpeed());
                 z.advance();
             }
 
@@ -738,15 +675,15 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
      * }
      */
     public int laneSpawn(int x) {
-        if (x == 1)
+        if (x == 0)
             return 80;
-        else if (x == 2) {
-            return 225;
+        else if (x == 1) {
+            return 200;
+        } else if (x == 2) {
+            return 350;
         } else if (x == 3) {
-            return 360;
-        } else if (x == 4) {
-            return 480;
+            return 455;
         } else
-            return 600;
+            return 590;
     }
 }

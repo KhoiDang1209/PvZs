@@ -15,7 +15,7 @@ public class Peashooter extends Plant {
 
     public Peashooter(GamePanel parent, int x_box, int y_lineland) {
         super(parent, x_box, y_lineland);
-        shootTimer = new Timer(1500, (ActionEvent Shot) -> {
+        shootTimer = new Timer(3000, (ActionEvent Shot) -> {
             /*
              * Get the position of zombie as zombie store in an array has 5 small arrays so
              * it get y

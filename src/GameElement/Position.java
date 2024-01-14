@@ -11,7 +11,7 @@ public class Position {
 
     // Position for Plant have completed
     public int Lane(int y) {
-        if (y >= 120 && y <= 240)
+        if (y > 120 && y <= 240)
             return 1;
         else if (y > 240 && y <= 380) {
             return 2;
