@@ -9,7 +9,7 @@ public class BucketHeadZombie extends Zombie {
      ImageIcon bucketHeadZombieImage;
     public BucketHeadZombie(GamePanel parent, int lane) {
         super(parent, lane);
-        health = 2500;
+        health = 1450;
         bucketHeadZombieImage = new ImageIcon("Image/Zombie/bucketheadzombie.gif");
         setIcon(bucketHeadZombieImage);
         setSize(bucketHeadZombieImage.getIconWidth(),bucketHeadZombieImage.getIconHeight());

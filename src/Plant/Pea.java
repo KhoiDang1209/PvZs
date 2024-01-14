@@ -18,7 +18,7 @@ public class Pea {
         this.myLane = lane;
         posX = startX;
     }
-
+    public static int zombieDie=0;
     public void advance() {
         Rectangle pRect = new Rectangle(posX, 80 + myLane * 160, Peabullet.getIconWidth(), Peabullet.getIconHeight());
         for (int i = 0; i < gp.gm.Zombie_units.get(myLane).size(); i++) {
@@ -28,6 +28,7 @@ public class Pea {
                 z.health -= 150;
                 boolean exit = false;
                 if (z.health < 0) {
+                    zombieDie++;
                     System.out.println("ZOMBIE DIE");
                     // This to do
                     gp.gm.Zombie_units.get(myLane).remove(i);
