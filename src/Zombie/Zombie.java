@@ -15,7 +15,7 @@ public class Zombie extends JLabel {
     Image zombieimage;
     private GamePanel gp;
 
-    public int posX = 1600;
+    public int posX = 1350;
 
     public int getPosX() {
         return posX;

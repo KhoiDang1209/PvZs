@@ -9,7 +9,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -625,79 +624,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         }
     }
 
-    private int x;
-    private int y;
-
-    private class LabelMouseListener extends MouseAdapter {
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            /*
-             * System.out.println("Click!");
-             * x = e.getXOnScreen();
-             * y = e.getYOnScreen();
-             * Position position = new Position(x, y);
-             * System.out.printf("x = %d, y = %d", x, y);
-             * System.out.println();
-             * int box = position.Box(x);// get the box number
-             * int lane = position.Lane(y);// get the Lane number
-             * System.out.printf("Box is: %d. Lane is: %d", box, lane);
-             * System.out.println();
-             * 
-             * if (PeashooterGIF != null && PlacedPeashoter == 0) {
-             * // Need a check if there is a plant or not
-             * PlantBox = position.BoxDraw(x);
-             * PlantLane = position.LaneDraw(y);
-             * PlantGIF = new JLabel();
-             * PlantGIF.setIcon(Peashootergif);
-             * PlacedPeashoter = 1;
-             * label.remove(PeashooterGIF);
-             * 
-             * }
-             * if (PlacedPeashoter == 1) {
-             * PeashooterButton.addMouseListener(peashooterButtonMouseListener);
-             * label.removeMouseListener(this);
-             * }
-             */
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        }
-    }
-
-    private class LabelMouseMotionListener implements MouseMotionListener {
-        @Override
-        public void mouseMoved(MouseEvent e) {
-            // updateGIFPosition(e);
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            // Code for the new MouseMotionListener on the label
-        }
-    }
-
-    /*
-     * private void updateGIFPosition(MouseEvent e) {
-     * // Code for updating the position of the GIF
-     * if (PeashooterGIF != null && PlacedPeashoter == 0) {
-     * PeashooterGIF.setIcon(Peashootergif);
-     * PeashooterGIF.setBounds(
-     * e.getXOnScreen() - Peashootergif.getIconWidth() / 2,
-     * e.getYOnScreen() - Peashootergif.getIconHeight() / 2,
-     * Peashootergif.getIconWidth(),
-     * Peashootergif.getIconHeight());
-     * label.add(PeashooterGIF);
-     * 
-     * } else if (PlacedPeashoter == 1) {
-     * label.remove(PeashooterGIF);
-     * 
-     * }
-     * }
-     */
     public int laneSpawn(int x) {
         if (x == 0)
-            return 80;
+            return 70;
         else if (x == 1) {
             return 200;
         } else if (x == 2) {
