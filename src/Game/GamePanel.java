@@ -222,6 +222,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         lawnMowers.add(lawnMower3);
         lawnMowers.add(lawnMower4);
         lawnMowers.add(lawnMower5);
+
         JPanel ButtonPanel = new JPanel(new FlowLayout());
         SunflowerButtton.setIcon(SunflowerCard);
         SunflowerButtton.setBounds(50, 30, SunflowerCard.getIconWidth(), SunflowerCard.getIconHeight());
