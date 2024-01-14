@@ -283,8 +283,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         JLabel sunshowLabel = new JLabel(sunshow);
         sunshowLabel.setBounds(100, 0, 470, 100);
         label.add(sunshowLabel);
-
-        int InitialnumOfSun = 1500;
+        // Place to set initial number of sun
+        int InitialnumOfSun = 100;
         setNumOfSun(InitialnumOfSun);
         NumOfSunBoard.setFont(new Font("Arial", Font.BOLD, 20));
         NumOfSunBoard.setForeground(new Color(0, 0, 0));
@@ -307,7 +307,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         advancerTimer.start();
 
         // Zombie producer
-        zombieProducer = new Timer(12000, (ActionEvent e) -> {
+        zombieProducer = new Timer(15000, (ActionEvent e) -> {
             Random rnd = new Random();
             int l = rnd.nextInt(5);
             int y = laneSpawn(l);
@@ -602,7 +602,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         else if (x == 1) {
             return 200;
         } else if (x == 2) {
-            return 350;
+            return 335;
         } else if (x == 3) {
             return 455;
         } else
