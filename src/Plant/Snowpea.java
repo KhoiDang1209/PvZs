@@ -1,40 +1,43 @@
 package Plant;
 
+import java.awt.Rectangle;
+
+import javax.swing.ImageIcon;
+
 import Game.GamePanel;
+import Zombie.Zombie;
 
-import javax.swing.*;
+public class Snowpea extends Pea{
+    public Snowpea(GamePanel parent,int lane,int startX){
+    super(parent,lane,startX);
+}
 
-public class SnowPeaShooter extends Plant{
-    public Timer shootTimer;
-    private int blood1= 1000;
-
-    public SnowPeaShooter(GamePanel gp, int x, int y) {
-        super(gp, x, y);
-    }
-
-
-    @Override
-    public void stop(){
-        shootTimer.stop();
-    }
-
-    public void receivedamage(int calculatedDamage1) {
-        if (calculatedDamage1 > 0) {
-            int newHealth = this.blood1 - calculatedDamage1;
-
-            if (newHealth <= 0) {
-                newHealth = 0; // Ensure health doesn't go below zero
-                System.out.println("Peashooter has been defeated!");
+@Override
+public void advance(){
+    Rectangle pRect = new Rectangle(posX,130+myLane*120,28,28);
+    for (int i = 0; i < gp.gm.Zombie_units.get(myLane).size(); i++) {
+        Zombie z = gp.gm.Zombie_units.get(myLane).get(i);
+        Rectangle zRect = new Rectangle(z.posX,109 + myLane*120,400,120);
+        if(pRect.intersects(zRect)){
+            z.health -= 300;
+            z.slow();
+            boolean exit = false;
+            if(z.health < 0){
+                System.out.println("ZOMBIE DIE");
+                gp.gm.Zombie_units.get(myLane).remove(i);
+                    gp.removeDieZombie(z);
+                    exit = true;
             }
-
-            System.out.println("Peashooter received damage: " + calculatedDamage1);
-            System.out.println("Peashooter remaining health: " + newHealth);
-
-            this.blood1 = newHealth; // Update the Peashooter's health
-        } else {
-            System.out.println("Invalid damage value. Damage must be greater than 0.");
+            gp.gm.PeaInField.get(myLane).remove(this);
+            if(exit) break;
         }
-
     }
+    if(posX > 1300){
+        gp.gm.PeaInField.get(myLane).remove(this);
+    }
+    posX += 15;
+}
 
 }
+
+    
