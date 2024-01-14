@@ -572,6 +572,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                     setNumOfSun(getNumOfSun() - 50);
                 }
             }
+            else if (activePlantingBrush == PlantType.SnowPeashooter) {
+                if (getNumOfSun() >= 150) {
+                    // Set place that bullet fire
+                    colliders[x + y * 9].setPlant(new SnowPeashooter(GamePanel.this, x, y));
+                    // new Peashooter(GamePanel.this, x, y) position where the pea bullet fire
+                    setNumOfSun(getNumOfSun() - 150);
+                }
+            }
             activePlantingBrush = PlantType.None;
         }
     }
