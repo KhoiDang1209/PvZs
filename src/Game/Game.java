@@ -18,14 +18,6 @@ public class Game extends JFrame {
     public ArrayList<ArrayList<Pea>> PeaInField;
     private Thread gameThread;
     private GamePanel gamePanel;
-    private Menu menu;
-    private MenuMode menuMode;
-    private PlantsMenu plantsMenu;
-    private ZombiesMenu zombiesMenu;
-    private Timer gameTimer;
-    private int gameTimeInSeconds = 0;
-    private JLabel timerLabel;
-    private static int checkTime = 0;
 
     public Game(GamePanel gp) {
         this.gamePanel = gp;
@@ -58,11 +50,6 @@ public class Game extends JFrame {
          * }
          */
     }
-
-    public void setCheckTime(int num) {
-        this.checkTime += num;
-    }
-
     public void startGameThread() {
         gameThread = new Thread(() -> {
             while (true) {

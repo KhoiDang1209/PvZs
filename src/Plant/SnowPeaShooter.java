@@ -3,13 +3,12 @@ package Plant;
 import Game.GamePanel;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 
-public class FreezePeashooter  extends Plant{
+public class SnowPeaShooter extends Plant{
     public Timer shootTimer;
     private int blood1= 1000;
 
-    public FreezePeashooter(GamePanel gp, int x, int y) {
+    public SnowPeaShooter(GamePanel gp, int x, int y) {
         super(gp, x, y);
     }
 
