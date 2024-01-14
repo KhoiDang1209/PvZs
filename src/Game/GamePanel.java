@@ -83,6 +83,10 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     // Load zombie images
 
     // Set of imageicon
+    public static boolean isGameRunning = true;
+    JButton Pause = new JButton();
+    ImageIcon pauseicon = new ImageIcon("Image/background/pause.png");
+    ImageIcon resumeicon = new ImageIcon("Image/background/ressume.png");
     JButton SunflowerButton = new JButton();
     ImageIcon SunflowerCard = new ImageIcon("Image/Plants/Cards/SunflowerCard.png");
     JButton PeashooterButton = new JButton();
@@ -108,7 +112,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
     ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
     public JLabel label = new JLabel();
-    public Font ZombieDieFont = loadCustomFont("Fonts/House_Of_Terror.ttf", 16);
+    public Font ZombieDieFont = loadCustomFont("Fonts/House_Of_Terror.ttf", 20);
 
     // Set of Timer
     Timer redrawTimer;
@@ -190,20 +194,28 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         // Load zombie images
         // Other code...
-
+        Pause.setIcon(pauseicon);
         label.setIcon(scaledImageIcon);
         label.setBounds(0, 0, originalImage.getWidth(null), originalImage.getHeight(null));
-
+        Pause.setBounds(1200, 20, pauseicon.getIconWidth(), pauseicon.getIconHeight());
+        Pause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pauseGame();
+                togglePause();
+            }
+        });
+        add(Pause);
         timerLabel = new JLabel("FPS = 0| UPS = 0| Time On Game = 0");
         timerLabel.setFont(ZombieDieFont);
         timerLabel.setForeground(new Color(0x006600));
-        timerLabel.setBounds(800, 20, 300, 30);
+        timerLabel.setBounds(500, 20, 300, 30);
         add(timerLabel);
         add(label);
         zombieDieLabel = new JLabel("ZOMBIE DIE: 0");
         zombieDieLabel.setFont(ZombieDieFont);
         zombieDieLabel.setForeground(Color.red);
-        zombieDieLabel.setBounds(1200, 20, 300, 30);
+        zombieDieLabel.setBounds(900, 20, 300, 30);
         label.add(zombieDieLabel);
         LawnMower lawnMower1 = new LawnMower(this, 200, 125);
         label.add(lawnMower1);
@@ -276,7 +288,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         sunshowLabel.setBounds(100, 0, 470, 100);
         label.add(sunshowLabel);
         // Place to set initial number of sun
-        int InitialnumOfSun = 100;
+        int InitialnumOfSun = 1500;
         setNumOfSun(InitialnumOfSun);
         NumOfSunBoard.setFont(new Font("Arial", Font.BOLD, 20));
         NumOfSunBoard.setForeground(new Color(0, 0, 0));
@@ -348,14 +360,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     }
 
     private void togglePause() {
-        if (isPaused) {
+        if (isGameRunning) {
             resumeGame();
-            pauseButton.setText("Pause");
+            Pause.setIcon(pauseicon);
         } else {
             pauseGame();
-            pauseButton.setText("Resume");
+            Pause.setIcon(resumeicon);
         }
-        isPaused = !isPaused;
+        isGameRunning = !isGameRunning;
     }
 
     // Trigger advanced method in each class
@@ -408,11 +420,11 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     }
 
     public void pauseGame() {
-        isRunning = false;
+        isGameRunning = false;
     }
 
     public void resumeGame() {
-        isRunning = true;
+        isGameRunning = true;
     }
 
     private int frame = 0;
@@ -431,7 +443,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
 
         double startTime = System.currentTimeMillis();
 
-        while (true) {
+        while (isGameRunning) {
             now = System.nanoTime();
             countTime = System.currentTimeMillis();
             // Render
@@ -456,6 +468,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             }
             this.updateZombieDielabel(Pea.zombieDie);
             if (Pea.zombieDie == ZombDieToWin) {
+                stopGameThread();
                 GameWinnner(this);
             }
         }
@@ -466,15 +479,18 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     }
 
     public void GameWinnner(GamePanel gamePanel) {
-        dispose();
         MusicStop();
         GameWinnerNotification gameWinnerNotification = new GameWinnerNotification();
     }
 
     public void GameOver(GamePanel gamePanel) {
-        dispose();
+        stopGameThread();
         MusicStop();
         GameOverNotification gameOverNotification = new GameOverNotification();
+    }
+
+    public void stopGameThread() {
+        isGameRunning = false;
     }
 
     void initializeInput() {
@@ -560,7 +576,7 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
             } else if (activePlantingBrush == PlantType.Wallnut) {
                 if (getNumOfSun() >= 50) {
                     // Set place that bullet fire
-                    colliders[x + y * 9].setPlant(new wallNut(GamePanel.this, x, y));
+                    colliders[x + y * 9].setPlant(new SnowPeashooter(GamePanel.this, x, y));
                     // new Peashooter(GamePanel.this, x, y) position where the pea bullet fire
                     setNumOfSun(getNumOfSun() - 50);
                 }
