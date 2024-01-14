@@ -6,22 +6,24 @@ import javax.swing.Timer;
 
 import Game.GamePanel;
 
-public class SnowPeaShooter extends Plant {
+public class SnowPeashooter extends Plant {
 
-    private int blood = 300;
+    private int blood = 250;
 
     public Timer shootTimer;
 
-    public SnowPeaShooter(GamePanel parent, int x_box, int y_lineland) {
+    public SnowPeashooter(GamePanel parent, int x_box, int y_lineland) {
         super(parent, x_box, y_lineland);
-        shootTimer = new Timer(3000, (ActionEvent Shot) -> {
+        shootTimer = new Timer(4500, (ActionEvent Shot) -> {
             /*
              * Get the position of zombie as zombie store in an array has 5 small arrays so
              * it get y
              * mean it get which land that has zombie or the size > 0
              */
             if (gp.gm.Zombie_units.get(y_lineland).size() > 0) {
-                gp.gm.PeaInField.get(y_lineland).add(new Pea(gp, y_lineland, 360 + this.x * 120));/* Cong thuc */
+                gp.gm.SnowPeaInField.get(y_lineland).add(new Snowpea(gp, y_lineland, 360 + this.x * 120));/*
+                                                                                                           * Cong thuc
+                                                                                                           */
                 /* Add an bullet */
             }
         });

@@ -6,9 +6,9 @@ import javax.swing.Timer;
 
 import Game.GamePanel;
 
-public class WallNut extends Plant{
+public class wallNut extends Plant{
     private int WallNuthealth= 2000;
-    public WallNut(GamePanel gp, int x, int y) {
+    public wallNut(GamePanel gp, int x, int y) {
         super(gp, x, y);
     }
     public void receivedamage(int dame){
