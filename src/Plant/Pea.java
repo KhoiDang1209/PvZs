@@ -18,14 +18,16 @@ public class Pea {
         this.myLane = lane;
         posX = startX;
     }
-    public static int zombieDie=0;
+
+    public static int zombieDie = 0;
+
     public void advance() {
         Rectangle pRect = new Rectangle(posX, 80 + myLane * 160, Peabullet.getIconWidth(), Peabullet.getIconHeight());
         for (int i = 0; i < gp.gm.Zombie_units.get(myLane).size(); i++) {
             Zombie z = gp.gm.Zombie_units.get(myLane).get(i);
             Rectangle zRect = new Rectangle(z.posX, 80 + myLane * 160, z.getWidth(), z.getHeight());
             if (pRect.intersects(zRect)) {
-                z.health -= 150;
+                z.health -= 180;
                 boolean exit = false;
                 if (z.health < 0) {
                     zombieDie++;

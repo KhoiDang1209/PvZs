@@ -28,7 +28,7 @@ public class Snowpea {
             if (SpRect.intersects(zRect)) {
                 // Condition to slow the zombie
                 z.slow();
-                z.health -= 50;
+                z.health -= 70;
                 boolean exit = false;
                 if (z.health < 0) {
                     System.out.println("ZOMBIE DIE");
