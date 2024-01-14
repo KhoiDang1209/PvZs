@@ -18,10 +18,10 @@ public class Sun extends JPanel implements MouseListener {
     private int myX;
     private int myY;
     private int endY;
-    private static final int FALL_SPEED = 4;
+    private static final int FALL_SPEED = 2;
     private static final int SUN_VALUE = 25;
     // time to destroy
-    private int destruct = 35;
+    private int destruct = 40;
 
     public Sun(GamePanel parent, int startX, int startY, int endY) {
         this.gp = parent;

@@ -43,7 +43,7 @@ public class GameOverNotification extends JFrame {
         add(label);
         JButton ContinueButton=createStyledButton("Continue",GONButtonFont,new Color(0x5B5B7D),Color.GREEN);
         ContinueButton.setBounds(75,230,150,50);
-        add(ContinueButton);
+        label.add(ContinueButton);
         ContinueButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +57,7 @@ public class GameOverNotification extends JFrame {
         });
         JButton ExitGameButton=createStyledButton("Exit game",GONButtonFont,new Color(0x5B5B7D),Color.GREEN);
         ExitGameButton.setBounds(300,230,150,50);
-        add(ExitGameButton);
+        label.add(ExitGameButton);
         ExitGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
