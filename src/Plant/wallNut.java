@@ -1,8 +1,10 @@
 package Plant;
 
-import Game.GamePanel;
+import java.awt.event.ActionEvent;
 
-import javax.swing.*;
+import javax.swing.Timer;
+
+import Game.GamePanel;
 
 public class WallNut extends Plant{
     private int WallNuthealth= 2000;

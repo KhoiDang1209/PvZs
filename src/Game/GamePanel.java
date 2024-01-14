@@ -31,6 +31,7 @@ import Plant.Pea;
 import Plant.Peashooter;
 import Plant.Plant;
 import Plant.Sunflower;
+import Plant.WallNut;
 import Sun.Sun;
 import Zombie.Zombie;
 
@@ -38,8 +39,12 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     enum PlantType {
         None,
         Sunflower,
-        Peashooter,
+        Peashooter, 
+        Snowpeashooter, 
+        Wallnut,
     }
+
+    public static final String Zombie_units = null;
 
     public Game gm = new Game(this);
     private MouseListener peashooterButtonMouseListener;
@@ -85,6 +90,8 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
     ImageIcon WallnutCard = new ImageIcon("Image/Plants/Cards/Wall-nutCard.png");
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
     ImageIcon Sunflowergif = new ImageIcon("Image/Plants/Fields/SunFlower.gif");
+    ImageIcon Wallnutgif = new ImageIcon("Image/Plants/Fields/wallnut.gif");
+    ImageIcon SnowPeashooter = new ImageIcon("Image/Plants/Fields/Snow-Pea.gif");
     ImageIcon originalImageIcon = new ImageIcon("Image/background/Frontyard.png");
     ImageIcon PeaImage = new ImageIcon("Image/Plants/Fields/ProjectilePea.png");
     Image originalImage = originalImageIcon.getImage();
@@ -243,6 +250,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         SnowPeashooterButton.setFocusable(true);
         SnowPeashooterButton.setHorizontalAlignment(JButton.CENTER);
         SnowPeashooterButton.setVerticalAlignment(JButton.CENTER);
+        PeashooterButton.addActionListener((ActionEvent e) -> {
+            activePlantingBrush = PlantType.Snowpeashooter;
+        });
         SnowPeashooterButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 int x = evt.getX();
@@ -259,6 +269,9 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
         WallnutButton.setFocusable(true);
         WallnutButton.setHorizontalAlignment(JButton.CENTER);
         WallnutButton.setVerticalAlignment(JButton.CENTER);
+        PeashooterButton.addActionListener((ActionEvent e) -> {
+            activePlantingBrush = PlantType.Wallnut;
+        });
         WallnutButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 int x = evt.getX();
@@ -543,7 +556,14 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                     setNumOfSun(getNumOfSun() - 100);
                 }
             }
-
+            else if (activePlantingBrush == PlantType.Wallnut) {
+                if (getNumOfSun() >= 50) {
+                    // Set place that bullet fire
+                    colliders[x + y * 9].setPlant(new WallNut(GamePanel.this, x, y));
+                    // new Wallnut(GamePanel.this, x, y) position where the pea bullet fire
+                    setNumOfSun(getNumOfSun() - 50);
+                }
+            }
             activePlantingBrush = PlantType.None;
         }
     }
@@ -572,12 +592,15 @@ public class GamePanel extends JFrame implements Runnable, Mouse {
                 } else if (WhichPlant instanceof Sunflower) {
                     // Draw ImageIcon as Image
                     Sunflowergif.paintIcon(this, graphic, DrawBox, DrawLane);
-                }
+                } else if (WhichPlant instanceof WallNut) {
+                    // Draw ImageIcon as Image
+                    Wallnutgif.paintIcon(this, graphic, DrawBox, DrawLane);
             }
 
         }
         // Bullet generation for normal Pea
         drawPeaBullets(graphic);
+    }
     }
 
     public void drawPeaBullets(Graphics graphic) {

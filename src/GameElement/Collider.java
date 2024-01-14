@@ -15,7 +15,6 @@ public class Collider extends JPanel implements MouseListener {
 
     ActionListener al;
     ImageIcon Peashootergif = new ImageIcon("Image/Plants/Fields/Peashooter.gif");
-
     public Collider() {
         // setBorder(new LineBorder(Color.RED));
         setOpaque(false);
